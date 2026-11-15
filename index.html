@@ -4,7 +4,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CUARENTA">
-<meta name="theme-color" content="#100f0d"><title>CUARENTA · Don Barajón V1.03.24</title>
+<meta name="theme-color" content="#100f0d">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="CUARENTA · Don Barajón: el juego de cartas ecuatoriano. Juega gratis contra Don Barajón desde el celular o la computadora.">
+<meta property="og:type" content="website"><meta property="og:title" content="CUARENTA · Don Barajón"><meta property="og:description" content="El juego de cartas ecuatoriano. Juega gratis contra Don Barajón desde el celular o la computadora."><meta property="og:image" content="https://gcobos79.github.io/Cuarenta/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://gcobos79.github.io/Cuarenta/"><meta property="og:locale" content="es_EC">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="CUARENTA · Don Barajón"><meta name="twitter:image" content="https://gcobos79.github.io/Cuarenta/og-image.png"><title>CUARENTA · Don Barajón V1.03.25</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;600;700;800&display=swap');
 *{box-sizing:border-box}body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",sans-serif}.scene{min-height:100vh;position:relative;padding:20px 3vw;background:#100f0d;overflow:hidden}.layout{position:relative;z-index:1;width:min(1420px,98vw);margin:22px auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.brand small{font-size:9px;letter-spacing:4px;color:#c2a778}.brand h1{font:800 clamp(32px,5vw,54px)/.9 "Barlow Condensed";letter-spacing:8px;color:#f0d9a9;margin:7px 0}.scores{display:flex;gap:9px}.score{min-width:105px;text-align:center;border:1px solid #a88754aa;background:#1a1712;border-radius:10px;padding:7px 12px}.score label{display:block;font-size:9px;letter-spacing:2px;color:#bba27b}.score strong{font:700 31px "Barlow Condensed";color:#f4dfb4}.board{position:relative;border:9px solid #3b291e;border-radius:27px;padding:15px 20px;background:linear-gradient(145deg,#17231d,#0c1511);box-shadow:0 25px 70px #000b,inset 0 0 0 1px #c19a5b66}.meta{display:flex;justify-content:space-between;color:#c5b28f;font-size:10px;letter-spacing:2px;padding:0 8px 8px}.rowhand{display:flex;align-items:center;gap:12px;min-height:100px;padding:5px 5px}.opponent{border-bottom:1px solid #bca16d33}.avatar{width:92px;flex:none;text-align:center}.face{width:55px;height:55px;border-radius:50%;margin:auto;display:grid;place-items:center;font-size:32px;background:radial-gradient(circle at 40% 30%,#e0c28d,#6b5034 60%,#211913);border:2px solid #b28c58}.voice-btn{margin-top:6px;padding:5px 7px;border:1px solid #b99762;border-radius:6px;background:#1b241e;color:#f0d9a9;font:800 8px "DM Sans";letter-spacing:.6px;cursor:pointer;white-space:nowrap}.voice-btn.active{background:#b99157;color:#17120c}.avatar b{display:block;font:700 10px "Barlow Condensed";letter-spacing:1px;color:#e4c58e;margin-top:4px}.hand{display:flex;justify-content:center;align-items:center;gap:clamp(3px,.7vw,9px);flex:1;min-height:86px;flex-wrap:wrap}.card{width:clamp(75px,8.2vw,105px);height:clamp(112px,11.9vw,150px);background:linear-gradient(135deg,#fffef9,#e8e0d1);border:1px solid #d2c7b5;border-radius:7px;color:#171717;position:relative;box-shadow:0 6px 12px #0009;flex:none;font-family:Georgia,serif;cursor:pointer}.card.red{color:#bd2633}.card .idx{position:absolute;top:4px;left:5px;font-size:34px;line-height:29px;font-weight:bold}.card .pip{position:absolute;inset:0;display:grid;place-items:center;font-size:47px}.card .bottom{top:auto;left:auto;right:5px;bottom:4px;transform:rotate(180deg)}@media (hover:hover){.card:hover{transform:translateY(-6px)}}.back{cursor:default;background:repeating-linear-gradient(45deg,#243b35 0 5px,#d6bd8a 5px 6px);border:3px solid #eee0c2;display:grid;place-items:center;color:#f1d7a1}.back:after{content:"✦";font-size:34px;border:1px solid #e7d4a0;width:54px;height:76px;display:grid;place-items:center}.counter{font-size:9px;color:#c9b795;white-space:nowrap;min-width:100px;text-align:right}.counter strong{font:700 22px "Barlow Condensed";color:#fff0cf;margin-left:5px}.felt{width:100%;box-sizing:border-box;min-height:210px;margin:7px 0;border-radius:100px;background:radial-gradient(ellipse,#246b4c,#15513a 58%,#0c3929);border:8px solid #65462f;box-shadow:inset 0 0 40px #061d14aa,0 9px 22px #0009;display:flex;flex-direction:column;align-items:center;justify-content:center}.felt label{font:600 9px "Barlow Condensed";letter-spacing:5px;color:#d9cba8a0;margin-bottom:8px}.table{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;width:100%;max-width:100%;min-height:85px;align-items:center;box-sizing:border-box;padding:0 10px}.player{flex-direction:column;gap:0}.player .hand{width:100%}.player .counter{text-align:center}.footer{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #bca16d33;margin-top:5px;padding:10px 6px 0;color:#d7c5a4;font-size:12px}.btn{border:1px solid #b99762;background:#b99157;color:#17120c;padding:9px 13px;border-radius:7px;font-weight:800;letter-spacing:1px;font-size:10px;cursor:pointer}.btn.secondary{background:#171b17;color:#d9c69f}.btn:disabled{opacity:.4}.overlay{position:fixed;inset:0;background:#080a08d9;backdrop-filter:blur(7px);display:grid;place-items:center;z-index:10;padding:18px}.dialog{width:min(460px,95vw);border:1px solid #b9955e;border-radius:18px;background:linear-gradient(145deg,#27352d,#111914);padding:30px;text-align:center;box-shadow:0 25px 90px #000c}.dialog h2{font:800 48px "Barlow Condensed";letter-spacing:6px;color:#ecd09c;margin:7px}.dialog p{color:#cbbd9f;font-size:13px}.dialog select{width:100%;margin:12px 0;padding:11px;border-radius:8px;background:#121512;color:#eee;border:1px solid #8d704b}.dialog button{width:100%;padding:13px;border:0;border-radius:8px;background:#c69b60;font-weight:800;cursor:pointer}.hidden{display:none!important}.toast.warning{background:#fff0e8;color:#6f170d;border:2px solid #b83b2c;max-height:38vh;overflow:auto;white-space:pre-line;text-align:left;line-height:1.45}.toast{position:fixed;z-index:15;top:18px;left:50%;transform:translateX(-50%);padding:13px 22px;border:2px solid #16110c;border-radius:12px;background:#f5ead4;color:#21180f;font-weight:800;box-shadow:4px 6px 0 #0008;text-align:center;max-width:90vw}.section-banner{position:fixed;z-index:30;inset:0;display:grid;place-items:center;pointer-events:none;background:#05080599;animation:sectionFade 2s ease forwards}.section-banner span{font:900 clamp(42px,8vw,86px)/1.05 "Barlow Condensed";letter-spacing:5px;text-align:center;color:#f0d9a9;text-shadow:0 5px 22px #000,0 0 24px #d3a45e;padding:24px;white-space:pre-line}@keyframes sectionFade{0%,12%{opacity:0}22%,78%{opacity:1}100%{opacity:0}}.points{position:fixed;z-index:16;inset:0;display:grid;place-items:center;pointer-events:none;font:800 64px "Barlow Condensed";color:#ffe4a8;text-shadow:0 0 18px #e6a94e,0 4px 8px #000;animation:pop .95s ease-out forwards}@keyframes pop{0%{opacity:0;transform:scale(.5)}25%{opacity:1;transform:scale(1.15)}75%{opacity:1}100%{opacity:0;transform:scale(1.4)}}.choice{display:grid;gap:7px;margin:14px 0}.choice button{padding:10px;background:#e7d8b9;border:0;border-radius:7px;cursor:pointer}
@@ -851,9 +855,12 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
 .game-panel input{width:100%;box-sizing:border-box;padding:12px 14px;margin:0 0 14px;border-radius:12px;border:1px solid #d9c18e88;background:#0d2a21;color:#fff4d6;font-size:16px}
 .game-panel input[hidden]{display:none}
 .gp-actions{display:flex;gap:10px}.gp-actions .btn{flex:1;padding:13px 6px;width:auto}
+/* V1.03.25 — ESTÁNDAR DE LUZ INTERMITENTE: una sola animación (expectPulse, 1 s por parpadeo) para todos los botones.
+   .expect = intermitente hasta que se pulse; .blink-8s = intermitente solo 8 segundos (8 parpadeos). */
 @keyframes expectPulse{0%,100%{filter:brightness(1);box-shadow:0 0 0 0 #e7c47a00}50%{filter:brightness(1.5);box-shadow:0 0 14px 5px #e7c47aaa}}
-.expect:not(:disabled){animation:expectPulse 1.1s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.expect:not(:disabled){animation:none;filter:brightness(1.25);box-shadow:0 0 0 3px #e7c47acc}}
+.expect:not(:disabled){animation:expectPulse 1s ease-in-out infinite}
+.blink-8s:not(:disabled){animation:expectPulse 1s ease-in-out 8}
+@media (prefers-reduced-motion:reduce){.expect:not(:disabled),.blink-8s:not(:disabled){animation:none;filter:brightness(1.25);box-shadow:0 0 0 3px #e7c47acc}}
 .voice-pick{display:flex;gap:8px;margin-top:6px}
 #donVoiceSelect{flex:1;min-width:0;padding:11px 10px;border-radius:12px;border:1px solid #d9c18e66;background:#0d1a14;color:#f3ead9;font-size:15px}
 #donVoiceTest{width:auto!important;padding:11px 14px}
@@ -893,6 +900,71 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
 .dialog::-webkit-scrollbar,#postGameAnalysis::-webkit-scrollbar,#choices .choice::-webkit-scrollbar,#settings .settings-dialog::-webkit-scrollbar{width:9px}
 .dialog::-webkit-scrollbar-track,#postGameAnalysis::-webkit-scrollbar-track,#choices .choice::-webkit-scrollbar-track,#settings .settings-dialog::-webkit-scrollbar-track{background:#16261e;border-radius:6px}
 .dialog::-webkit-scrollbar-thumb,#postGameAnalysis::-webkit-scrollbar-thumb,#choices .choice::-webkit-scrollbar-thumb,#settings .settings-dialog::-webkit-scrollbar-thumb{background:#d9c18e;border-radius:6px;border:2px solid #16261e}
+/* V1.03.25 */
+/* Ayuda: ocupa exactamente el marco del juego (celular: toda la pantalla; computadora: el área del juego, ver fitHelp) */
+#help{padding:0!important;place-items:stretch}
+#help .help-dialog{width:100%!important;max-width:none!important;height:100%;max-height:none!important;border-radius:0;border:0;box-sizing:border-box;padding:calc(var(--sat,0px) + 14px) 14px calc(var(--sab,0px) + 10px)!important}
+#help.help-framed .help-dialog{position:fixed;border:1px solid #b9955e;border-radius:18px;padding:18px 16px 10px!important}
+#help.help-framed .help-scroll>*{max-width:760px;margin-left:auto;margin-right:auto}
+#settings #panelPartida .settings-options{border:0!important;background:none!important;padding:0!important;margin:0!important;box-shadow:none!important}
+#settings #panelPartida .settings-option:first-child{border-top:0;padding-top:0}
+/* V1.03.25: Configuración lo más completa posible en pantalla: compacta en pantallas bajas y en columnas en pantallas anchas */
+@media (max-height:800px),(max-width:600px){
+ #settings .settings-dialog{--gap-m:7px;--gap-s:5px;--gap-l:10px;padding:14px!important}
+ #settings .settings-option input[type="text"]{height:36px}
+ #settings .settings-options{padding:2px 14px 6px}
+ .settings-tabpanel{padding:8px 14px}
+ #settings .settings-description{margin:4px 0 8px!important}
+ #settings .settings-description.locked-msg{font-size:12.5px;line-height:1.35}
+ #settings .settings-option.editable-now{padding:7px 10px!important;margin:4px 0}
+}
+/* el título y los botones (AYUDA, CERRAR) quedan siempre a la vista al desplazar */
+#settings .settings-title{position:sticky;top:-14px;z-index:3;margin:-14px -14px 4px;padding:14px 14px 8px;background:#1f2b24}
+#settings .settings-description.locked-msg{color:#ffe6a8!important;font-weight:600;line-height:1.45;text-shadow:0 0 12px #f0d08a55}
+#settings .settings-description.locked-msg b{color:#fff3cf}
+#gpNo[hidden]{display:none!important}
+.settings-option.editable-now{padding:10px 12px!important;margin:6px 0;outline:2px solid #52d87a;outline-offset:0;border-radius:12px;box-shadow:0 0 14px #52d87a55}
+#help{z-index:12}
+.help-dialog{width:min(640px,95vw);max-height:90vh;display:flex;flex-direction:column;text-align:left;overflow:hidden;padding:18px 16px 8px!important}
+.help-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 4px 10px}
+.help-title h2{margin:0;font:700 20px/1 "DM Sans";letter-spacing:.16em;color:#e9dfc7}
+#help .help-title .btn{width:auto;padding:8px 14px;background:#ffffff14;color:#e9dfc7;font:700 12px "DM Sans";letter-spacing:.1em;border-radius:8px}
+#help .help-title .btn:hover{background:#ffffff22}
+.help-scroll{overflow:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+.help-index{display:none}
+#help .help-sec{border:0;border-top:1px solid #ffffff14;border-radius:0;margin:0;background:none}
+#help .help-head{display:flex;align-items:center;gap:2px}
+#help .help-toggle{flex:1;display:flex;align-items:center;gap:8px;width:auto;margin:3px 0;background:none;border:0;border-radius:8px;padding:13px 8px;color:#e9dfc7;font:600 16px/1.3 "DM Sans";text-align:left;cursor:pointer}
+#help .help-toggle:hover{background:#ffffff0d}
+#help .help-toggle::after{content:"›";margin-left:auto;font-size:22px;line-height:1;color:#bba27b;transition:transform .15s}
+#help .help-sec.open>.help-head{background:#c9a45c26;border-radius:10px;box-shadow:inset 0 0 0 1px #c9a45c66,0 0 14px #c9a45c33}
+#help .help-toggle[aria-expanded=true]{color:#ffe6a8;font-weight:800;text-shadow:0 0 10px #f0d08a66}
+#help .help-toggle[aria-expanded=true]::after{color:#ffe6a8}
+#help .help-sec.open>.help-head .help-toggle:hover{background:none}
+#help .help-toggle[aria-expanded=true]::after{transform:rotate(90deg)}
+#help .help-say{width:38px;height:38px;flex:none;padding:0;border:0;border-radius:50%;background:none;color:#bba27b;display:grid;place-items:center;cursor:pointer}
+#help .help-say:hover{background:#ffffff14;color:#f0d9a9}
+#help .help-say.on{background:#52d87a2e;color:#52d87a}
+.help-content{padding:0 8px 16px}
+.help-sub h4{margin:18px 0 4px;font:700 12px "DM Sans";letter-spacing:.12em;text-transform:uppercase;color:#c9a45c}
+.help-sub p{margin:4px 0;font-size:15.5px;line-height:1.55;color:#d9cfb8}
+.help-exs{display:flex;flex-wrap:wrap;gap:0 26px;margin:10px 0;padding:4px 12px 10px;background:#ffffff0a;border-radius:10px}
+.help-ex{margin:8px 0 0}
+.help-ex .card{width:42px!important;height:60px!important;border-radius:5px;box-shadow:0 2px 5px #0008}
+.help-ex .card .idx{font-size:14px!important;line-height:12px!important;top:2px!important;left:3px!important}
+.help-ex .card .idx.bottom{top:auto!important;left:auto!important;right:3px!important;bottom:2px!important}
+.help-ex .card .pip{font-size:20px!important}
+.help-ex .ex-l{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a99a78}
+.help-ex .choice-cards{justify-content:flex-start;gap:6px;pointer-events:none}
+#help .help-act{margin-top:12px;width:auto;padding:11px 16px}
+.help-note{font-size:14px;color:#a99a78;margin:8px 0 0}
+.hs.now{background:#52d87a33;border-radius:4px;box-shadow:0 0 0 2px #52d87a33}
+#sharePanel .game-panel{max-width:min(420px,94vw)}
+#shareList{display:grid;gap:8px;margin:10px 0}
+.share-opt{display:block;text-align:center;text-decoration:none;width:100%}
+#shareUrl{word-break:break-all;font-size:14px;color:#f0d9a9;user-select:all}
+#shareText{font-size:15px;line-height:1.4}
+#shareMsg{min-height:1.2em;font-size:14px;color:#52d87a}
 </style></head><body>
 <!-- V1.03.20: figuras de la J, la Q y la K (dibujadas en el propio archivo) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -976,9 +1048,17 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
 <div class="panel-wrap hidden" id="gamePanel"><div class="game-panel" role="dialog" aria-modal="true" aria-labelledby="gpTitle"><h3 id="gpTitle"></h3><p id="gpText"></p><input id="gpInput" type="text" maxlength="20" autocomplete="off" hidden><div class="gp-actions"><button class="btn secondary" id="gpNo" type="button"></button><button class="btn start-btn" id="gpYes" type="button"></button></div></div></div>
 <div class="overlay hidden" id="settings">
  <div class="dialog settings-dialog">
-  <div class="settings-title"><h2>CONFIGURACIÓN</h2><div class="settings-title-actions"><button class="btn secondary" id="viewBack" type="button">← VOLVER</button><button class="btn secondary" id="closeSettings" type="button">CERRAR</button></div></div>
+  <div class="settings-title"><h2>CONFIGURACIÓN</h2><div class="settings-title-actions"><button class="btn secondary" id="viewBack" type="button">← VOLVER</button><button class="btn secondary" id="helpBtn" type="button">AYUDA</button><button class="btn secondary" id="closeSettings" type="button">CERRAR</button></div></div>
   <div class="settings-main" id="settingsMain">
-  <p class="settings-description">Personaliza la partida</p>
+  <p class="settings-description" id="settingsSubtitle">Personaliza la partida</p>
+  <p class="settings-description" id="settingsLockNotice" role="status">La configuración no se puede cambiar durante una partida. Para modificar estas opciones, primero debes terminar la partida.</p>
+  <div class="settings-tabs" id="settingsTabs" role="tablist">
+   <button class="settings-tab active" id="tabPartida" type="button" role="tab" aria-selected="true" data-tab="partida">PARTIDA</button>
+   <button class="settings-tab" id="tabReglas" type="button" role="tab" aria-selected="false" data-tab="reglas">REGLAS</button>
+   <button class="settings-tab" id="tabPrefs" type="button" role="tab" aria-selected="false" data-tab="prefs">PREFERENCIAS</button>
+   <button class="settings-tab" id="tabHist" type="button" role="tab" aria-selected="false" data-tab="hist" hidden>HISTÓRICOS</button>
+  </div>
+  <section class="settings-tabpanel active" id="panelPartida" role="tabpanel">
   <section class="settings-options" id="gameSetup">
    <div class="settings-option">
     <label class="setup-label" for="playerName">TU NOMBRE</label>
@@ -994,13 +1074,8 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
     <div class="level-marks"><span>Normal</span><span>Avanzado</span><span>Experto</span></div>
    </div>
   </section>
-  <p class="settings-description" id="settingsLockNotice" role="status">La configuración no se puede cambiar durante una partida. Para modificar estas opciones, primero debes terminar la partida.</p>
-  <div class="settings-tabs" id="settingsTabs" role="tablist">
-   <button class="settings-tab active" id="tabReglas" type="button" role="tab" aria-selected="true" data-tab="reglas">REGLAS</button>
-   <button class="settings-tab" id="tabPrefs" type="button" role="tab" aria-selected="false" data-tab="prefs">PREFERENCIAS</button>
-   <button class="settings-tab" id="tabHist" type="button" role="tab" aria-selected="false" data-tab="hist" hidden>HISTÓRICOS</button>
-  </div>
-  <section class="settings-tabpanel active" id="panelReglas" role="tabpanel">
+  </section>
+  <section class="settings-tabpanel" id="panelReglas" role="tabpanel">
    <div class="settings-option">
     <span class="setup-label">38 QUE NO JUEGAN</span>
     <p class="option-help">A los 38 puntos, solo una caída gana el juego.</p>
@@ -1011,7 +1086,6 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
     <p class="option-help">Si quien reparte no levanta ninguna carta en la primera mano, el rival cobra 4 puntos.</p>
     <div class="switch-row"><span class="switch-side active" data-for="falta4Switch" data-right="0">Desactivada</span><button class="two-switch green" id="falta4Switch" type="button" role="switch" aria-checked="false" aria-label="Regla 4 de falta: activada o desactivada"><span class="ts-thumb"></span></button><span class="switch-side" data-for="falta4Switch" data-right="1">Activada</span></div>
    </div>
-   <div class="settings-actions"><button class="btn secondary" id="openGuide" type="button">CÓMO SE ENTREGAN LOS PUNTOS</button></div>
   </section>
   <section class="settings-tabpanel" id="panelPrefs" role="tabpanel">
    <div class="settings-option">
@@ -1022,6 +1096,10 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
     <span class="setup-label">VOZ DE DON BARAJÓN</span>
     <div class="switch-row"><span class="switch-side" data-for="donVoiceSetting" data-right="0">Apagada</span><button class="two-switch green" id="donVoiceSetting" type="button" role="switch" aria-checked="false" aria-label="Voz de Don Barajón: activada o apagada"><span class="ts-thumb"></span></button><span class="switch-side active" data-for="donVoiceSetting" data-right="1">Activada</span></div>
    </div>
+   <div class="settings-option">
+    <span class="setup-label">DON BARAJÓN CON PERSONALIDAD</span>
+    <div class="switch-row"><span class="switch-side" data-for="donPersonalitySetting" data-right="0">Natural</span><button class="two-switch green" id="donPersonalitySetting" type="button" role="switch" aria-checked="true" aria-label="Don Barajón con personalidad: activada o natural"><span class="ts-thumb"></span></button><span class="switch-side active" data-for="donPersonalitySetting" data-right="1">Con personalidad</span></div>
+   </div>
    <div class="settings-option" id="voiceChoiceOption">
     <span class="setup-label">TIPO DE VOZ DE DON</span>
     <div class="voice-pick"><select id="donVoiceSelect" aria-label="Tipo de voz de Don Barajón"></select><button class="btn secondary" id="donVoiceTest" type="button">PROBAR</button></div>
@@ -1030,6 +1108,10 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
    <div class="settings-option">
     <span class="setup-label">SONIDO DE CARTAS</span>
     <div class="switch-row"><span class="switch-side" data-for="cardSoundSwitch" data-right="0">Apagado</span><button class="two-switch green" id="cardSoundSwitch" type="button" role="switch" aria-checked="false" aria-label="Sonido al llegar las cartas a la mesa: activado o apagado"><span class="ts-thumb"></span></button><span class="switch-side active" data-for="cardSoundSwitch" data-right="1">Activado</span></div>
+   </div>
+   <div class="settings-option">
+    <span class="setup-label">COMPARTIR EL JUEGO</span>
+    <button class="btn start-btn" id="shareBtn" type="button" aria-label="Compartir el juego por WhatsApp, mensajes, Messenger o correo">📤 COMPARTIR</button>
    </div>
   </section>
   <section class="settings-tabpanel" id="panelHist" role="tabpanel">
@@ -1042,21 +1124,6 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
   <div id="settingsCredit" class="settings-credit" role="note"></div>
   <p class="settings-description settings-version">Versión del juego: <strong id="gameVersion"></strong></p>
   </div>
-  <section class="settings-panel scoring-guide" id="scoringGuide" aria-label="Cómo se entregan los puntos">
-   <div class="match-history-head"><strong>CÓMO SE ENTREGAN LOS PUNTOS</strong></div>
-   <p class="scoring-intro">Gana quien llega primero a 40 puntos.</p>
-   <ul>
-    <li><b>Caída (+2):</b> capturar, con una carta del mismo valor, la carta que el rival acaba de jugar.</li>
-    <li><b>Limpia (+2):</b> dejar la mesa vacía al capturar.</li>
-    <li><b>Ronda (+2):</b> tener 3 cartas del mismo valor en la mano. Se reclama antes de jugar la primera carta de la sección.</li>
-    <li><b>Caída en la ronda (+4):</b> si el rival hace caída sobre una carta de tu ronda reclamada, él recibe 4 puntos extra al terminar la sección.</li>
-    <li><b>Cuatro cartas iguales:</b> ganan la partida de inmediato.</li>
-    <li><b>Conteo de cartas:</b> al terminar las 4 secciones de un ciclo, solo puntúa quien levantó más cartas. Con 20 cartas gana 6 puntos; con 21 o 22, 8; con 23 o 24, 10; y así, 2 puntos más cada 2 cartas. Con menos de 20 no hay puntos. Si ambos tienen 20, los 6 puntos son para quien no repartió.</li>
-    <li><b>38 que no juegan (regla opcional):</b> con 38 puntos solo una caída da la victoria; limpia, ronda y conteo de cartas ya no suman.</li>
-    <li><b>4 de falta (regla opcional):</b> si quien reparte no levanta ninguna carta en la primera mano, el rival cobra 4 puntos.</li>
-   </ul>
-   <p class="scoring-note">Capturar cartas no da puntos por sí solo: solo cuentan para el conteo final.</p>
-  </section>
   <aside class="audit-log hidden" id="auditLog">
    <div class="audit-head"><strong id="auditTitle">REGISTRO DE LA PARTIDA ACTUAL</strong><span id="auditCount">0</span></div>
    <div class="audit-sub" id="auditSubtitle">Registro cronológico completo, desde el inicio hasta el final de la partida.</div>
@@ -1065,12 +1132,15 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
  </div>
 </div>
 <div class="overlay hidden" id="choices"><div class="dialog"><h2>ELIGE TU CAPTURA</h2><div class="choice" id="choiceList"></div><button class="btn secondary" id="cancelChoice">CANCELAR</button></div></div>
-<div class="overlay hidden" id="victory"><div class="dialog victory-dialog"><h2 id="winner">VICTORIA</h2><p id="finalScore"></p><p class="victory-note" id="victoryNote" hidden></p><section class="postgame-analysis" id="postGameAnalysis" aria-live="polite" hidden></section><div class="victory-actions"><button id="again">NUEVA PARTIDA</button><button id="levelUp" type="button" hidden></button></div></div></div><div id="toast" class="toast hidden"></div>
+<div class="overlay hidden" id="victory"><div class="dialog victory-dialog"><h2 id="winner">VICTORIA</h2><p id="finalScore"></p><p class="victory-note" id="victoryNote" hidden></p><section class="postgame-analysis" id="postGameAnalysis" aria-live="polite" hidden></section><div class="victory-actions"><button id="again">NUEVA PARTIDA</button><button id="levelUp" type="button" hidden></button></div></div></div>
+<div class="overlay hidden" id="help"><div class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="help-title"><h2 id="helpTitle">AYUDA</h2><button class="btn secondary" id="helpClose" type="button">CERRAR</button></div><div class="help-scroll"><nav class="help-index" id="helpIndex" aria-label="Índice de la ayuda"></nav><div id="helpBody"></div></div></div></div>
+<div class="panel-wrap hidden" id="sharePanel"><div class="game-panel" role="dialog" aria-modal="true" aria-labelledby="shareTitle"><h3 id="shareTitle">COMPARTIR EL JUEGO</h3><p id="shareText"></p><p id="shareUrl"></p><div id="shareList"></div><p id="shareMsg" role="status"></p><div class="gp-actions"><button class="btn secondary" id="shareClose" type="button">CERRAR</button></div></div></div>
+<div id="toast" class="toast hidden"></div>
 <script>
 const R=['A','2','3','4','5','6','7','J','Q','K'],SU=['♠','♥','♦','♣'],V=Object.fromEntries(R.map((r,i)=>[r,i+1]));
 // V1.03.20: estado de la línea de avisos (se declara al principio para que prepareNewGame pueda usarlo durante el arranque)
 var metaQ=[],metaBusy=false,metaSkip=false;
-const GAME_VERSION='V1.03.24'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
+const GAME_VERSION='V1.03.25'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
 let gameSession=0;
 let S={deck:[],hands:[[],[]],table:[],captured:[[],[]],score:[0,0],dealer:1,turn:0,section:1,mode:'assisted',started:false,lastPlayed:null,rounda:[false,false],rondaClaimed:[false,false],rondaVal:[null,null],rondaFall:[false,false],s1Captured:[false,false],pending:null,cycleNo:1,busy:false,paused:false,aiLevel:1,firstPlayer:0};
 const $=s=>document.querySelector(s);
@@ -1215,7 +1285,29 @@ function chooseDonLine(group,lines){
 const DON_BANK={"pCaida": [["Caída tuya, {n}… un regalito de mi parte; con el marcador que llevo me puedo dar el lujo.", "Me cazaste una, pero yo sigo arriba. Lo tuyo es un respiro, no una remontada.", "Dos puntos para ti. Anótalos con cariño: serán los últimos en un buen rato.", "Bonita caída, de verdad. Qué lástima que mi ventaja no se asuste por tan poco.", "Ah, caíste justo sobre mi carta. Con calma, {n}, perder puntos es parte de mi estrategia de humildad.", "Esa caída me hizo cosquillas. Sigo ganando, por si lo dudabas.", "Me quitaste dos puntos y yo te quito la ilusión. Quedamos a mano en dramatismo.", "Caída, sí. Remontada, no. Todavía hay mucha distancia entre tú y mi talento."], ["¡Caída! Estamos igualados y tú con suerte de principiante, {n}.", "Qué casualidad que justo esa carta… yo diría que tienes un amigo en el mazo.", "Dos puntos para ti, {n}. Ojo, que la suerte también se gasta.", "Me cayó la caída como un balde de agua fría. Esto sigue parejo, pero con tu cara de felicidad.", "Caída tuya. Parece que hoy la fortuna te guiñó el ojo. A mí me guiñó los dos, pero por nervios.", "Buena. Anota tus dos puntos, que yo anoto tu suerte en mi libreta negra.", "Empatados y con caída: me vas a obligar a jugar en serio, {n}.", "Esa caída fue pura suerte, y lo digo con todo el respeto que me merece la suerte ajena."], ["¡Caída! Esto es una conspiración de las cartas. Exijo un recuento de baraja.", "Otra caída tuya y yo cada vez más lejos. Quien barajó esto tendrá que dar explicaciones.", "Me hundes y encima con caída. Voy a pedir que revisen la baraja, {n}.", "Con la suerte que me dieron las cartas, mejor juego con los ojos cerrados.", "Dos puntos más para ti y yo con este mal humor. Qué barbaridad de barajado.", "Caída. Perfecto. Sigo perdiendo y las cartas se ríen. Las voy a demandar por daños y perjuicios.", "Esto no es un juego, es una emboscada. Alguien marcó la baraja, y no fui yo, {n}.", "Qué manera de darme una cachetada con guante de seda. Y con dos puntos de propina."]], "pLimpia": [["Mesa limpia, {n}. Me dejaste mirando el paño verde, pero con puntos a mi favor.", "Limpia tuya. Esa mesa vacía me dolió menos de lo que te va a doler mi ventaja.", "Te llevaste hasta el polvo. Bonito detalle para quien va perdiendo.", "Dos puntitos para ti. Yo los llamaría propina por dignidad.", "Qué limpieza tan elegante. Pena que el marcador no se limpie igual.", "Mesa vacía… igual que la esperanza de alcanzarme, {n}. Es broma, algo queda.", "Limpia. Aplausos de pie. Yo aplaudo sentado, como corresponde a quien va ganando.", "Lo reconozco: buena jugada. Anótala en tu historial, que en el mío ya no cabe otra."], ["Mesa limpia y marcador parejo. Esto se está poniendo interesante, {n}.", "Limpiaste la mesa y mis nervios de paso.", "¡Limpia! Con esa suerte, hasta yo te pediría un número de la lotería.", "Me dejaste sin cartas que recoger y sin comentarios ingeniosos. Bueno, uno sí me queda.", "Dos puntos de golpe. Vas a hacer que me tome esto en serio, {n}.", "Limpia tuya. Estamos empatados y yo con cara de funeral.", "Qué barbaridad de limpieza. ¿Te contrata alguien para esto, {n}?", "La mesa quedó como mi paciencia: vacía."], ["¿Limpia?, ¿ahora?, ¿con lo mal que voy? Esto es sabotaje, {n}.", "Mesa limpia y yo perdiendo. Las cartas conspiran y lo sé.", "Me estás regalando un hueco en la mesa y un hueco en mi orgullo.", "Dos puntos más. Quien mezcló esta baraja merece un pergamino de reprobación.", "No me ganas tú, me ganan estas cartas mal barajadas.", "Limpiaste la mesa y arrasaste con mi buen humor, {n}.", "Qué casualidad tan conveniente. Reclamo una revisión técnica de la baraja.", "Me quedé mirando la mesa vacía y pensando en cambiar de oficio."]], "pDoble": [["¡Caída y limpia! Cuatro puntos de golpe y yo aún mando. Impresionante, pero insuficiente, {n}.", "Cuatro puntos en una jugada. Bonito espectáculo, aunque la película la sigo ganando yo.", "Eso fue un golpe completo. Me tambaleé, pero sigo en pie y por delante.", "Cuatro puntos para ti. Mañana lo cuento como anécdota; hoy lo cuento como susto."], ["¡Caída y limpia! Cuatro puntos de golpe, {n}. Se acabó mi tranquilidad.", "Eso fue una obra de arte. Voy a pedirte que me enseñes, pero en secreto.", "Cuatro puntos y yo con la boca abierta. Esto estaba parejo y se puso peligroso.", "Qué manera de cobrarme dos veces con una sola carta. Hasta el banco es más amable."], ["Caída y limpia, con lo mal que voy. Me falta solo que caiga un meteorito.", "Cuatro puntos de golpe, {n}. Las cartas están de tu parte y yo en la lista negra.", "Esto no es suerte, es abuso. Exijo hablar con el gerente de la baraja.", "Cuatro puntos más y yo ya empiezo a redactar mi carta de renuncia."]], "pCaptura": [["Buena captura, {n}. Aplausos discretos desde mi puesto de líder.", "Te llevaste unas cartas. Yo me llevé la ventaja; cada quien con su souvenir.", "Esa captura no cambia nada: yo sigo arriba y tú sigues amable.", "Muy bien. Sigue así y quizás me alcances en la próxima vida.", "Recogiste unas cartas con elegancia. Me recuerdas a mí, pero con menos puntos.", "Te salió la cuenta. Qué bueno, así mi victoria tendrá más mérito.", "Buena levantada. El marcador sigue diciendo lo mismo: yo ganando.", "Captura correcta, {n}. Le pongo un siete de diez y un guiño.", "Bien jugado. Con humildad lo digo: yo lo habría hecho mejor, pero igual está bien."], ["Captura limpia y marcador parejo. Cada vez me caes mejor… y peor, {n}.", "Buena levantada. Estamos igualados y tú sin sudar.", "Te salió. A este paso me voy a tener que concentrar.", "Esa captura tenía tu nombre. La mía se quedó sin remitente.", "Muy bien, {n}. Lo mío fue un descuido; lo tuyo, suerte. Equilibrio cósmico.", "Anótate esa. Aquí nadie regala puntos, salvo las cartas.", "Qué buen ojo para la suma. Yo lo llamo suerte; tú llámalo talento.", "Cartas para ti y presión para mí. Un negocio redondo.", "Buena captura. Estamos parejos y yo ya me estoy poniendo serio."], ["Otra captura tuya y yo aquí, de espectador de lujo.", "Sigues sumando, {n}, y yo sigo culpando a la baraja. Todos felices.", "Esas cartas deberían ser mías. Pero la baraja está mal barajada, como siempre.", "Captura. Perfecto. Mi marcador pide auxilio y nadie responde.", "Te llevas las cartas y mi buen humor. Gran combo.", "No me ganas tú, me ganan estas cartas con mala intención.", "Qué bonito se te da todo hoy. Yo lo atribuyo a la mala distribución de la suerte.", "Buena levantada, {n}. Me estoy acostumbrando a admirarte desde atrás.", "Cada captura tuya es un clavo más en el ataúd de mi marcador. Qué dramático soy."]], "pSinCap": [["Pasaste sin recoger. Estrategia valiente cuando uno va perdiendo, {n}.", "Esa carta se queda en la mesa… como mi ventaja, bien sentada.", "No capturaste. Yo no me burlo… mucho.", "Dejaste una carta ahí. Gracias, la considero un regalo.", "Si buscas remontarme, esa no era la jugada, {n}.", "Carta a la mesa. Ya la estoy mirando con cariño.", "Sin captura. Vas a necesitar más que paciencia: vas a necesitar un milagro.", "Esa jugada fue un acto de fe. Yo creo en los puntos, no en los milagros.", "Poco ambiciosa tu jugada. Así me gusta: cómoda para mí."], ["No capturaste, {n}. Esto sigue parejo, pero con ganas de ponerse peligroso.", "Carta suelta en la mesa. Me guiña el ojo.", "Sin captura. Estamos empatados y tú jugando a la ruleta.", "Esa carta queda a mi disposición, gracias.", "Interesante jugada. Misteriosa y probablemente inútil.", "No hay captura. Esto huele a trampa, y no sé si tuya o mía.", "Dejaste una carta. Yo, que soy educado, no voy a decir nada… hasta que la recoja.", "Qué calma tienes, {n}. Yo con los nervios y tú tomando té.", "Poner una carta y rezar. Táctica clásica y muy humana."], ["Sin captura y yo perdiendo. El universo se burla de los dos, {n}.", "Dejas una carta y yo ni puedo aprovecharla. Maldita baraja.", "Una carta a la mesa. Como mi suerte: tirada y sin dueño.", "Ni tú recoges ni yo remonto. Qué dúo tan elegante.", "Esa carta merece justicia. Pero a mí nadie me hace justicia hoy.", "No capturaste. Yo tampoco, pero yo tengo una excusa: las cartas están embrujadas.", "Qué silencio en la mesa. Parece el funeral de mi marcador, {n}.", "Poco puedo hacer con esa carta, y poco he hecho en toda la partida.", "Mientras tú dudas, yo sigo sin suerte. Que alguien revise la baraja de una vez."]], "dCaida": [["¡Caída! Esa carta tenía mi nombre y yo tenía la paciencia. Dos puntos más, {n}.", "Te descuidaste y yo estaba mirando, como buen líder.", "Caída. Me pregunto cómo seguiré ganando si me haces estas cosas tan fáciles.", "Otro regalo envuelto en caída. Gracias por colaborar con mi ventaja.", "¡Cuarenta años de experiencia y esa caída me salió en un segundo!", "Dos puntos más para el mejor del salón. No lo digo yo, lo dice el marcador.", "Caída, {n}. Anota otra lección en tu cuaderno de derrotas.", "Qué bien se siente ganar con elegancia y con caída."], ["¡Caída! Esto estaba empatado y ahora ya no, {n}.", "Dos puntos para mí. La suerte te abandonó un segundo y yo estaba atento.", "Caída. Hoy el destino me guiñó el ojo, y yo le guiñé de vuelta.", "Te distraíste y me regalaste dos puntos. Qué amable.", "Esa caída es pura destreza… y un poquito de suerte, lo admito.", "Eso se llama oportunismo con buenos modales.", "¡Caí sobre tu carta como un halcón! Dos puntos para mi nido, {n}.", "Ay, qué felicidad. Hoy el marcador se inclina a mi favor."], ["¡Caída! Por fin una a mi favor. Las cartas se acordaron de mí.", "Dos puntos, {n}. Para ser sincero, los necesitaba como pan caliente.", "Hoy todo me sale mal, menos esta caída. Eso se llama consuelo.", "Caí sobre tu carta. Por una vez, las cartas no me traicionaron.", "Caída. No me hables todavía, que estoy de mal humor y de buen humor al mismo tiempo.", "Por fin una. Voy a pedir que se detenga la partida para celebrarlo.", "Dos puntos, {n}. Mi marcador empieza a respirar.", "Esa caída fue un oasis en este desierto de mala suerte."]], "dLimpia": [["Mesa limpia. Ni una carta suelta para contar el cuento, {n}.", "Limpia. Orden en la mesa y puntos en mi cuenta.", "Me llevé todo. Hasta el polvo. Con estilo.", "Dejé la mesa como mi ventaja: enorme y sin rivales.", "Dos puntitos más por limpieza. Me deberían pagar por servicio de aseo.", "Limpia. Qué elegancia tiene ganar con la mesa impecable.", "Así se hace: sin dejar rastro y sin pedir permiso.", "Mesa vacía, marcador lleno. Mi combinación favorita, {n}."], ["¡Limpia! Esto se acaba de poner a mi favor, {n}.", "Me llevé todo. La mesa parece recién barrida por el mejor mayordomo.", "Dos puntos de limpieza. Esto es arte, y el arte se paga.", "Mesa vacía. Ya puedes mirarla con nostalgia.", "Limpia. No es suerte, es técnica. Bueno, es un poco de suerte.", "Qué placer dejarte sin nada que recoger, {n}.", "La mesa quedó como mi conciencia: limpia.", "Pasé la escoba y dos puntos entraron en mi bolsillo."], ["¡Limpia! Por fin una buena, {n}. Esto merece un brindis con agua.", "Me llevé todo y quedé más contento que un niño con juguete nuevo.", "Mesa limpia. Las cartas se disculparon un segundo por su mala conducta.", "Dos puntos. Aún pierdo, pero con la mesa impecable.", "Limpia. Esto es lo único bueno que me ha pasado hoy, y lo voy a presumir.", "Barrí la mesa y barrí mi tristeza por un momento.", "Qué bonito se ve una mesa vacía cuando uno necesita ánimo, {n}.", "Limpia. Ahora solo falta que las cartas pidan perdón por el resto."]], "dDoble": [["¡Caída y limpia! Cuatro puntos de golpe, {n}. Ni yo me lo esperaba tan elegante.", "Cuatro puntos en una jugada. Eso, señoras y señores, es talento.", "Caída y limpia. Ya puedes dejar de soñar con alcanzarme.", "Un golpe completo. Que alguien me traiga un café y un trofeo."], ["¡Caída y limpia! Cuatro puntos y yo temblando de emoción, {n}.", "Eso fue un golpe maestro. Anótalo en tu lista de cosas que no vas a olvidar.", "Cuatro puntos de golpe. Estaba empatado y ahora ya no. Qué delicia.", "Caída y limpia. La suerte hoy me firmó un autógrafo."], ["¡Caída y limpia, {n}! Cuatro puntos para el que iba perdiendo. La baraja se disculpa.", "Cuatro puntos de un jalón. Por fin una venganza a mi altura.", "Qué manera de resucitar. Mi marcador sale del ataúd con paso lento.", "Cuatro puntos y yo sonriendo como si nada. Ahora sí me puedes llamar señor."]], "dCaptura": [["Buena levantada. No fue casualidad: así juega un líder, {n}.", "Cartas a mi montón y puntos en mi vitrina. Qué bien me veo ganando.", "Esa combinación tenía mi nombre bordado.", "Otra captura. Me da pena ganar tanto, pero no tanta.", "Voy sumando. Tú sigue pensando, que mi tiempo es oro.", "Qué placer recoger lo que me pertenece, {n}.", "Captura limpia. Me lo dicen todos: tengo un nivel de juego impresionante.", "Gracias por dejar una mesa tan aprovechable. Bueno, gracias no: fue mérito mío.", "Y otra más para mi colección de victorias parciales."], ["Esa captura estaba esperando a que yo la recogiera, {n}.", "Buena levantada. Estamos parejos y yo con ganas de despegar.", "Cartas para mí. Hoy la suerte parece estar partida a la mitad.", "Recogí unas cuantas. Nada espectacular, pero cumplidor.", "Un paso adelante. Uno más y ya te alcanzo, o te supero.", "Eso es lo que se llama paciencia premiada.", "Qué buena cuenta. Mis neuronas hicieron horas extras, {n}.", "Captura. No me felicites todavía, déjame disfrutar el momento.", "Equilibrio en el marcador y desequilibrio en tus nervios. Perfecto."], ["Por fin recojo algo. Ya empezaba a pensar que las cartas me odiaban, {n}.", "Una captura. Es poco, pero es mía, y la voy a cuidar como un tesoro.", "Eso ayuda, pero no arregla el desastre. Las cartas siguen de mal humor.", "Levanté unas cartas. Pido un minuto de silencio para mi alegría.", "No cantes victoria todavía; apenas estoy calentando mi mal genio, {n}.", "Captura. Mi marcador respira, aunque sea con dificultad.", "Qué alivio. Hoy todo me sale al revés menos esto.", "Algo es algo. Voy a escribirle una carta a mi suerte para pedir más.", "Recogí cartas. Se siente como encontrar dinero en un abrigo viejo."]], "dSinCap": [["Esta carta se queda en la mesa. No pasa nada, {n}: voy ganando de todos modos.", "No encontré captura. Y aun así sigo arriba, qué cosa tan curiosa.", "Dejo esta carta. Cuestión de elegancia, no de necesidad.", "Sin recoger. Hoy hasta mis errores van bien acompañados de ventaja.", "Pongo una carta. Es mi forma de ser generoso con quien va perdiendo.", "Paso. Un líder también sabe esperar su momento.", "No era la combinación que buscaba. Tengo todo el tiempo del mundo, {n}.", "La mesa se llena y mi ventaja se queda igual de cómoda.", "Sin captura. Esto se llama gestión de recursos a mi favor."], ["No encontré captura, {n}. Esto sigue parejo y yo con cara de póker.", "Dejo una carta. A ver si te animas a quitármela.", "Sin recoger. Estamos igualados y el suspenso me queda divino.", "No había combinación. Cosas de la vida, y de la baraja.", "Una carta más a la mesa. Que decida el destino, yo ya cumplí.", "Paso. Entre paréntesis, mi cara de póker es estupenda.", "No hubo levantada. Esto sigue abierto, como mi buen humor, {n}.", "La mesa crece. Y con ella, la tensión de los dos.", "Sin captura. Me ves tranquilo y lo estoy, por fuera."], ["Nada. No encontré entrada y mi humor se hunde con el marcador, {n}.", "Dejo una carta. Es lo único que me queda: tirar cosas y culpar a la baraja.", "Sin captura. Estas cartas no vienen bien barajadas, lo juro.", "No salió. Las cartas me tienen un resentimiento personal.", "Esta carta se queda sola, como yo en este marcador.", "Paso sin recoger, {n}. Me duele más a mí que a ti, créeme.", "Ni una combinación. Voy a presentar una queja formal contra el mazo.", "Qué mal humor me están dejando estas cartas. Y encima sin captura.", "No hubo suerte. Tampoco la hubo en los últimos veinte minutos, para ser exacto."]], "ciclo": [["Este ciclo me salió provechoso, {n}. Así da gusto cerrar cuentas.", "Buen ciclo para mí: más puntos y más cartas de mi lado. Seguimos.", "Cuentas claras y a mi favor. Este ciclo valió la pena.", "Cierro el ciclo con una sonrisa que no puedo disimular.", "Mi contabilidad está feliz. Y mi ego, más.", "Ciclo ganado, {n}. Si fuera un examen, me pondría diez y una estrellita."], ["Este ciclo no me favoreció, {n}. Tú lo aprovechaste mejor; ya buscaré la revancha.", "Mal ciclo para mí. Culpo a la baraja, por supuesto.", "No fue mi ciclo. Pido que lo borren de los registros oficiales.", "Ciclo para el olvido. Me llevo la lección y mi mal humor, {n}.", "Se me escapó este ciclo. Las cartas conspiraron, pero lo anoto como aprendizaje.", "Perdí este ciclo y mi orgullo se fue de paseo. Ya volverá."], ["Ciclo parejo: ni tú ni yo sacamos ventaja. Esto sigue abierto, {n}.", "Empate de cuentas en este ciclo. Ninguno se puede quejar… pero yo lo haré igual.", "Quedamos tablas. Hoy el universo prefiere el equilibrio.", "Ciclo igualado. Aquí nadie gana, pero todos sudamos.", "Ni para ti ni para mí. La baraja se lavó las manos.", "Empatamos, {n}. Mejor así: más suspenso para lo que viene."]], "fin": [["¡Cuarenta! Esta partida me resultó provechosa y se queda en el garaje de Don Barajón, {n}.", "Gané. Qué sorpresa… para nadie. ¡Buena partida!", "Cuarenta puntos y ni una gota de sudor. Hasta la próxima: tú, el segundo puesto, y yo, la gloria.", "Me llevo la partida, {n}. Y tú te llevas la experiencia, que también cuenta.", "¡Ganó Don Barajón! Aplausos, flores y un café bien cargado.", "Cuarenta en el marcador y felicidad en mi alma. Gracias por jugar.", "Esta victoria me sabe a gloria, {n}. Fue una buena batalla… para mí.", "Gané con estilo y con la mesa impecable. Revancha cuando quieras.", "Partida cerrada con broche de oro. El oro es mío, claro.", "Cuarenta, {n}. La vida es dura, pero yo soy más duro."], ["Me ganaste limpio, {n}. La revancha va por mi cuenta.", "Esta partida no me resultó provechosa. Pero tomé nota y tomaré venganza.", "Perdí, y lo digo con dignidad, aunque por dentro estoy llorando de rabia.", "Ganaste. Felicidades. Ahora devuélveme la ilusión que me quitaste.", "Me ganaste, {n}. Voy a decir que me dejé, para mantener mi reputación.", "Las cartas me traicionaron, pero tú las usaste con maestría. Qué dolor.", "Victoria para ti. Yo me voy a un rincón a reflexionar sobre la vida y la baraja.", "Buen juego, {n}. En mi libro de memorias esto será un capítulo breve y triste.", "Reconozco la derrota. Con mala cara, pero la reconozco.", "Ganaste, y yo con ganas de pedir un recuento de cartas. Pero no: tú fuiste mejor."]], "inicio": [["¡Muy bien! Tú comienzas, {n}. A jugar.", "Reparto yo y empiezas tú. Cuidado con lo que haces.", "Las cartas están listas. Tú abres el telón, {n}.", "Que empiece el espectáculo. Tú primero, que yo luego te ganaré.", "Tu turno, {n}. Piensa bien, que aquí se juega con cabeza y con humor."], ["La mesa está lista. Don Barajón tiene la salida, {n}. ¡Vamos a jugar!", "Reparte el jugador y empiezo yo. Qué buen augurio.", "Yo abro la partida. Prepárate para ver cómo se hace.", "Que se haga silencio: Don Barajón va a mover.", "Comienzo yo, {n}. Pero con cariño y con muchas ganas de ganar."]], "rondaDon": ["¡Ronda para mí! Dos puntitos que no pienso dejar pasar.", "Tengo ronda, {n}. Y la reclamo con la elegancia de siempre.", "Ronda mía. Dos puntos de regalo del destino.", "Ronda, señores. Me los llevo con permiso y sin permiso.", "¡Ronda! Es como encontrar un billete en el abrigo, {n}.", "Reclamo mi ronda. Los puntos fáciles también cuentan."], "rondaP": ["Ronda tuya, {n}. Dos puntos fáciles; qué envidia.", "Reclamaste ronda. Anota: dos puntos y mi respeto.", "Ronda para ti. Qué envidia, yo también las colecciono.", "Ronda confirmada. Voy a vigilar de cerca tu caída, {n}.", "Con ronda y todo, sigues en mi radar.", "Dos puntos de ronda. Cuidado: reclamarla tiene su precio."], "at38": [["Treinta y ocho, {n}. Ahora solo una caída te salva. Yo me encargo de que no la tengas.", "Llegaste a treinta y ocho. Qué miedo me das… un poquito.", "Treinta y ocho y a la orilla del abismo. Yo te empujo con mucho gusto.", "Tan cerca y tan lejos. Con 38 solo una caída te corona, {n}.", "Treinta y ocho. Respira hondo, que ahora viene lo difícil.", "Ya casi, {n}. Pero entre el casi y el listo hay un Don Barajón."], ["¡Treinta y ocho! Ahora solo me sirve una caída.", "Treinta y ocho para mí, {n}. A un paso de la gloria y a dos de un infarto.", "Ya casi cuarenta. Los nervios me tiemblan, pero con elegancia.", "Treinta y ocho. Si cae una caída, me corono; si no, sudo.", "Tan cerca. Pido silencio y fe, {n}.", "Treinta y ocho. Me tiembla hasta el bigote."]]};
 function donState(){const g=S.score[1]-S.score[0];return g>=4?0:(g<=-4?2:1)} // 0: Don gana · 1: parejo · 2: Don pierde
 function fillName(t){const n=firstName();return t.replace(/,\s*\{n\}/g,n?`, ${n}`:'').replace(/\{n\}/g,n)}
-function donLine(key,idx){const b=DON_BANK[key],st=Array.isArray(b[0]),i=st?(idx===undefined?donState():idx):'';return fillName(chooseDonLine(key+i,st?b[i]:b))}
+// V1.03.25: «Don Barajón con personalidad». Activada (por defecto) usa DON_BANK; desactivada usa NATURAL_BANK (frases neutras, sin burla ni picardía). Nunca hablan de cartas ocultas.
+const DON_PERSONALITY_KEY='donBarajonPersonalityV1';
+function readDonPersonality(){try{return localStorage.getItem(DON_PERSONALITY_KEY)!=='false'}catch(e){return true}}
+let donPersonality=readDonPersonality();
+const NATURAL_BANK={
+ pCaida:["Caída, {n}. Se suma ese punto.","Buena caída, {n}.","Caída de {n}: punto para ti."],
+ pLimpia:["Limpia, {n}. La mesa queda vacía.","Buena limpia, {n}.","Mesa limpia, {n}. Punto para ti."],
+ pDoble:["Caída y limpia, {n}. Muy buena jugada.","Doble punto, {n}. Bien jugado."],
+ pCaptura:["Buena captura, {n}.","Te llevas esas cartas, {n}.","Bien jugado, {n}."],
+ pSinCap:["Jugada tranquila, {n}.","Deja la carta en la mesa, {n}.","Sigamos, {n}."],
+ dCaida:["Caída mía. Sumo ese punto.","Hago caída.","Caída para mí."],
+ dLimpia:["Limpio la mesa.","Hago limpia y sumo el punto.","Mesa limpia, punto para mí."],
+ dDoble:["Caída y limpia. Sumo dos puntos.","Hago caída y limpia a la vez."],
+ dCaptura:["Me llevo estas cartas.","Capturo y sigo.","Bien, capturo."],
+ dSinCap:["Juego una carta a la mesa.","Dejo la carta y sigo.","Sigo con mi turno."],
+ ciclo:[["Terminamos el ciclo. Me fue bien esta vez.","Cierre de ciclo a mi favor."],["Terminamos el ciclo. Te fue mejor a ti, {n}.","Cierre de ciclo a tu favor."],["Terminamos el ciclo. Quedó muy parejo.","Ciclo parejo, {n}."]],
+ fin:[["Gané la partida. Buena partida, {n}.","Fin de la partida. Gracias por jugar, {n}."],["Ganaste la partida, {n}. Felicidades.","Buena partida, {n}. Ganaste."]],
+ inicio:[["Empezamos, {n}. Mucha suerte.","Comienza la partida, {n}."],["Vamos a jugar, {n}. Suerte.","A jugar, {n}."]],
+ rondaDon:["Tengo ronda y la reclamo: dos puntos.","Ronda para mí. Sumo dos puntos."],
+ rondaP:["Ronda reclamada, {n}. Sumas dos puntos.","Tienes ronda, {n}. Dos puntos para ti."],
+ at38:[["Estás en 38, {n}.","Cuidado, {n}: estás en 38."],["Estoy en 38.","Llegué a 38."]]
+};
+function donLine(key,idx){const nat=!donPersonality&&NATURAL_BANK[key],b=nat?NATURAL_BANK[key]:DON_BANK[key],st=Array.isArray(b[0]),i=st?(idx===undefined?donState():idx):'';return fillName(chooseDonLine((nat?'n.':'')+key+i,st?b[i]:b))}
 function donCommentOnPlayerMove(c,take,caida,limpia,pts){
  if(caida&&limpia)return donLine('pDoble');
  if(caida)return donLine('pCaida');
@@ -1379,12 +1471,14 @@ function setDonVoiceEnabled(enabled,announce=true){
  donVoiceEnabled=!!enabled;
  try{localStorage.setItem(DON_VOICE_KEY,String(donVoiceEnabled))}catch(e){}
  syncDonVoiceControls();
- if(donVoiceEnabled){loadDonVoice();if(announce)donSpeak('¡La voz sigue bajo mi control! Cuando tenga algo que decir, me vas a escuchar.');}
+ if(donVoiceEnabled){loadDonVoice();if(announce)donSpeak(donPersonality?'¡La voz sigue bajo mi control! Cuando tenga algo que decir, me vas a escuchar.':'La voz está activada.');}
  else clearDonSpeechQueue();
 }
 function toggleDonVoice(){setDonVoiceEnabled(!donVoiceEnabled,true)}
 $('#voiceToggle').addEventListener('click',toggleDonVoice);
 $('#donVoiceSetting').addEventListener('click',()=>{setDonVoiceEnabled(!donVoiceEnabled,true)});
+setTwoSwitch($('#donPersonalitySetting'),donPersonality);
+$('#donPersonalitySetting').addEventListener('click',()=>{donPersonality=!donPersonality;try{localStorage.setItem(DON_PERSONALITY_KEY,String(donPersonality))}catch(e){}setTwoSwitch($('#donPersonalitySetting'),donPersonality)});
 function showSectionBanner(message='COMIENZA UNA\\nNUEVA SECCIÓN',duration=2200){
  const el=$('#sectionBanner'),label=el.querySelector('span');
  label.textContent=message;
@@ -1500,9 +1594,12 @@ function lockSetup(locked){
  setup.classList.toggle('locked',locked);
  $('#firstToggle').disabled=locked;
  $('#aiLevel').disabled=locked;$('#quickAiLevel').disabled=locked;
- $('#playerName').disabled=locked;$('#rule38Switch').disabled=locked;$('#falta4Switch').disabled=locked;document.querySelectorAll('.settings-tabpanel .settings-option').forEach(e=>{const free=e.querySelector('#playerGender,#donVoiceSetting,#donVoiceSelect,#cardSoundSwitch');e.classList.toggle('locked',locked&&!free)}); // V1.03.13: tratamiento, voz, tipo de voz y sonido se pueden cambiar siempre
- $('#settingsLockNotice').textContent='La configuración no se puede cambiar durante una partida. Para modificar estas opciones, primero debes terminar la partida.';
- $('#settingsLockNotice').hidden=!locked; // V1.03: el aviso solo aparece mientras hay una partida en curso
+ $('#playerName').disabled=locked;$('#rule38Switch').disabled=locked;$('#falta4Switch').disabled=locked;document.querySelectorAll('.settings-tabpanel .settings-option').forEach(e=>{const free=e.querySelector('#playerGender,#donVoiceSetting,#donPersonalitySetting,#donVoiceSelect,#cardSoundSwitch');e.classList.toggle('locked',locked&&!free);e.classList.toggle('editable-now',locked&&!!free)}); // V1.03.13: tratamiento, voz, tipo de voz y sonido se pueden cambiar siempre
+ $('#settingsLockNotice').textContent='Durante la partida solo puedes cambiar las opciones resaltadas en verde: tratamiento, voz, tipo de voz, personalidad de Don y sonido de las cartas. Las demás se desbloquean al terminar la partida.';
+ $('#settingsLockNotice').hidden=true; // V1.03.25: el aviso se unifica con el subtítulo (un solo mensaje)
+ { const sub=$('#settingsSubtitle'); // V1.03.25: con partida en curso el subtítulo explica qué se puede cambiar y se ve más brillante
+  sub.classList.toggle('locked-msg',locked);
+  sub.innerHTML=locked?'<b>Partida en curso.</b> Solo puedes cambiar las opciones resaltadas en verde: tratamiento, voz, tipo de voz, personalidad de Don y sonido de las cartas. Para modificar las demás, termina primero la partida actual.':'Personaliza la partida'; }
  const first=Number($('#firstToggle').dataset.player||0);
  $('#beginGame').disabled=locked;
  $('#firstToggle').setAttribute('aria-disabled',String(locked));
@@ -2388,7 +2485,7 @@ function setAuditMode(enabled){
 function setPanelView(name){$('#settings').classList.toggle('panel-guide',name==='guide');}
 // Pestañas: Reglas, Preferencias e Históricos (esta última solo se muestra con la clave del dueño).
 const OWNER_SALT='cuarenta-don-barajon:clave-de-dueno:v1',OWNER_KEY_HASH='f7a14d09feb58ab9df36a5d014abec123bc7fd2092dabc56d6dd16f5920c9e1e'; // solo se guarda la huella, no la palabra
-let ownerUnlocked=false,ownerCheckTimer=null,ownerCheckSeq=0,settingsTab='reglas';
+let ownerUnlocked=false,ownerCheckTimer=null,ownerCheckSeq=0,settingsTab='partida';
 function normalizeOwnerKey(t){return t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 async function ownerKeyHash(word){ // para obtener la huella de otra clave (consola del navegador): await ownerKeyHash('palabra')
  if(!(window.crypto&&crypto.subtle))return null;
@@ -2406,19 +2503,18 @@ async function checkOwner(){
 function updateOwnerAccess(){clearTimeout(ownerCheckTimer);ownerCheckTimer=setTimeout(checkOwner,200)}
 function setSettingsTab(name){
  if(name==='hist'&&!ownerUnlocked)name='reglas';
- settingsTab=name;const panels={reglas:'panelReglas',prefs:'panelPrefs',hist:'panelHist'};
+ settingsTab=name;const panels={partida:'panelPartida',reglas:'panelReglas',prefs:'panelPrefs',hist:'panelHist'};
  document.querySelectorAll('.settings-tab').forEach(b=>{const on=b.dataset.tab===name;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on))});
  document.querySelectorAll('.settings-tabpanel').forEach(p=>p.classList.toggle('active',p.id===panels[name]));
  if(name==='hist')refreshHistTab();
 }
 function refreshHistTab(){const has=!!currentGameStartedAt&&auditRecords.length>0;$('#viewCurrentLog').disabled=!has;$('#viewCurrentNote').textContent=has?'':'Todavía no hay una partida en curso.';renderMatchHistory();}
-$('#settingsBtn').onclick=()=>{$('#settings').classList.remove('hidden');viewingArchivedMatch=null;setAuditMode(false);setPanelView(null);setSettingsTab(settingsTab);renderMatchHistory()};
+$('#settingsBtn').onclick=()=>{$('#settings').classList.remove('hidden');viewingArchivedMatch=null;setAuditMode(false);setPanelView(null);setSettingsTab(S.started?'prefs':settingsTab);renderMatchHistory();blink8($('#helpBtn'))};
 $('#closeSettings').onclick=()=>{$('#settings').classList.add('hidden');setAuditMode(false);setPanelView(null)};
 $('#settings').addEventListener('click',e=>{if(e.target.id==='settings'){ $('#settings').classList.add('hidden');setAuditMode(false);setPanelView(null)}});
 $('#rule38Switch').onclick=()=>{if(S.started)return;rule38Enabled=!rule38Enabled;try{localStorage.setItem(RULE38_KEY,String(rule38Enabled))}catch(e){}setTwoSwitch($('#rule38Switch'),rule38Enabled)};
 $('#falta4Switch').onclick=()=>{if(S.started)return;falta4Enabled=!falta4Enabled;try{localStorage.setItem(FALTA4_KEY,String(falta4Enabled))}catch(e){}setTwoSwitch($('#falta4Switch'),falta4Enabled)};
 $('#settingsTabs').addEventListener('click',e=>{const b=e.target.closest('.settings-tab');if(b&&!b.hidden)setSettingsTab(b.dataset.tab)});
-$('#openGuide').onclick=()=>setPanelView('guide');
 $('#viewCurrentLog').onclick=()=>{viewingArchivedMatch=null;setPanelView(null);setAuditMode(true)};
 $('#viewBack').onclick=()=>{if($('#settings').classList.contains('audit-mode')){setAuditMode(false);setPanelView(null);setSettingsTab('hist')}else setPanelView(null)};
 
@@ -2426,12 +2522,13 @@ $('#again').onclick=()=>prepareNewGame();
 // V1.03.20: cuando gana el jugador, Don propone subir de nivel (o revancha en Experto); el botón cambia el nivel y comienza la nueva partida
 function showLevelUp(p){
  const up=$('#levelUp'),note=$('#victoryNote');if(!up||!note)return;
- if(p!==0){up.hidden=true;note.hidden=true;return}
+ if(p!==0){up.hidden=true;up.classList.remove('blink-8s');note.hidden=true;return}
  const lv=Math.max(1,Math.min(3,Number(S.aiLevel||1))),n=directAddress();
  const info={1:{to:2,label:'JUEGA EN AVANZADO',text:`¡Me ganaste en Normal${n}! ¿Te atreves con el nivel Avanzado?`},
              2:{to:3,label:'JUEGA EN EXPERTO',text:`¡Me ganaste en Avanzado${n}! ¿Te atreves con el nivel Experto?`},
              3:{to:3,label:'JUEGA OTRA VEZ',text:`¡Me ganaste en Experto${n}! Para la revancha voy a jugar con más garra y sin piedad. ¿Otra partida?`}}[lv];
- up.dataset.level=String(info.to);up.textContent=info.label;up.hidden=false;note.textContent=info.text;note.hidden=false;
+ up.dataset.level=String(info.to);up.textContent=info.label;up.hidden=false;blink8(up); // V1.03.25: luz intermitente estándar, 8 s
+ note.textContent=info.text;note.hidden=false;
 }
 $('#levelUp').onclick=()=>{const sl=$('#aiLevel');sl.value=String(Number($('#levelUp').dataset.level||1));sl.oninput();prepareNewGame();$('#beginGame').click()};
 // V1.02: CANCELAR cierra el diálogo de captura sin jugar; la carta sigue en la mano y el turno no cambia.
@@ -2673,10 +2770,10 @@ function gamePanel({title,text,input=false,placeholder='',left,right,dismiss=nul
  return new Promise(resolve=>{
   const wrap=document.getElementById('gamePanel'),inp=document.getElementById('gpInput'),y=document.getElementById('gpYes'),n=document.getElementById('gpNo');
   document.getElementById('gpTitle').textContent=title;document.getElementById('gpText').textContent=text;
-  n.textContent=left.label;y.textContent=right.label;n.className='btn '+(left.danger?'danger':'secondary');y.className='btn start-btn';
+  n.hidden=!left;if(left){n.textContent=left.label;n.className='btn '+(left.danger?'danger':'secondary')}y.textContent=right.label;y.className='btn start-btn';
   wrap.classList.toggle('panel-high',!!input);inp.hidden=!input;inp.value='';inp.placeholder=placeholder;
-  const out=b=>b.value==='input'?inp.value:b.value;
-  const cancelValue=dismiss!==null?dismiss:(input?null:(right.value===false?false:left.value));
+  const out=b=>b&&b.value==='input'?inp.value:(b?b.value:undefined);
+  const cancelValue=dismiss!==null?dismiss:(input?null:(right.value===false?false:(left?left.value:right.value)));
   const done=v=>{wrap.classList.add('hidden');y.onclick=n.onclick=wrap.onclick=inp.onkeydown=null;document.removeEventListener('keydown',key,true);refreshExpected();resolve(v)};
   const key=e=>{if(e.key==='Escape'){e.preventDefault();done(cancelValue)}};
   y.onclick=()=>done(out(right));n.onclick=()=>done(out(left));
@@ -2699,14 +2796,14 @@ function refreshExpected(){
  if(cfg&&!cfgSeen){cfgSeen=true;try{localStorage.setItem(CFG_SEEN_KEY,'1')}catch(e){}}
  mark($$('settingsBtn'),!panel&&!cfg&&!win&&!S.started&&!cfgSeen); // el engranaje late hasta que se abre Configuración por primera vez
  mark($$('again'),win&&!panel);
- if(!cfg||panel){clearTimeout(expectTimer);expectTimer=null;mark($$('closeSettings'),false);mark($$('viewBack'),false)}
- else if(!expectTimer&&!$$('closeSettings').classList.contains('expect')&&!$$('viewBack').classList.contains('expect')){
-  expectTimer=setTimeout(()=>{ // tras unos segundos sin pulsar nada, late la salida visible
-   const vis=el=>el&&el.offsetParent!==null;mark($$('closeSettings'),vis($$('closeSettings'))&&!vis($$('viewBack')));mark($$('viewBack'),vis($$('viewBack')));
-  },6000);
+ const help=!$$('help').classList.contains('hidden'),share=!$$('sharePanel').classList.contains('hidden');
+ mark($$('helpClose'),help&&!panel&&!share); // V1.03.25: CERRAR de la Ayuda parpadea todo el tiempo (estándar de luz intermitente)
+ if(!cfg||panel||help){clearTimeout(expectTimer);expectTimer=null;mark($$('closeSettings'),false);mark($$('viewBack'),false)}
+ else{ // V1.03.25: al abrir Configuración, CERRAR (o VOLVER) y AYUDA se encienden a la vez
+  const vis=el=>el&&el.offsetParent!==null;mark($$('closeSettings'),vis($$('closeSettings'))&&!vis($$('viewBack')));mark($$('viewBack'),vis($$('viewBack')));
  }
 }
-if(window.MutationObserver)['settings','victory','gamePanel'].forEach(id=>new MutationObserver(()=>{expectTimer&&clearTimeout(expectTimer);expectTimer=null;['closeSettings','viewBack'].forEach(b=>document.getElementById(b).classList.remove('expect'));refreshExpected()}).observe(document.getElementById(id),{attributes:true,attributeFilter:['class']}));
+if(window.MutationObserver)['settings','victory','gamePanel','help','sharePanel'].forEach(id=>new MutationObserver(()=>{expectTimer&&clearTimeout(expectTimer);expectTimer=null;['closeSettings','viewBack'].forEach(b=>document.getElementById(b).classList.remove('expect'));refreshExpected()}).observe(document.getElementById(id),{attributes:true,attributeFilter:['class']}));
 setInterval(refreshExpected,700);refreshExpected();
 
 // --- Crédito: no aparece escrito en el HTML; se arma al abrir y se verifica
@@ -2786,6 +2883,179 @@ setTimeout(async()=>{try{
  if(!name)return;
  $('#playerName').value=name;localStorage.setItem(PLAYER_NAME_KEY,name);renderMatchWins();updateOwnerAccess();
 }catch(e){}},300);
+
+/* ===== V1.03.25: Ayuda, lectura en voz alta, instalar, compartir y mensaje del día ===== */
+const SITE_URL='https://gcobos79.github.io/Cuarenta/';
+function siteUrl(){return /^https?:$/.test(location.protocol)?location.origin+location.pathname:SITE_URL}
+const HELP=[
+ {id:'jugar',t:'Cómo jugar (guía para principiantes)',subs:[
+  {t:'La baraja y el objetivo',x:['Se juega con 40 cartas: as, del 2 al 7, J, Q y K de los cuatro palos. No hay 8, 9 ni 10.','Cada carta vale su número. El as vale 1, la J vale 8, la Q vale 9 y la K vale 10.','Gana quien llega primero a 40 puntos.'],ex:[{l:'Cartas',c:['A.0','7.1','J.2','Q.3','K.0']}]},
+  {t:'Tu turno',x:['En cada sección se reparten 5 cartas a cada jugador. Por turno juegas una carta de tu mano.','Si tu carta puede capturar cartas de la mesa, las captura. Si no puede, se queda en la mesa.','Cuando se acaban las cartas de la mano, se reparte otra sección. Cuatro secciones forman un ciclo.']},
+  {t:'Capturar por igualdad',x:['Si juegas una carta con el mismo valor que una carta de la mesa, la capturas.','Además te llevas, en orden, una carta de cada valor siguiente mientras existan en la mesa: después del 5 el 6, luego el 7, y así hasta la K.'],ex:[{l:'Juegas',c:['5.0']},{l:'En la mesa',c:['5.1','6.2','7.3','2.1']},{l:'Te llevas',c:['5.1','6.2','7.3']}]},
+  {t:'Capturar por suma',x:['Una carta del 2 al 7 también captura dos o más cartas numéricas más pequeñas de la mesa si suman exactamente su valor.','La J, la Q y la K nunca entran en una suma.'],ex:[{l:'Juegas',c:['7.0']},{l:'En la mesa',c:['3.1','4.2','K.0']},{l:'Te llevas',c:['3.1','4.2']}]},
+  {t:'Cuando hay varias capturas',x:['Si tu carta permite más de una captura, el juego te muestra las opciones y eliges la que prefieras.']},
+  {t:'Caída, limpia y ronda',x:['Caída: capturas con una carta del mismo valor la carta que el rival acaba de jugar. Vale 2 puntos.','Limpia: dejas la mesa vacía al capturar. Vale 2 puntos.','Ronda: tienes 3 cartas del mismo valor en la mano. Se reclama antes de jugar la primera carta y vale 2 puntos.'],ex:[{l:'Caída: el rival juega',c:['4.1']},{l:'Tú juegas y capturas',c:['4.2']},{l:'Ronda en tu mano',c:['5.0','5.1','5.3']}]}
+ ]},
+ {id:'puntos',t:'Cómo se entregan los puntos',subs:[
+  {t:'Puntos por jugada',x:['Caída: 2 puntos. Limpia: 2 puntos. Ronda: 2 puntos.','Si el rival hace caída sobre una carta de tu ronda reclamada, recibe 4 puntos extra al terminar la sección.','Cuatro cartas iguales ganan la partida de inmediato.']},
+  {t:'Conteo de cartas',x:['Capturar cartas no da puntos por sí solo. Al terminar las 4 secciones de un ciclo, puntúa quien levantó más cartas.','Con 20 cartas ganas 6 puntos. Con 21 o 22 cartas, 8. Con 23 o 24, 10, y así, 2 puntos más cada 2 cartas.','Con menos de 20 cartas no hay puntos. Si ambos tienen 20, los 6 puntos son para quien no repartió.']}
+ ]},
+ {id:'opcionales',t:'Reglas opcionales',subs:[
+  {t:'38 que no juegan',x:['Con 38 puntos, solo una caída da la victoria. La limpia, la ronda y el conteo de cartas ya no suman.']},
+  {t:'4 de falta',x:['Si quien reparte no levanta ninguna carta en la primera mano, el rival cobra 4 puntos.']},
+  {t:'Dónde se activan',x:['Se activan en Configuración, en la pestaña Reglas, antes de comenzar la partida. Durante una partida están bloqueadas.']}
+ ]},
+ {id:'don',t:'Don Barajón y sus niveles',subs:[
+  {t:'Los tres niveles',x:['Don Barajón tiene tres niveles: Normal, Avanzado y Experto. A mayor nivel, juega con más cuidado.','Cuando le ganas, te propone subir al siguiente nivel. El nivel se elige en Configuración antes de comenzar.']},
+  {t:'Su personalidad',x:['Don Barajón puede hablar con su personalidad burlona y picaresca, o de forma natural. Se cambia en Configuración, en la pestaña Preferencias.']}
+ ]},
+ {id:'config',t:'Configuración y personalización',subs:[
+  {t:'Tu nombre y tu tratamiento',x:['Escribe tu nombre para que Don te hable por tu nombre. También eliges cómo quieres que se refiera a ti.']},
+  {t:'Voz y sonido',x:['Puedes encender o apagar la voz de Don, elegir el tipo de voz y activar el sonido de las cartas.','Durante una partida solo se pueden cambiar las opciones resaltadas en verde. Las demás se bloquean hasta terminar.']},
+  {t:'Marcador e historial',x:['En Configuración puedes revisar el historial de tus partidas y el registro de cada jugada.']}
+ ]},
+ {id:'dispositivos',t:'Jugar en la computadora y en otros dispositivos',subs:[
+  {t:'Navegador recomendado',x:['El juego funciona en el navegador del celular, de la tablet y de la computadora. Se recomienda Chrome, porque ofrece la voz Google español.']},
+  {t:'Instalar como aplicación',x:['Puedes instalar el juego para abrirlo con un toque desde la pantalla de inicio, como una aplicación.','En Android y en la computadora, usa el botón de instalar de esta pantalla.','En el iPhone, abre el juego en Safari, toca el botón Compartir y elige Añadir a pantalla de inicio.'],install:true},
+ ]},
+ {id:'compartir',t:'Compartir el juego y mensaje del día',subs:[
+  {t:'Compartir con tus amigos',x:['Puedes invitar a tus amigos por WhatsApp, mensajes, Messenger o correo con el botón Compartir. El mensaje ya viene preparado.'],share:true},
+  {t:'El mensaje del día',x:['Una vez al día, al abrir el juego, Don Barajón te da un consejo o un dato del juego. Un mismo mensaje no se repite en la misma semana.']}
+ ]}
+];
+function blink8(el){if(!el)return;el.classList.remove('blink-8s');void el.offsetWidth;el.classList.add('blink-8s');clearTimeout(el._b8);el._b8=setTimeout(()=>el.classList.remove('blink-8s'),8000)}
+let helpSayTok=0,helpBuilt=false;
+const SPK='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+const hesc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hsent=t=>(t.match(/[^.!?]+[.!?]*\s*/g)||[t]).map(s=>`<span class="hs">${hesc(s)}</span>`).join('');
+function helpCard(id){const c=makeDeck().find(x=>x.id===id);return c?miniCard(c):''}
+function buildHelp(){
+ if(helpBuilt)return;helpBuilt=true;
+ const speech='speechSynthesis' in window;
+ $('#helpIndex').hidden=true; // el propio acordeón numerado hace de índice
+ $('#helpBody').innerHTML=HELP.map((s,i)=>`<section class="help-sec" id="hsec-${s.id}"><div class="help-head"><button type="button" class="help-toggle" aria-expanded="false" data-h="${s.id}"><span class="hs">${i+1}. ${hesc(s.t)}</span></button>${speech?`<button type="button" class="help-say" data-h="${s.id}" aria-label="Leer en voz alta: ${hesc(s.t)}" title="Leer en voz alta">${SPK}</button>`:''}</div><div class="help-content" hidden>${s.subs.map((u,j)=>`<div class="help-sub" id="hsub-${s.id}-${j}"><h4><span class="hs">${i+1}.${j+1} ${hesc(u.t)}</span></h4>${u.x.map(p=>`<p>${hsent(p)}</p>`).join('')}${u.ex?'<div class="help-exs">':''}${(u.ex||[]).map(e=>`<div class="help-ex"><span class="ex-l">${hesc(e.l)}</span><span class="choice-cards">${e.c.map(helpCard).join('')}</span></div>`).join('')}${u.ex?'</div>':''}${u.install?'<button type="button" class="btn start-btn help-act" id="installApp">📲 INSTALAR COMO APLICACIÓN</button><p class="help-note" id="installNote"></p>':''}${u.share?'<button type="button" class="btn start-btn help-act" id="helpShare">📤 COMPARTIR</button>':''}</div>`).join('')}</div></section>`).join('');
+ $('#helpIndex').onclick=e=>{const b=e.target.closest('.help-link');if(!b)return;openHelpSection(b.dataset.h,b.dataset.s)};
+ $('#helpBody').onclick=e=>{
+  const tg=e.target.closest('.help-toggle');if(tg){const open=tg.getAttribute('aria-expanded')!=='true';openHelpSection(tg.dataset.h,null,open);return}
+  const sy=e.target.closest('.help-say');if(sy){helpRead(sy.dataset.h);return}
+  if(e.target.closest('#installApp')){installApp();return}
+  if(e.target.closest('#helpShare')){openShare();return}
+ };
+ updateInstallUI();
+}
+function openHelpSection(id,sub,force){
+ document.querySelectorAll('.help-sec').forEach(sec=>{const mine=sec.id==='hsec-'+id,tg=sec.querySelector('.help-toggle'),ct=sec.querySelector('.help-content');const open=mine?(force===undefined?true:force):false;tg.setAttribute('aria-expanded',String(open));ct.hidden=!open;sec.classList.toggle('open',open)});
+ if(force===false)return;
+ const target=sub!=null&&sub!==undefined?$('#hsub-'+id+'-'+sub):$('#hsec-'+id);
+ if(target)setTimeout(()=>{try{target.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){target.scrollIntoView()}},30);
+}
+function helpStopRead(){helpSayTok++;clearDonSpeechQueue();document.querySelectorAll('.help-say.on').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.hs.now').forEach(e=>e.classList.remove('now'))}
+async function helpRead(id){
+ const btn=document.querySelector(`.help-say[data-h="${id}"]`);
+ if(btn&&btn.classList.contains('on')){helpStopRead();return}
+ helpStopRead();openHelpSection(id);
+ const tok=helpSayTok,sec=$('#hsec-'+id);if(btn)btn.classList.add('on');
+ const spans=[...sec.querySelectorAll('.hs')];
+ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+ const mine=donSpeechToken;
+ for(const sp of spans){
+  if(tok!==helpSayTok)return;
+  sp.classList.add('now');try{sp.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}
+  for(const cl of splitClauses(sp.textContent.trim())){if(tok!==helpSayTok)return;await speakOne(cl.t,donSpeechToken,true);if(tok!==helpSayTok)return;if(cl.pause)await sleep(cl.pause)}
+  sp.classList.remove('now');
+  await sleep(spans.indexOf(sp)===0?500:350);
+ }
+ if(tok===helpSayTok)helpStopRead();
+}
+function fitHelp(){ // V1.03.25: la Ayuda ocupa lo mismo que la pantalla del juego, ni más ni menos
+ const wrap=$('#help'),dlg=wrap.querySelector('.help-dialog');
+ if(typeof isPhoneUI==='function'&&isPhoneUI()){wrap.classList.remove('help-framed');['left','top','width','height'].forEach(k=>dlg.style.removeProperty(k));return}
+ const r=document.querySelector('.layout').getBoundingClientRect();
+ const l=Math.max(0,r.left),tp=Math.max(0,r.top),rr=Math.min(innerWidth,r.right),bb=Math.min(innerHeight,r.bottom);
+ wrap.classList.add('help-framed');dlg.style.left=l+'px';dlg.style.top=tp+'px';dlg.style.setProperty('width',Math.max(320,rr-l)+'px','important');dlg.style.setProperty('height',Math.max(320,bb-tp)+'px','important');
+}
+window.addEventListener('resize',()=>{if(!$('#help').classList.contains('hidden'))fitHelp()});
+function openHelp(){buildHelp();$('#help').classList.remove('hidden');fitHelp();$('#helpBody').parentElement.scrollTop=0}
+function closeHelp(){helpStopRead();$('#help').classList.add('hidden')}
+$('#helpBtn').onclick=()=>{clearTimeout($('#helpBtn')._b8);$('#helpBtn').classList.remove('blink-8s');openHelp()};$('#helpClose').onclick=closeHelp;
+$('#help').addEventListener('click',e=>{if(e.target===$('#help'))closeHelp()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#help').classList.contains('hidden')&&$('#gamePanel').classList.contains('hidden')&&$('#sharePanel').classList.contains('hidden'))closeHelp()});
+
+/* --- Instalar como aplicación --- */
+let deferredInstall=null;
+const isStandalone=()=>{try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function updateInstallUI(){
+ const b=document.getElementById('installApp'),n=document.getElementById('installNote');if(!b)return;
+ if(isStandalone()){b.disabled=true;b.textContent='✓ YA ESTÁ INSTALADA';if(n)n.textContent='Estás jugando desde la aplicación instalada.';return}
+ b.disabled=false;b.textContent='📲 INSTALAR COMO APLICACIÓN';
+ if(n)n.textContent=deferredInstall?'Toca el botón para instalar el juego.':(isIOS()?'En el iPhone: Safari → Compartir → Añadir a pantalla de inicio.':'Si el botón no abre la instalación, usa el menú del navegador: Instalar aplicación o Añadir a pantalla de inicio.');
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;updateInstallUI()});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;updateInstallUI()});
+async function installApp(){
+ if(deferredInstall){try{deferredInstall.prompt();await deferredInstall.userChoice}catch(e){}deferredInstall=null;updateInstallUI();return}
+ const text=isIOS()?'Abre el juego en Safari. Toca el botón Compartir (el cuadrado con la flecha hacia arriba) y elige «Añadir a pantalla de inicio».':'Abre el menú de tu navegador (⋮) y elige «Instalar aplicación» o «Añadir a pantalla de inicio». En Chrome de la computadora, también aparece un icono de instalar en la barra de direcciones.';
+ await gamePanel({title:'INSTALAR EL JUEGO',text,right:{label:'ENTENDIDO',value:true}});
+}
+
+/* --- Compartir --- */
+function shareText(){return 'Te invito a jugar CUARENTA con Don Barajón, el juego de cartas ecuatoriano. Es gratis y se juega desde el celular o la computadora.'}
+function openShare(){
+ const url=siteUrl(),txt=shareText(),full=txt+' '+url,e=encodeURIComponent,touch='ontouchstart' in window||navigator.maxTouchPoints>0;
+ const items=[['WhatsApp','💬','https://wa.me/?text='+e(full)],['Mensajes','✉️','sms:?&body='+e(full)],touch?['Messenger','🗨️','fb-messenger://share/?link='+e(url)]:null,['Correo','📧','mailto:?subject='+e('CUARENTA · Don Barajón')+'&body='+e(full)]].filter(Boolean);
+ $('#shareList').innerHTML=items.map(([n,i,h])=>`<a class="btn secondary share-opt" href="${h}" target="_blank" rel="noopener">${i} ${n}</a>`).join('')+(navigator.share?'<button type="button" class="btn secondary share-opt" id="shareNative">📲 Otras aplicaciones…</button>':'')+'<button type="button" class="btn secondary share-opt" id="shareCopy">🔗 Copiar enlace</button>';
+ $('#shareText').textContent=txt;$('#shareUrl').textContent=url;$('#shareMsg').textContent='';
+ const nat=$('#shareNative');if(nat)nat.onclick=()=>{navigator.share({title:'CUARENTA · Don Barajón',text:txt,url}).catch(()=>{})};
+ $('#shareCopy').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(full);ok=true}catch(e){try{const r=document.createRange();r.selectNodeContents($('#shareUrl'));const s=getSelection();s.removeAllRanges();s.addRange(r);ok=document.execCommand('copy')}catch(e2){}}$('#shareMsg').textContent=ok?'Enlace copiado.':'Copia el enlace de arriba manualmente.'};
+ $('#sharePanel').classList.remove('hidden');
+}
+function closeShare(){$('#sharePanel').classList.add('hidden')}
+$('#shareClose').onclick=closeShare;$('#sharePanel').addEventListener('click',e=>{if(e.target===$('#sharePanel'))closeShare()});
+$('#shareBtn').onclick=openShare;
+
+/* --- Mensaje del día: uno por día; el mismo no se repite en 7 días --- */
+const DAILY=[
+ ['Mira, {n}: la J vale 8, la Q vale 9 y la K vale 10. Y ninguna de las tres entra en una suma. Anótalo.','La J vale 8, la Q vale 9 y la K vale 10. Ninguna de las tres entra en una suma.'],
+ ['Antes de soltar una carta, {n}, fíjate si la mesa regala una caída. Dos puntos fáciles no se desprecian.','Antes de jugar una carta, revisa si la mesa te permite una caída: son 2 puntos.'],
+ ['Una limpia vale 2 puntos, {n}. Barrer la mesa tiene su encanto, y yo lo sé bien.','Una limpia vale 2 puntos. Si puedes dejar la mesa vacía al capturar, es una buena jugada.'],
+ ['¿Tres cartas iguales en la mano, {n}? Eso es ronda. Reclámala antes de jugar la primera carta.','Con tres cartas iguales en la mano tienes ronda. Reclámala antes de jugar tu primera carta.'],
+ ['Las cartas capturadas no dan puntos por sí solas, {n}. Pero a partir de 20 al final del ciclo, ¡sí que pesan!','Las cartas capturadas solo puntúan al final del ciclo, y desde las 20 cartas.'],
+ ['Cuidado, {n}: una carta alta sola en la mesa es una invitación a que el rival haga caída.','Dejar una carta sola en la mesa puede darle una caída al rival.'],
+ ['Si ves un botón latiendo, {n}, es que el juego espera que lo pulses. No es capricho mío.','Cuando un botón late, es el que el juego espera que pulses.'],
+ ['Puedes cambiarme la voz en Configuración, {n}. Aunque la mía ya es bastante buena.','Puedes cambiar la voz de Don Barajón en Configuración, en la pestaña Preferencias.'],
+ ['¿Te animas con «4 de falta» y «38 que no juegan», {n}? La partida se pone más picante.','Puedes activar las reglas «4 de falta» y «38 que no juegan» en Configuración para jugar con más emoción.'],
+ ['Si me ganas, {n}, te reto con el siguiente nivel. Prepárate para sufrir un poquito.','Cuando ganas una partida, el juego te propone subir al siguiente nivel.'],
+ ['Pon tu nombre en Configuración, {n}, y así sabré a quién derrotar.','Escribe tu nombre en Configuración para que Don Barajón te hable por tu nombre.'],
+ ['La escalera, {n}: al capturar te llevas también las cartas que siguen en orden. ¡Qué elegante!','Al capturar, te llevas también las cartas siguientes en orden: después del 5, el 6, luego el 7, y así.'],
+ ['Revisa el historial en Configuración, {n}. Ahí quedan guardadas mis victorias… y alguna tuya.','En Configuración puedes revisar el historial de tus partidas.'],
+ ['La pantalla de Ayuda te explica todo, {n}, y hasta te lo lee en voz alta. Ni yo lo haría mejor.','La pantalla de Ayuda tiene una guía para principiantes y puede leerte cada sección en voz alta.'],
+ ['Instala el juego como aplicación, {n}: lo abres con un toque y yo te espero sentado.','Puedes instalar el juego como aplicación desde la pantalla de Ayuda.'],
+ ['Comparte el juego con tus amigos, {n}. Cuantos más vengan, más gente tendré para ganarle.','Puedes invitar a tus amigos con el botón Compartir, en Configuración, pestaña Preferencias.'],
+ ['Con 38 y la regla opcional, {n}, solo una caída gana. Nervios de acero, por favor.','Si activas «38 que no juegan», con 38 puntos solo una caída da la victoria.'],
+ ['¿Dudas entre dos capturas, {n}? Elige la que deje menos oportunidades de caída al rival.','Si dudas entre dos capturas, elige la que deje menos oportunidades de caída al rival.'],
+ ['Cuatro secciones forman un ciclo, {n}, y al final se cuentan las cartas. Nada se me escapa.','Cuatro secciones forman un ciclo. Al terminar, se cuentan las cartas capturadas.'],
+ ['Juega con calma, {n}. Yo no tengo prisa, y menos cuando voy ganando.','Juega con calma. No hay límite de tiempo para pensar tu jugada.']
+];
+const DAILY_KEY='donBarajonDailyV1';
+const dayStr=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function dailyPick(){
+ let st={last:'',seen:{}};try{const r=JSON.parse(localStorage.getItem(DAILY_KEY)||'null');if(r&&typeof r==='object')st={last:r.last||'',seen:r.seen||{}}}catch(e){}
+ const now=new Date(),today=dayStr(now);if(st.last===today)return null;
+ const recent=i=>{const d=st.seen[i];if(!d)return false;const p=d.split('-').map(Number),t=new Date(p[0],p[1]-1,p[2]);return (now-t)/864e5<7};
+ let pool=DAILY.map((_,i)=>i).filter(i=>!recent(i));if(!pool.length)pool=DAILY.map((_,i)=>i);
+ const idx=pool[Math.floor(Math.random()*pool.length)];
+ st.last=today;st.seen[idx]=today;try{localStorage.setItem(DAILY_KEY,JSON.stringify(st))}catch(e){}
+ return idx;
+}
+function dailyBusy(){return !$('#gamePanel').classList.contains('hidden')||!$('#settings').classList.contains('hidden')||!$('#victory').classList.contains('hidden')||!$('#help').classList.contains('hidden')||!$('#sharePanel').classList.contains('hidden')||S.started}
+function tryDaily(n=0){
+ if(n>8)return;
+ if(dailyBusy()){setTimeout(()=>tryDaily(n+1),2500);return}
+ const idx=dailyPick();if(idx===null)return;
+ gamePanel({title:'MENSAJE DEL DÍA',text:fillName(DAILY[idx][donPersonality?0:1]),right:{label:'ENTENDIDO',value:true}});
+}
+setTimeout(()=>tryDaily(0),1800);
 </script>
 <script>
 (() => {
