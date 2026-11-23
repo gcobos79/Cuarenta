@@ -1,0 +1,92 @@
+/* CUARENTA · Amigos — estilos (V2.02). Mismo aspecto que Solo, con el tapete azul para diferenciarlo. */
+:root{--ch:clamp(62px,min(15.5dvh,calc((100vw - 64px)/5/.74)),140px);--cw:calc(var(--ch)*.7);
+ --fieltro1:#3b7bc4;--fieltro2:#1f4f8f;--fieltro3:#0e2c58;--oro:#c9a45c;--oro-claro:#f0d9a9}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+[hidden]{display:none!important}
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column;max-width:1200px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px calc(env(safe-area-inset-bottom,0px) + 8px)}
+
+/* encabezado */
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.brand small{display:block;font-size:9px;letter-spacing:3px;color:#c2a778}
+.brand h1{font:800 clamp(24px,5vw,44px)/.95 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:5px;color:var(--oro-claro);margin:4px 0 0}
+.scores{display:flex;gap:9px}
+.score{min-width:92px;max-width:34vw;text-align:center;border:1px solid #a88754aa;background:#1a1712;border-radius:10px;padding:6px 10px;transition:box-shadow .25s,border-color .25s}
+.score.activo{border-color:var(--oro-claro);box-shadow:0 0 12px 1px #f0d9a966}
+.score label{display:block;font-size:9px;letter-spacing:2px;color:#bba27b;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score strong{font:700 30px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;color:#f4dfb4}
+.version{font-size:10px;letter-spacing:.14em;color:#a89a7a;text-align:right}
+
+/* tablero */
+.board{flex:1;display:flex;flex-direction:column;min-height:0;border:7px solid #3b291e;border-radius:24px;padding:8px 10px;background:linear-gradient(145deg,#16202e,#0b121c);box-shadow:0 25px 70px #000b,inset 0 0 0 1px #c19a5b66}
+.fila{display:flex;align-items:center;gap:10px;min-height:calc(var(--ch) + 6px)}
+.fila.opp{border-bottom:1px solid #bca16d33;padding-bottom:6px}
+.etq{flex:0 0 auto;font:600 10px "DM Sans",sans-serif;letter-spacing:.14em;color:#bba27b;writing-mode:horizontal-tb;max-width:64px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis}
+.mano{flex:1;display:flex;justify-content:center;align-items:center;gap:clamp(3px,.8vw,9px);min-height:var(--ch)}
+.pila{flex:0 0 auto;text-align:center;font-size:9px;color:#c9b795;line-height:1.2;min-width:54px}
+.pila b{display:block;font:700 22px/1 "Barlow Condensed",sans-serif;color:#fff0cf}
+.felt{position:relative;flex:1;min-height:96px;margin:6px 0;border-radius:70px;background:radial-gradient(ellipse,var(--fieltro1),var(--fieltro2) 58%,var(--fieltro3));border:7px solid #65462f;box-shadow:inset 0 0 40px #031026aa,0 9px 22px #0009;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 14px;overflow:auto}
+.estado{position:absolute;top:8px;left:0;right:0;text-align:center;font:600 10px "DM Sans",sans-serif;letter-spacing:.16em;color:#d9e6fa;opacity:.85;text-transform:uppercase;padding:0 14px}
+.mesa{display:flex;flex-wrap:wrap;gap:clamp(4px,1vw,9px);justify-content:center;align-items:center;width:100%;margin-top:14px}
+
+/* cartas (mismas proporciones y figuras que Solo) */
+.card{width:var(--cw);height:var(--ch);background:linear-gradient(135deg,#fffef9,#e8e0d1);border:1px solid #d2c7b5;border-radius:7px;color:#171717;position:relative;box-shadow:0 6px 12px #0009;flex:none;font-family:Georgia,serif;cursor:default;transition:transform .2s,box-shadow .2s}
+.card.red{color:#bd2633}
+.card .idx{position:absolute;top:calc(var(--ch)*.03);left:calc(var(--cw)*.06);font-size:calc(var(--ch)*.23);line-height:calc(var(--ch)*.195);font-weight:bold;text-align:center}
+.card .bottom{top:auto;left:auto;right:calc(var(--cw)*.06);bottom:calc(var(--ch)*.03);transform:rotate(180deg)}
+.card .pip{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--ch)*.31)}
+.card .fig{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.card.figcard.red .fig{--c:#c8202f}.card.figcard.black .fig{--c:#1f2f5c}
+.card.figcard .idx{z-index:2}
+.card.back{background:repeating-linear-gradient(45deg,#9b1c2c 0 5px,#dcbc6c 5px 6px);border:3px solid #e8c978;display:grid;place-items:center;color:#f3d58a}
+.card.back:after{content:"✦";font-size:calc(var(--ch)*.22);border:1px solid #f3d58a;width:62%;height:72%;display:grid;place-items:center}
+.card.jugable{cursor:pointer}
+.mano.activa .card{box-shadow:0 0 0 2px #f0d9a9aa,0 6px 12px #0009}
+@media (hover:hover){.card.jugable:hover{transform:translateY(-6px)}}
+.card.ultima{box-shadow:0 0 0 3px #f6d48d,0 0 18px 4px #f6d48dcc}
+.card.mini{--ch:84px;--cw:calc(var(--ch)*.7);cursor:default}
+
+/* pie y botones */
+.pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;padding:8px 2px 0}
+.aviso{flex:1 0 100%;min-height:2.4em;font-size:12px;line-height:1.3;color:#d7c5a4}
+.btn{display:inline-block;border:1px solid var(--oro);background:#171b17;color:var(--oro-claro);padding:12px 20px;border-radius:8px;font:800 11px "DM Sans",sans-serif;letter-spacing:1px;text-decoration:none;cursor:pointer;box-shadow:0 0 8px 1px #c9a45c4d;text-align:center}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.45;box-shadow:none;cursor:not-allowed}
+.btn.fin{background:#38201b;border-color:#a85e4c;color:#f0c4b5}
+.btn:focus-visible,.card:focus-visible,input:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+@keyframes pulso{0%,100%{filter:brightness(1);box-shadow:0 0 0 0 #e7c47a00}50%{filter:brightness(1.5);box-shadow:0 0 14px 5px #e7c47aaa}}
+.btn.espera:not(:disabled){animation:pulso 1s ease-in-out infinite}
+
+/* configuración dentro del tapete */
+.config{width:min(340px,100%);text-align:center;background:#0a1a33cc;border:1px solid #d9c18e88;border-radius:16px;padding:14px 14px 12px}
+.config h2{margin:0 0 4px;font:800 22px "Barlow Condensed",sans-serif;letter-spacing:2px;color:var(--oro-claro)}
+.config p{margin:0 0 10px;font-size:12px;line-height:1.35;color:#d9e6fa}
+.config label.nom{display:block;text-align:left;font-size:10px;letter-spacing:.12em;color:#bba27b;margin:6px 0 2px;text-transform:uppercase}
+.config input[type=text]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d9c18e88;background:#0d2a4d;color:#fff4d6;font-size:16px}
+.config .opc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 0;font-size:12px;color:#e6dcc3;text-align:left}
+.config .opc input{width:20px;height:20px;accent-color:#c9a45c}
+
+/* ventanas */
+.velo{position:fixed;inset:0;background:rgba(4,12,28,.6);display:grid;place-items:center;z-index:30;padding:14px}
+.panel{width:min(380px,100%);max-height:92dvh;overflow:auto;padding:20px 18px 16px;border-radius:20px;border:2px solid #d9c18e;background:radial-gradient(ellipse at 50% 0,var(--fieltro1) 0,var(--fieltro2) 62%,var(--fieltro3) 100%);box-shadow:0 14px 40px #000a,inset 0 0 0 1px #0007;text-align:center}
+.panel h3{margin:0 0 8px;font:800 26px "Barlow Condensed",sans-serif;letter-spacing:2px;color:var(--oro-claro)}
+.panel p{margin:0 0 14px;font-size:14px;line-height:1.4;color:#e8eefb;white-space:pre-line}
+.panel .cartas{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:2px 0 14px}
+.panel .acciones{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.panel .opcion{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;width:100%;margin:0 0 10px;padding:10px;border:1px solid #d9c18e88;border-radius:12px;background:#0a1a33aa;color:#f0d9a9;font:800 11px "DM Sans",sans-serif;letter-spacing:.1em;cursor:pointer}
+.panel .opcion .mas{font-size:16px;color:#f0d9a9}
+.toasts{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translateX(-50%);z-index:40;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none;width:min(92vw,520px)}
+.toast{padding:10px 16px;border-radius:12px;background:#f5ead4;color:#21180f;font-weight:700;font-size:13px;line-height:1.3;text-align:center;box-shadow:3px 5px 0 #0008}
+@media (prefers-reduced-motion:reduce){.btn.espera:not(:disabled){animation:none}.card{transition:none}}
+
+/* alturas cortas (tabletas con barra del navegador, computadoras bajas): la configuración se compacta */
+@media (max-height:800px){.config{padding:8px 12px 8px}.config h2{font-size:18px;margin-bottom:2px}.config p{font-size:11px;margin-bottom:4px}.config label.nom{margin-top:3px}.config input[type=text]{padding:6px 10px}.config .opc{margin-top:4px}}
+/* celulares: el contador de cartas levantadas va en su propia línea sobre cada mano (como en Solo) y el nombre ya está arriba */
+@media (max-width:700px){
+ .fila{flex-direction:column;align-items:stretch;gap:2px;min-height:0}
+ .etq{display:none}
+ .pila{order:-1;display:flex;align-items:baseline;gap:6px;justify-content:flex-start;text-align:left;font-size:11px;min-width:0;padding-left:4px}
+ .pila b{display:inline;font-size:20px}
+ .mano{min-height:var(--ch)}
+ .felt{border-radius:40px;border-width:6px;padding:8px 10px}
+}

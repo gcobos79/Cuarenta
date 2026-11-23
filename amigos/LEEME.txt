@@ -1,0 +1,15 @@
+CUARENTA · AMIGOS — V2.02 (prueba local)
+
+Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
+Esta versión: la mesa (tapete azul) y las reglas del 1 contra 1, jugadas por dos personas en la misma pantalla. Todavía no hay conexión.
+
+Archivos
+- reglas.js : las reglas del juego, sin pantalla (capturas por igualdad, suma y escalera; caída; limpia; ronda con bono de +4;
+              «38 que no juegan»; «4 de falta»; conteo de cartas). Copia la mecánica y el puntaje de Solo. El estado es JSON.
+- mesa.js   : la pantalla de prueba local.
+- estilos.css e index.html : el aspecto (mismo que Solo, con tapete azul).
+- pruebas/reglas.test.js : pruebas de las reglas. Se ejecutan con:  node --test amigos/pruebas/reglas.test.js
+
+Cómo se verificó que juega igual que Solo: las capturas (4.000 situaciones al azar), el conteo de cartas y las rondas se compararon
+con las funciones reales de Solo y no hubo ninguna diferencia.
+Siguientes pasos: sala con código y Supabase, reparto por el celular anfitrión, reconexión y parejas (2 contra 2).
