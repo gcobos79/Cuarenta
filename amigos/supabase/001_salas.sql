@@ -60,3 +60,8 @@ grant select, insert, delete on public.acciones to anon, authenticated;
 
 -- Tiempo real: los celulares reciben los cambios de la sala y las acciones nuevas al instante.
 alter publication supabase_realtime add table public.salas, public.acciones;
+
+-- Ajuste posterior (aviso de seguridad de Supabase): las funciones de los disparadores no se pueden llamar desde la página.
+-- Los disparadores siguen funcionando; solo se quita el permiso de llamarlas directamente.
+revoke execute on function public.salas_limpiar() from public, anon, authenticated;
+revoke execute on function public.salas_tocar() from public, anon, authenticated;
