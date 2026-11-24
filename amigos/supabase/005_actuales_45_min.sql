@@ -1,0 +1,4 @@
+-- CUARENTA — historial: los «juegos actuales» son las salas en juego con actividad en los últimos 45 minutos
+-- (antes 6 horas: salas abandonadas seguían apareciendo como «en juego»). Es la misma función historial_listar de 004.
+-- El cuerpo completo está aplicado en la base; aquí solo se deja constancia del cambio:
+--   where s.fase = 'jugando' and s.estado is not null and s.actualizada > now() - interval '45 minutes'
