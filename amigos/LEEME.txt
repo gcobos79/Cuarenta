@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.26
+CUARENTA · AMIGOS — V2.27
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -12,8 +12,6 @@ Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas
    (p. ej. Ana 1 — Beto 0). Cuando los DOS pulsan JUGAR OTRA VEZ empieza otra partida (reparte el otro). SALIR DE LA SALA: si sale el amigo, el anfitrión queda en la misma sala
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave» de Solo).
-
-Cartas ocultas más chicas (V2.26): el reverso de las cartas del rival se ve a ~2/3 del tamaño de las tuyas, y la mesa y tu mano aprovechan ese espacio.
 
 Números de los marcadores en letra normal, no condensada (V2.25).
 
