@@ -287,8 +287,8 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .scores{flex:1 1 auto;min-width:0;display:flex;gap:6px}
 .score{flex:1 1 0;min-width:0;max-width:none;padding:5px 6px}
 .score label{font-size:10px;letter-spacing:.1em;color:#e8d9b4}
-.score .pc{display:flex;align-items:baseline;justify-content:center;gap:5px;white-space:nowrap;font:600 clamp(13px,3.95vw,19px)/1.2 "Saira Extra Condensed","Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.01em;color:#e3d5b0}
-.score .pc b{font-weight:800;font-size:1.22em;color:#fff0cf;letter-spacing:.02em}
+.score .pc{display:flex;align-items:baseline;justify-content:center;gap:5px;white-space:nowrap;font:400 clamp(14px,4.7vw,21px)/1.2 "League Gothic","Arial Narrow",sans-serif;letter-spacing:.02em;color:#e3d5b0}
+.score .pc b{font-weight:400;font-size:1.2em;color:#fff0cf;letter-spacing:.03em}
 .score .pc i{font-style:normal;color:#a88754}
 .score .gan{font-size:8px;margin-top:0}
 .ver-flot{position:fixed;left:calc(env(safe-area-inset-left,0px) + 10px);top:calc(env(safe-area-inset-top,0px) + 70px);z-index:70;padding:6px 12px;border-radius:999px;background:#0a0a0af2;border:1.5px solid #d9c18e;color:#f0d9a9;font:800 13px/1 "Barlow Condensed","DM Sans",sans-serif;letter-spacing:.12em;box-shadow:0 8px 22px #000b;pointer-events:none}
