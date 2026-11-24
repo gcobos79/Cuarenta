@@ -130,7 +130,9 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .turno.mio{color:#2a1706;background:linear-gradient(180deg,#ffe27a,#e0b13a);border-color:#fff3b0;box-shadow:0 0 18px 3px #f6d48daa;animation:turnoPulso 1.3s ease-in-out infinite}
 @keyframes turnoPulso{0%,100%{box-shadow:0 0 10px 1px #f6d48d88}50%{box-shadow:0 0 24px 6px #f6d48dcc}}
 .fila.su-turno{border-radius:12px;background:linear-gradient(180deg,#f0d9a91c,transparent);box-shadow:inset 0 0 0 1px #f0d9a966}
-.fila.sin-turno .mano{opacity:.6}
+/* las cartas de quien no tiene el turno se oscurecen y se aclaran cuando le toca */
+.fila .card{transition:transform .2s,box-shadow .2s,filter .35s}
+.fila.sin-turno .card{filter:brightness(.42) saturate(.8)}
 @media (prefers-reduced-motion:reduce){.turno.mio{animation:none}.points,.points.event-message{animation-duration:.01s}}
 /* ajustes: voz y sonido a la izquierda de la fila de botones; marcos de turno sin rozar las cartas */
 .derecha{display:none}
