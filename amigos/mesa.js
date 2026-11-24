@@ -181,37 +181,33 @@
   }
   async function volverAlLobby() { // el amigo se fue: la sala vuelve a esperar a alguien (el marcador de partidas se reinicia)
     if (!S || !S.anfitrion) return;
-    S.jugadores = S.jugadores.filter(j => !j.salio && j.id === S.id).map(j => ({ id: j.id, nombre: j.nombre, asiento: 0, victorias: 0 }));
+    S.jugadores = S.jugadores.filter(j => !j.salio && j.id === S.id).map(j => Object.assign({ id: j.id, nombre: j.nombre, asiento: 0, victorias: 0 }, j.adm ? { adm: true } : {}));
     E = null; V = null; panelFin = false; ultimaCartaId = null; preguntada = ''; ocupado = false;
     try { await Red.guardar(S.codigo, { jugadores: S.jugadores, estado: null, fase: 'espera', ultima_accion: S.ultima }); } catch (e) { toast('No se pudo actualizar la sala.'); }
     toast('Tu amigo salió de la sala. Puedes esperar a otro con el mismo código.', 4500); dibujar();
   }
 
   // ---- historial de partidas (solo el administrador) ----
+  const sinAdmin = () => { const c = $('#histSinAdmin'); return !c || c.checked; }; // por defecto el administrador no aparece en los listados
   const fechaCorta = f => { const [y, m, d] = String(f).split('-'); return `${d}/${m}`; };
   async function cargarHistorial() {
     const lista = $('#histLista'); if (!lista) return; lista.innerHTML = '<p class="vacio">Cargando…</p>';
     document.querySelectorAll('#histPanel .chip').forEach(c => c.classList.toggle('activo', Number(c.dataset.dias) === histDias));
     try {
-      const r = await Historial.listar(claveAdmin, histDias), act = r.actuales || [], par = r.partidas || [];
+      const r = await Historial.listar(claveAdmin, histDias, sinAdmin()), act = r.actuales || [], par = r.partidas || [];
       if (!$('#histLista')) return;
       let h = `<h4>JUEGOS ACTUALES (${act.length})</h4>` + (act.length ? act.map(a => `<div class="fila-h actual"><span class="cuando">Sala ${esc(a.codigo)}</span><span class="quien">${esc(a.jugador1)} <b>${a.puntaje1}</b> – <b>${a.puntaje2}</b> ${esc(a.jugador2)}</span><span class="extra">Ciclo ${a.ciclo || 1} · sección ${a.seccion || 1}/4 · en juego</span></div>`).join('') : '<p class="vacio">No hay juegos en curso.</p>');
-      h += `<h4>ANTERIORES (${par.length})</h4>` + (par.length ? par.map(p => `<div class="fila-h"><span class="cuando">${fechaCorta(p.fecha)} · ${esc(p.hora)}<i>${p.modo === 'solo' ? 'SOLO' : 'AMIGOS'}</i></span><span class="quien">${esc(p.jugador1)} <b>${p.puntaje1}</b> – <b>${p.puntaje2}</b> ${esc(p.jugador2)}</span><span class="extra">Ganó ${esc(p.ganador)}</span><button type="button" class="quitar" data-id="${esc(p.id)}" aria-label="Quitar del listado">QUITAR</button></div>`).join('') : '<p class="vacio">No hay partidas terminadas en este periodo.</p>');
+      h += `<h4>ANTERIORES (${par.length})</h4>` + (par.length ? par.map(p => `<div class="fila-h"><span class="cuando">${fechaCorta(p.fecha)} · ${esc(p.hora)}</span><span class="quien">${esc(p.jugador1)} <b>${p.puntaje1}</b> – <b>${p.puntaje2}</b> ${esc(p.jugador2)}</span><span class="extra">Ganó ${esc(p.ganador)}</span></div>`).join('') : '<p class="vacio">No hay partidas terminadas en este periodo.</p>');
       lista.innerHTML = h;
-      lista.querySelectorAll('.quitar').forEach(b => { b.onclick = () => quitarPartida(b.dataset.id); });
     } catch (e) {
       lista.innerHTML = `<p class="vacio">${e.message === 'acceso-denegado' ? 'Acceso denegado: la clave de administrador no coincide con la registrada en el historial.' : 'No se pudo cargar el historial. Revisa tu conexión.'}</p>`;
     }
   }
-  async function quitarPartida(id) {
-    const r = await ventana('QUITAR DEL LISTADO', '<p>La partida dejará de aparecer en el historial.</p>', [{ txt: 'CANCELAR', val: 0, id: 'quitarNo' }, { txt: 'QUITAR', val: 1, clase: 'fin', id: 'quitarSi' }]);
-    if (r !== 1) return;
-    try { await Historial.quitar(claveAdmin, id); } catch (e) { toast('No se pudo quitar. Revisa tu conexión.'); }
-    cargarHistorial();
-  }
   function abrirHistorial() {
     if (!esAdmin || $('#histPanel')) return;
     $('#velos').appendChild($('#histTpl').content.firstElementChild.cloneNode(true));
+    try { $('#histSinAdmin').checked = localStorage.getItem('amigosHistSinAdmin') !== 'no'; } catch (e) { }
+    $('#histSinAdmin').onchange = () => { try { localStorage.setItem('amigosHistSinAdmin', $('#histSinAdmin').checked ? 'si' : 'no'); } catch (e) { } cargarHistorial(); };
     $('#histCerrar').onclick = cerrarHistorial; $('#histActualizar').onclick = cargarHistorial;
     document.querySelectorAll('#histPanel .chip').forEach(c => { c.onclick = () => { histDias = Number(c.dataset.dias); cargarHistorial(); }; });
     cargarHistorial();
@@ -375,7 +371,7 @@
   async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
     const fin = (eventos || []).find(e => e.tipo === 'fin');
     if (fin && (fin.ganador === 0 || fin.ganador === 1)) { const g = S.jugadores.find(j => j.asiento === fin.ganador); if (g) g.victorias = (g.victorias || 0) + 1; }
-    if (fin) { try { Historial.guardar({ modo: 'amigos', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '' }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
+    if (fin) { try { Historial.guardar({ modo: 'amigos', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '', admin: S.jugadores.some(j => j.adm) }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
     const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
     if (E) {
       S.version++;
@@ -396,7 +392,7 @@
     const seat = (S.jugadores.find(j => j.id === a.jugador) || { asiento: -1 }).asiento;
     if (a.tipo === 'unirse') {
       if (!E && S.jugadores.length < S.maximo && !S.jugadores.some(j => j.id === a.jugador)) {
-        S.jugadores = S.jugadores.concat([{ id: a.jugador, nombre: limpia(a.datos && a.datos.nombre) || 'Amigo', asiento: S.jugadores.length }]);
+        S.jugadores = S.jugadores.concat([{ id: a.jugador, nombre: limpia(a.datos && a.datos.nombre) || 'Amigo', asiento: S.jugadores.length }].map((j, i, v) => (i === v.length - 1 && a.datos && a.datos.adm === true) ? Object.assign(j, { adm: true }) : j));
         dibujar(); toast(`${S.jugadores[S.jugadores.length - 1].nombre} entró a la sala`, 2500);
       }
     } else if (E && E.estado === 'jugando' && seat >= 0) {
@@ -437,7 +433,7 @@
     const nombre = nombreEscrito(), id = Red.nuevoId();
     $('#btnCrear').disabled = true;
     try {
-      const sala = await Red.crearSala({ id, nombre, maximo: 2, opciones: { rule38: $('#o38').checked, falta4: $('#o4f').checked } });
+      const sala = await Red.crearSala({ id, nombre, maximo: 2, adm: esAdmin, opciones: { rule38: $('#o38').checked, falta4: $('#o4f').checked } });
       entrarSala(sala, { id, nombre, anfitrion: true });
     } catch (e) { toast('No se pudo crear la sala. Inténtalo otra vez.', 4000); }
     $('#btnCrear').disabled = false;
@@ -453,7 +449,7 @@
       if (sala.fase !== 'espera') { toast('Esa partida ya empezó.', 3500); return; }
       if (sala.jugadores.length >= sala.maximo) { toast('Esa sala ya está llena.', 3500); return; }
       const id = Red.nuevoId();
-      await Red.enviarAccion(codigo, id, 'unirse', { nombre });
+      await Red.enviarAccion(codigo, id, 'unirse', esAdmin ? { nombre, adm: true } : { nombre });
       for (let i = 0; i < 20; i++) { // el anfitrión tarda un momento en aceptar
         await new Promise(r => setTimeout(r, 600)); sala = await Red.leerSala(codigo);
         if (sala && sala.jugadores.some(j => j.id === id)) { entrarSala(sala, { id, nombre, anfitrion: false }); return; }
@@ -525,7 +521,15 @@
   $('#oVer').addEventListener('change', dibujar);
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
-  try { $('#miNombre').value = localStorage.getItem(CLAVE_NOMBRE) || ''; } catch (e) { }
+  // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y se puede cambiar con un toque.
+  try {
+    const solo = localStorage.getItem('donBarajonPlayerName') || '', propio = localStorage.getItem(CLAVE_NOMBRE) || '';
+    const guardado = patronClave(solo) ? '' : (propio || limpia(solo)); // el nombre «clave» de Solo no se copia: se detecta aparte como administrador
+    const ver = patronClave(solo) ? 'Administrador' : guardado;
+    $('#miNombre').value = guardado;
+    if (ver) { $('#nombreCampo').hidden = true; $('#nombreListo').hidden = false; $('#nombreVer').textContent = ver; }
+  } catch (e) { }
+  $('#cambiarNombre').onclick = () => { $('#nombreListo').hidden = true; $('#nombreCampo').hidden = false; $('#miNombre').focus(); };
   window.Mesa = { forzarAdmin(v, clave) { esAdmin = !!v; if (clave) claveAdmin = clave; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
   revisarAdmin();

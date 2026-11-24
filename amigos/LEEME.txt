@@ -15,8 +15,9 @@ La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la v
 
 Historial, lupa y reloj (V2.07)
 - Historial de partidas: cada partida terminada (Solo contra Don Barajón y Amigos en línea) guarda una fila en la base de datos: fecha, hora, jugador 1, jugador 2 (Don Barajón en Solo), puntaje 1, puntaje 2 y ganador. Reemplaza el formulario de Google.
-  Solo el administrador ve el botón HISTORIAL DE PARTIDAS (menú de Amigos): filtros HOY / 3 DÍAS / 5 DÍAS / TODOS, primero los juegos actuales (salas en juego) y luego los anteriores por fecha y hora, y QUITAR para sacar una partida del listado (no se borra).
-  Seguridad: la página solo puede AGREGAR filas; leer y quitar se hace con funciones de la base que piden la huella de la clave del administrador (la primera vez que el administrador abre el historial queda registrada su huella). Ver supabase/003_partidas.sql.
+  Solo el administrador ve el botón HISTORIAL DE PARTIDAS (menú de Amigos): filtros HOY / 3 DÍAS / 5 DÍAS / TODOS y, primero los juegos actuales (salas en juego) y luego los anteriores por fecha y hora. El interruptor «Ocultar al administrador» (activado por defecto) saca de los listados las partidas donde participó el administrador; no se borra nada.
+  Seguridad: la página solo puede AGREGAR filas; leer se hace con funciones de la base que piden la huella de la clave del administrador (la primera vez que el administrador abre el historial queda registrada su huella). Ver supabase/003_partidas.sql.
+- El nombre solo se pide la primera vez: si ya está guardado (en Amigos o en Solo) se muestra «Jugarás como …» con un botón CAMBIAR.
 - Lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo); al soltar no se juega la carta.
 - Reloj de arena: cuando juega el rival, la línea de estado muestra un reloj de arena que cae ~3 segundos y da la vuelta.
 
@@ -42,7 +43,7 @@ Archivos
 - estilos.css e index.html : el aspecto (mismo que Solo, con tapete azul).
 - vendor/   : la librería de Supabase (supabase-js 2.118.0, licencia MIT), guardada dentro del sitio.
 - historial.js : guarda las partidas terminadas y, para el administrador, lista y quita del listado.
-- supabase/001_salas.sql, 002_revancha.sql y 003_partidas.sql : las tablas y permisos de la base de datos (002 añade la acción «revancha»).
+- supabase/001_salas.sql, 002_revancha.sql y 003_partidas.sql y 004_historial_admin.sql : las tablas y permisos de la base de datos (002 añade la acción «revancha»).
 - pruebas/reglas.test.js : pruebas de las reglas:  node --test amigos/pruebas/reglas.test.js
 
 Seguridad (modelo de confianza entre amigos): no hay cuentas; quien tenga el código puede entrar. Las cartas de los dos viajan dentro del estado de la sala,

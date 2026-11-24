@@ -25,3 +25,8 @@ test('huella: igual clave (sin tildes ni mayúsculas) da la misma huella de 64 c
   const a = await H.huella('  Clave Ñoño '), b = await H.huella('clave nono'), c = await H.huella('otra');
   assert.match(a, /^[0-9a-f]{64}$/); assert.equal(a, b); assert.notEqual(a, c);
 });
+
+test('fila: marca si participó el administrador (solo para poder ocultarla del listado)', () => {
+  assert.equal(H.fila({ jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0, admin: true }).admin, true);
+  assert.equal(H.fila({ jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0 }).admin, false);
+});

@@ -19,7 +19,7 @@
     const d = ahora || new Date();
     const j1 = nombre(p.jugador1, 'Jugador 1'), j2 = nombre(p.jugador2, 'Jugador 2');
     return { id: p.id || nuevoId(), fecha: fechaLocal(d), hora: horaLocal(d), modo: p.modo === 'solo' ? 'solo' : 'amigos', jugador1: j1, jugador2: j2,
-      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
+      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), admin: !!p.admin, ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
   }
   // Fecha «desde» para el filtro: hoy = 1 día, 3 días, 5 días; todos = null.
   function desde(dias, ahora) {
@@ -57,9 +57,9 @@
     if (!r.ok) { const e = new Error(r.status === 403 || r.status === 401 ? 'acceso-denegado' : 'error-' + r.status); e.estado = r.status; throw e; }
     return r.json();
   }
-  const listar = async (clave, dias) => rpc('historial_listar', { p_h: await huella(clave), p_desde: desde(dias) });
-  const quitar = async (clave, id) => rpc('historial_quitar', { p_h: await huella(clave), p_id: id });
+  // sinAdmin = true oculta las partidas y salas donde participó el administrador (no se borra nada)
+  const listar = async (clave, dias, sinAdmin) => rpc('historial_listar', { p_h: await huella(clave), p_desde: desde(dias), p_sin_admin: !!sinAdmin });
 
-  root.Historial = { guardar, fila, desde, listar, quitar, huella, vaciarCola, pendientes: () => leerCola().length };
+  root.Historial = { guardar, fila, desde, listar, huella, vaciarCola, pendientes: () => leerCola().length };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.Historial;
 })(typeof self !== 'undefined' ? self : this);

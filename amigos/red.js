@@ -21,10 +21,10 @@
   function codigoAzar() { let s = ''; for (let i = 0; i < 3; i++) s += ALFABETO[Math.floor(Math.random() * ALFABETO.length)]; return s; }
   const nuevoId = () => (root.crypto && crypto.randomUUID ? crypto.randomUUID() : 'id' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10)).slice(0, 36);
 
-  async function crearSala({ id, nombre, maximo, opciones }) {
+  async function crearSala({ id, nombre, maximo, opciones, adm }) {
     for (let i = 0; i < 8; i++) {
       const codigo = codigoAzar();
-      const { data, error } = await cliente().from('salas').insert({ codigo, anfitrion: id, maximo: maximo || 2, opciones: opciones || {}, jugadores: [{ id, nombre, asiento: 0 }] }).select().single();
+      const { data, error } = await cliente().from('salas').insert({ codigo, anfitrion: id, maximo: maximo || 2, opciones: opciones || {}, jugadores: [Object.assign({ id, nombre, asiento: 0 }, adm ? { adm: true } : {})] }).select().single();
       if (!error) return data;
       if (error.code !== '23505') throw error; // 23505: ese código ya existe; se prueba otro
     }

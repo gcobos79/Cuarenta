@@ -208,11 +208,9 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .hist .vacio{margin:4px 0 8px;font-size:12px;color:#d9e6fa;opacity:.85}
 .fila-h{display:grid;grid-template-columns:1fr auto;gap:1px 8px;align-items:center;padding:7px 8px;margin:4px 0;border:1px solid #d9c18e44;border-radius:10px;background:#07142b99;font-size:12px}
 .fila-h .cuando{grid-column:1/-1;font-size:10px;letter-spacing:.1em;color:#bba27b;text-transform:uppercase}
-.fila-h .cuando i{margin-left:8px;padding:1px 6px;border-radius:6px;border:1px solid #d9c18e66;font-style:normal;font-size:9px}
 .fila-h .quien{font-weight:600;color:#fff4d6}.fila-h .quien b{color:var(--oro-claro);font-size:15px}
 .fila-h .extra{grid-column:1;font-size:11px;color:#d9e6fa;opacity:.9}
 .fila-h.actual{border-color:var(--oro-claro);box-shadow:0 0 10px #f0d9a933}
-.fila-h .quitar{grid-column:2;grid-row:2/4;align-self:center;padding:7px 10px;border-radius:8px;border:1px solid #a85e4c;background:#38201b;color:#f0c4b5;font:800 10px "DM Sans",sans-serif;letter-spacing:.06em;cursor:pointer}
 
 /* V2.07 — reloj de arena mientras juega el rival: la arena cae ~3 segundos y el reloj da la vuelta */
 .reloj{display:inline-block;vertical-align:middle;width:19px;height:26px;margin:-6px 3px -5px;color:#d9e6fa;animation:relojVuelta 3.6s ease-in-out infinite}
@@ -235,3 +233,11 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .lupa .card{transform:none!important;box-shadow:0 0 0 3px #f6d48d,0 18px 50px #000e;border-radius:calc(var(--ch)*.05);filter:none!important}
 @keyframes lupaEntra{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.lupa{animation:none}}
+
+/* V2.07 — el historial oculta al administrador con un interruptor (no hay botón de quitar) y el nombre ya guardado no se pide de nuevo */
+.hist .opc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 8px;font-size:12px;color:#e6dcc3}
+.hist .opc input{width:20px;height:20px;accent-color:#c9a45c}
+.config .nombre-listo{margin:4px 0 0;font-size:13px;color:#d9e6fa}
+.config .nombre-listo b{color:var(--oro-claro);font-size:15px}
+.enlace{margin-left:6px;padding:4px 8px;border-radius:6px;border:1px solid #d9c18e88;background:transparent;color:var(--oro-claro);font:800 10px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
+.fila-h{grid-template-columns:1fr}

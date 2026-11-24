@@ -86,7 +86,8 @@
    <div class="config" id="config">
     <h2>AMIGOS</h2>
     <p class="como">Cada jugador usa <b>su propio celular</b>. Uno es el <b>anfitrión</b> y el otro es el <b>invitado</b>. <b>Solo el anfitrión crea la sala.</b></p>
-    <label class="nom" for="miNombre">Tu nombre (el que verá tu amigo)</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off">
+    <p class="nombre-listo" id="nombreListo" hidden>Jugarás como <b id="nombreVer"></b> <button type="button" class="enlace" id="cambiarNombre">CAMBIAR</button></p>
+    <div id="nombreCampo"><label class="nom" for="miNombre">Tu nombre (el que verá tu amigo)</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off"></div>
     <section class="rol" aria-labelledby="rolAnf">
      <h3 id="rolAnf">📱 SI ERES EL ANFITRIÓN</h3>
      <p>Tú creas la sala y repartes. Elige las reglas, pulsa <b>CREAR SALA</b> y verás un código de 3 caracteres. Díselo a tu amigo y, cuando él entre, pulsa <b>COMENZAR</b>.</p>
@@ -142,6 +143,7 @@
   <div class="filtros" role="group" aria-label="Periodo">
    <button type="button" class="chip activo" data-dias="1">HOY</button><button type="button" class="chip" data-dias="3">3 DÍAS</button><button type="button" class="chip" data-dias="5">5 DÍAS</button><button type="button" class="chip" data-dias="0">TODOS</button>
   </div>
+  <label class="opc" id="histOcultar"><span>Ocultar al administrador (mis partidas)</span><input type="checkbox" id="histSinAdmin" checked></label>
   <div id="histLista" aria-live="polite"></div>
   <div class="acciones"><button class="btn" id="histActualizar" type="button">ACTUALIZAR</button><button class="btn fin" id="histCerrar" type="button">CERRAR</button></div>
  </div>
