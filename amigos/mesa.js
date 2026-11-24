@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.23', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.24', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -536,6 +536,13 @@
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(n => logo.addEventListener(n, ocultar));
     logo.addEventListener('contextmenu', e => e.preventDefault());
     logo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ver.hidden = false; setTimeout(() => { ver.hidden = true; }, 2000); } });
+    // el círculo 40 se ve unos 5 segundos al abrir y luego desaparece: los marcadores usan ese espacio
+    setTimeout(() => { logo.classList.add('saliendo'); setTimeout(() => { logo.hidden = true; }, 500); }, 5000);
+    // sin el círculo, la versión se ve manteniendo pulsado un marcador (1 segundo)
+    const marc = document.querySelector('.scores'); let tm = null;
+    const quitarM = () => { clearTimeout(tm); tm = null; ver.hidden = true; };
+    marc.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button !== 0) return; quitarM(); tm = setTimeout(() => { ver.hidden = false; try { navigator.vibrate && navigator.vibrate(10); } catch (x) { } }, 1000); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(n => marc.addEventListener(n, quitarM));
   }
   // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y el campo ya no se muestra (sin avisos).
   try {
