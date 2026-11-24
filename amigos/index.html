@@ -107,6 +107,7 @@
      <label class="opc"><span>Ver las cartas de los dos</span><input type="checkbox" id="oVer" checked></label>
      <p>Pulsa el botón de abajo para empezar la prueba.</p>
     </details>
+    <button class="btn" id="btnHistorial" type="button" hidden>HISTORIAL DE PARTIDAS</button>
    </div>
    <div class="lobby revancha" id="revancha" hidden>
     <p class="lb-etq">PARTIDAS GANADAS</p>
@@ -134,11 +135,24 @@
  </main>
 </div>
 <div id="velos"></div>
+<template id="histTpl">
+<div class="velo" id="histPanel" role="dialog" aria-modal="true" aria-labelledby="histTitulo">
+ <div class="panel hist">
+  <h3 id="histTitulo">HISTORIAL DE PARTIDAS</h3>
+  <div class="filtros" role="group" aria-label="Periodo">
+   <button type="button" class="chip activo" data-dias="1">HOY</button><button type="button" class="chip" data-dias="3">3 DÍAS</button><button type="button" class="chip" data-dias="5">5 DÍAS</button><button type="button" class="chip" data-dias="0">TODOS</button>
+  </div>
+  <div id="histLista" aria-live="polite"></div>
+  <div class="acciones"><button class="btn" id="histActualizar" type="button">ACTUALIZAR</button><button class="btn fin" id="histCerrar" type="button">CERRAR</button></div>
+ </div>
+</div>
+</template>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 <script src="../audio/index.js"></script>
 <script src="vendor/supabase-js-2.118.0.umd.js"></script>
 <script src="reglas.js"></script>
 <script src="red.js"></script>
+<script src="historial.js"></script>
 <script src="efectos.js"></script>
 <script src="voz.js"></script>
 <script src="mesa.js"></script>

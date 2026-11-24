@@ -12,6 +12,7 @@
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
   let turnoMioAntes = false, pendEv = 0;
+  let claveAdmin = '', histDias = 1;
   let esAdmin = false, panelFin = false, victoriasLocal = [0, 0]; // administrador (ve la prueba local); aviso de fin ya visto; partidas ganadas de la prueba local
   // ---- administrador: la misma clave de Solo (solo se guarda la huella, no la palabra). Se lee del nombre guardado en Solo o del nombre escrito aquí ----
   const CLAVE_SAL = 'cuarenta-don-barajon:clave-de-dueno:v1', CLAVE_HUELLA = 'f7a14d09feb58ab9df36a5d014abec123bc7fd2092dabc56d6dd16f5920c9e1e';
@@ -26,7 +27,7 @@
   async function revisarAdmin() {
     let ok = false;
     const fuentes = []; try { fuentes.push(localStorage.getItem('donBarajonPlayerName') || ''); } catch (e) { } fuentes.push(($('#miNombre') || {}).value || '');
-    for (const f of fuentes) { const m = patronClave(f); if (m) { try { if ((await huellaClave(m[1])) === CLAVE_HUELLA) { ok = true; break; } } catch (e) { } } }
+    for (const f of fuentes) { const m = patronClave(f); if (m) { try { if ((await huellaClave(m[1])) === CLAVE_HUELLA) { ok = true; claveAdmin = m[1]; break; } } catch (e) { } } }
     if (ok !== esAdmin) { esAdmin = ok; dibujar(); }
   }
   // Dos cadenas: «serie» aplica cambios al estado uno por uno; «serieEv» muestra animaciones y avisos uno por uno (sin frenar a la anterior).
@@ -82,6 +83,7 @@
     const finVisible = !!D && D.estado === 'fin' && panelFin;
     document.body.classList.toggle('sin-mesa', !D || finVisible); // en el menú, el lobby y el panel de revancha no hay cartas: el tapete usa todo el espacio
     $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
+    $('#btnHistorial').hidden = !esAdmin || !!modo; // el historial lo ve solo el administrador, desde el menú
     $('details.local').hidden = !esAdmin; // la prueba en esta pantalla solo la ve el administrador
     ['g0', 'g1'].forEach((id, p) => { const e = $('#' + id); e.hidden = !modo; e.textContent = modo ? 'GANADAS ' + ganadas(p) : ''; });
     if (finVisible) dibujarRevancha();
@@ -182,6 +184,37 @@
     try { await Red.guardar(S.codigo, { jugadores: S.jugadores, estado: null, fase: 'espera', ultima_accion: S.ultima }); } catch (e) { toast('No se pudo actualizar la sala.'); }
     toast('Tu amigo salió de la sala. Puedes esperar a otro con el mismo código.', 4500); dibujar();
   }
+
+  // ---- historial de partidas (solo el administrador) ----
+  const fechaCorta = f => { const [y, m, d] = String(f).split('-'); return `${d}/${m}`; };
+  async function cargarHistorial() {
+    const lista = $('#histLista'); if (!lista) return; lista.innerHTML = '<p class="vacio">Cargando…</p>';
+    document.querySelectorAll('#histPanel .chip').forEach(c => c.classList.toggle('activo', Number(c.dataset.dias) === histDias));
+    try {
+      const r = await Historial.listar(claveAdmin, histDias), act = r.actuales || [], par = r.partidas || [];
+      if (!$('#histLista')) return;
+      let h = `<h4>JUEGOS ACTUALES (${act.length})</h4>` + (act.length ? act.map(a => `<div class="fila-h actual"><span class="cuando">Sala ${esc(a.codigo)}</span><span class="quien">${esc(a.jugador1)} <b>${a.puntaje1}</b> – <b>${a.puntaje2}</b> ${esc(a.jugador2)}</span><span class="extra">Ciclo ${a.ciclo || 1} · sección ${a.seccion || 1}/4 · en juego</span></div>`).join('') : '<p class="vacio">No hay juegos en curso.</p>');
+      h += `<h4>ANTERIORES (${par.length})</h4>` + (par.length ? par.map(p => `<div class="fila-h"><span class="cuando">${fechaCorta(p.fecha)} · ${esc(p.hora)}<i>${p.modo === 'solo' ? 'SOLO' : 'AMIGOS'}</i></span><span class="quien">${esc(p.jugador1)} <b>${p.puntaje1}</b> – <b>${p.puntaje2}</b> ${esc(p.jugador2)}</span><span class="extra">Ganó ${esc(p.ganador)}</span><button type="button" class="quitar" data-id="${esc(p.id)}" aria-label="Quitar del listado">QUITAR</button></div>`).join('') : '<p class="vacio">No hay partidas terminadas en este periodo.</p>');
+      lista.innerHTML = h;
+      lista.querySelectorAll('.quitar').forEach(b => { b.onclick = () => quitarPartida(b.dataset.id); });
+    } catch (e) {
+      lista.innerHTML = `<p class="vacio">${e.message === 'acceso-denegado' ? 'Acceso denegado: la clave de administrador no coincide con la registrada en el historial.' : 'No se pudo cargar el historial. Revisa tu conexión.'}</p>`;
+    }
+  }
+  async function quitarPartida(id) {
+    const r = await ventana('QUITAR DEL LISTADO', '<p>La partida dejará de aparecer en el historial.</p>', [{ txt: 'CANCELAR', val: 0, id: 'quitarNo' }, { txt: 'QUITAR', val: 1, clase: 'fin', id: 'quitarSi' }]);
+    if (r !== 1) return;
+    try { await Historial.quitar(claveAdmin, id); } catch (e) { toast('No se pudo quitar. Revisa tu conexión.'); }
+    cargarHistorial();
+  }
+  function abrirHistorial() {
+    if (!esAdmin || $('#histPanel')) return;
+    $('#velos').appendChild($('#histTpl').content.firstElementChild.cloneNode(true));
+    $('#histCerrar').onclick = cerrarHistorial; $('#histActualizar').onclick = cargarHistorial;
+    document.querySelectorAll('#histPanel .chip').forEach(c => { c.onclick = () => { histDias = Number(c.dataset.dias); cargarHistorial(); }; });
+    cargarHistorial();
+  }
+  function cerrarHistorial() { const p = $('#histPanel'); if (p) p.remove(); }
 
   // ---- lo que ocurre en cada jugada: animación, voz y letras grandes ----
   const grandeJugada = e => { // «¡CAÍDA!» / «¡LIMPIA!» con los puntos que sumó
@@ -340,6 +373,7 @@
   async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
     const fin = (eventos || []).find(e => e.tipo === 'fin');
     if (fin && (fin.ganador === 0 || fin.ganador === 1)) { const g = S.jugadores.find(j => j.asiento === fin.ganador); if (g) g.victorias = (g.victorias || 0) + 1; }
+    if (fin) { try { Historial.guardar({ modo: 'amigos', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '' }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
     const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
     if (E) {
       S.version++;
@@ -446,6 +480,7 @@
     else salirSala(true);
   };
   $('#btnCrear').onclick = crearSalaUI; $('#btnUnirme').onclick = unirmeUI;
+  $('#btnHistorial').onclick = abrirHistorial;
   $('#rvOtra').onclick = marcarListo;
   $('#rvSalir').onclick = () => { if (modo === 'local') { E = null; V = null; modo = null; panelFin = false; dibujar(); } else salirSala(true); };
   $('#miNombre').addEventListener('input', revisarAdmin);
@@ -463,7 +498,7 @@
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
   try { $('#miNombre').value = localStorage.getItem(CLAVE_NOMBRE) || ''; } catch (e) { }
-  window.Mesa = { forzarAdmin(v) { esAdmin = !!v; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
+  window.Mesa = { forzarAdmin(v, clave) { esAdmin = !!v; if (clave) claveAdmin = clave; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
   revisarAdmin();
   reanudar();
