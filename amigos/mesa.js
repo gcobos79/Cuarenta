@@ -124,7 +124,17 @@
     const solo = $('#irSolo'), bloquea = jugando || (red && !!D); solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0;
     $('#btnVoz').classList.toggle('off', !Voz.activa()); $('#btnVoz').setAttribute('aria-pressed', String(Voz.activa()));
     $('#btnSonido').classList.toggle('off', !Efectos.sonido()); $('#btnSonido').setAttribute('aria-pressed', String(Efectos.sonido()));
+    ajustarMesa();
   }
+  // Las cartas de la mesa se achican lo necesario para que quepan todas dentro del tapete (nunca se cortan)
+  function ajustarMesa() {
+    const m = $('#mesa'), f = $('.felt'); if (!m || !f || m.hidden) return;
+    m.style.removeProperty('--ch');
+    const c = m.querySelector('.card'); if (!c) return;
+    let h = c.getBoundingClientRect().height;
+    while (f.scrollHeight > f.clientHeight + 1 && h > 40) { h *= .92; m.style.setProperty('--ch', h.toFixed(1) + 'px'); }
+  }
+  window.addEventListener('resize', () => { if (window.Mesa) Mesa.dibujar(); });
   function dibujarLobby() {
     $('#lbCodigo').textContent = S.codigo;
     $('#lbJugadores').innerHTML = Array.from({ length: S.maximo }, (_, i) => {

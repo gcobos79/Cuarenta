@@ -168,3 +168,4 @@ body.sin-mesa .fila{display:none}
 .felt>.mesa{flex:1 0 auto} /* si no cabe, el tapete se desplaza en vez de montar las cartas sobre el turno */
 @media (max-height:700px) and (max-width:700px){:root{--ch:clamp(50px,min(12.5dvh,calc((100vw - 64px)/5/.74)),140px)}}
 @media (max-width:430px){.top{gap:6px}.brand h1{letter-spacing:3px;font-size:clamp(22px,6.4vw,30px)}.score{min-width:78px;padding:6px 6px}.scores{gap:6px}.version{font-size:9px;letter-spacing:.08em}} /* la versión ya no se corta */
+.mesa{--cw:calc(var(--ch)*.7)} /* el ancho sigue a la altura cuando ajustarMesa() achica las cartas */

@@ -13,7 +13,7 @@ Cómo se juega en línea (1 contra 1)
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave», como en Solo).
 
-Distribución (V2.06): «¡TU TURNO!» y el estado del ciclo van en su propio renglón (ya no tapan las cartas de la mesa), el aviso vacío no ocupa espacio y la versión ya no se corta en celulares angostos.
+Distribución (V2.06): «¡TU TURNO!» y el estado del ciclo van en su propio renglón (ya no tapan las cartas de la mesa), el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa se achican solas lo necesario para que quepan todas (nunca se cortan).
 
 Efectos y voz (V2.04)
 - Las jugadas se animan como en Solo: la carta sale de la mano y viaja a la mesa, las cartas de la captura se iluminan una por una y se levantan hacia el montón; suena el golpe de la carta.
