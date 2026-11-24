@@ -7,11 +7,28 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.04', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.05', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
   let turnoMioAntes = false, pendEv = 0;
+  let esAdmin = false, panelFin = false, victoriasLocal = [0, 0]; // administrador (ve la prueba local); aviso de fin ya visto; partidas ganadas de la prueba local
+  // ---- administrador: la misma clave de Solo (solo se guarda la huella, no la palabra). Se lee del nombre guardado en Solo o del nombre escrito aquí ----
+  const CLAVE_SAL = 'cuarenta-don-barajon:clave-de-dueno:v1', CLAVE_HUELLA = 'f7a14d09feb58ab9df36a5d014abec123bc7fd2092dabc56d6dd16f5920c9e1e';
+  const normClave = x => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  async function huellaClave(palabra) {
+    if (!(window.crypto && crypto.subtle)) return null;
+    const enc = new TextEncoder(), k = await crypto.subtle.importKey('raw', enc.encode(normClave(palabra)), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: enc.encode(CLAVE_SAL), iterations: 100000, hash: 'SHA-256' }, k, 256);
+    return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  const patronClave = txt => /^«\s*(.+?)\s*»$/.exec((txt || '').trim());
+  async function revisarAdmin() {
+    let ok = false;
+    const fuentes = []; try { fuentes.push(localStorage.getItem('donBarajonPlayerName') || ''); } catch (e) { } fuentes.push(($('#miNombre') || {}).value || '');
+    for (const f of fuentes) { const m = patronClave(f); if (m) { try { if ((await huellaClave(m[1])) === CLAVE_HUELLA) { ok = true; break; } } catch (e) { } } }
+    if (ok !== esAdmin) { esAdmin = ok; dibujar(); }
+  }
   // Dos cadenas: «serie» aplica cambios al estado uno por uno; «serieEv» muestra animaciones y avisos uno por uno (sin frenar a la anterior).
   let serieP = Promise.resolve(), evP = Promise.resolve();
   const serie = fn => (serieP = serieP.then(fn, fn).catch(e => { console.error(e); }));
@@ -25,6 +42,8 @@
   const jugadorEn = dom => (dom === 0 ? abajo() : arriba());
   const nom = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).nombre || 'Esperando…') : nombres[p]);
   const MAY = t => String(t).toLocaleUpperCase();
+  const ganadas = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).victorias || 0) : victoriasLocal[p]);
+  const marcadorPartidas = () => `${nom(0)} ${ganadas(0)} — ${nom(1)} ${ganadas(1)}`;
   const cartaTxt = c => c.rank + c.suit;
   const esFigura = c => c.rank === 'J' || c.rank === 'Q' || c.rank === 'K';
   const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx">${c.rank}<br>${c.suit}</span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom">${c.rank}<br>${c.suit}</span></div>`;
@@ -52,7 +71,7 @@
   // ---- dibujo (siempre desde V, lo que se ve) ----
   function textoBoton() {
     if (!modo) return { t: 'PRUEBA LOCAL', dis: false, fin: false, espera: true };
-    if (modo === 'local') return E && E.estado === 'jugando' ? { t: 'TERMINAR PARTIDA', fin: true } : { t: 'COMENZAR' };
+    if (modo === 'local') return E && E.estado === 'jugando' ? { t: 'TERMINAR PARTIDA', fin: true } : { t: 'SALIR' };
     if (!E) return S.anfitrion ? { t: 'COMENZAR', dis: S.jugadores.length < S.maximo, espera: S.jugadores.length >= S.maximo } : { t: 'ESPERANDO AL ANFITRIÓN', dis: true };
     return E.estado === 'jugando' ? { t: S.anfitrion ? 'TERMINAR PARTIDA' : 'SALIR DE LA PARTIDA', fin: true } : { t: 'SALIR' };
   }
@@ -60,7 +79,11 @@
     const red = modo === 'red', D = V, jugando = !!D && D.estado === 'jugando';
     $('#n0').textContent = nom(0) + (red && S.asiento === 0 ? ' (tú)' : ''); $('#n1').textContent = nom(1) + (red && S.asiento === 1 ? ' (tú)' : '');
     $('#e0').textContent = nom(jugadorEn(0)); $('#e1').textContent = nom(jugadorEn(1));
-    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#turno').hidden = !jugando;
+    const finVisible = !!D && D.estado === 'fin' && panelFin;
+    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#turno').hidden = !jugando; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
+    $('details.local').hidden = !esAdmin; // la prueba en esta pantalla solo la ve el administrador
+    ['g0', 'g1'].forEach((id, p) => { const e = $('#' + id); e.hidden = !modo; e.textContent = modo ? 'GANADAS ' + ganadas(p) : ''; });
+    if (finVisible) dibujarRevancha();
     if (red && !D) dibujarLobby();
     if (!D) {
       $('#p0').textContent = '0'; $('#p1').textContent = '0'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
@@ -95,6 +118,7 @@
       }
     }
     const b = textoBoton(), pr = $('#principal');
+    pr.hidden = !modo && !esAdmin; // sin modo y sin ser administrador no hay prueba local
     pr.textContent = b.t; pr.disabled = !!b.dis; pr.classList.toggle('fin', !!b.fin); pr.classList.toggle('espera', !!b.espera);
     const solo = $('#irSolo'), bloquea = jugando || (red && !!D); solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0;
     $('#btnVoz').classList.toggle('off', !Voz.activa()); $('#btnVoz').setAttribute('aria-pressed', String(Voz.activa()));
@@ -109,6 +133,44 @@
       return `<li><span class="punto ${on ? 'on' : 'off'}" aria-hidden="true"></span>${esc(j.nombre)}${i === 0 ? ' · anfitrión' : ''}${j.id === S.id ? ' · tú' : ''}${on ? '' : ' · desconectado'}</li>`;
     }).join('');
     const o = S.opciones || {}; $('#lbOpciones').textContent = `Reglas: ${o.rule38 ? '38 que no juegan' : 'sin 38'} · ${o.falta4 ? '4 de falta' : 'sin 4 de falta'}`;
+  }
+
+  function dibujarRevancha() {
+    const red = modo === 'red', gan = V.ganador;
+    $('#rvMarcador').innerHTML = [0, 1].map(p => `<li class="${gan === p ? 'gana' : ''}"><span>${esc(nom(p))}${red && p === S.asiento ? ' · tú' : ''}${gan === p ? ' · ganó' : ''}</span><b>${ganadas(p)}</b></li>`).join('');
+    let estado = '¿Otra partida?', mio = false, otro = false;
+    if (red) {
+      const yoJ = S.jugadores.find(j => j.id === S.id) || {}, riv = S.jugadores.find(j => j.id !== S.id) || {};
+      mio = !!yoJ.listo; otro = !!riv.listo;
+      estado = mio && !otro ? `Esperando a que ${riv.nombre || 'tu amigo'} también quiera jugar otra vez…` : (!mio && otro ? `${riv.nombre || 'Tu amigo'} quiere jugar otra vez. ¿Y tú?` : '¿Otra partida en la misma sala?');
+    }
+    $('#rvEstado').textContent = estado; $('#rvOtra').disabled = mio; $('#rvOtra').textContent = mio ? 'LISTO' : 'JUGAR OTRA VEZ';
+  }
+  async function marcarListo() { // quiero jugar otra vez
+    if (modo === 'local') { comenzarLocal(); return; }
+    if (!S || !V || V.estado !== 'fin') return;
+    if (S.anfitrion) {
+      await serie(async () => { const j = S.jugadores.find(x => x.id === S.id); if (j) j.listo = true; try { await Red.guardar(S.codigo, { jugadores: S.jugadores }); } catch (e) { toast('No se pudo avisar. Revisa tu conexión.'); } dibujar(); await intentarRevancha(); });
+    } else {
+      const j = S.jugadores.find(x => x.id === S.id); if (j) j.listo = true; dibujar();
+      try { await Red.enviarAccion(S.codigo, S.id, 'revancha', {}); } catch (e) { if (j) j.listo = false; toast('No se pudo avisar. Revisa tu conexión.'); dibujar(); }
+    }
+  }
+  async function intentarRevancha() { // solo el anfitrión: cuando los dos están listos, empieza otra partida en la misma sala
+    if (!S || !S.anfitrion || !E || E.estado !== 'fin') return;
+    if (S.jugadores.length < S.maximo || !S.jugadores.every(j => j.listo && !j.salio)) return;
+    S.jugadores.forEach(j => { j.listo = false; });
+    const ini = E.dealerInicial === 0 || E.dealerInicial === 1 ? 1 - E.dealerInicial : undefined; // reparte el otro
+    E = nueva(Object.assign({}, S.opciones, { dealer: ini })); V = null; preguntada = ''; ultimaCartaId = null; panelFin = false;
+    const ev = E.eventosIniciales || []; delete E.eventosIniciales;
+    await publicar(ev); encolarEv(ev, clonar(E));
+  }
+  async function volverAlLobby() { // el amigo se fue: la sala vuelve a esperar a alguien (el marcador de partidas se reinicia)
+    if (!S || !S.anfitrion) return;
+    S.jugadores = S.jugadores.filter(j => !j.salio && j.id === S.id).map(j => ({ id: j.id, nombre: j.nombre, asiento: 0, victorias: 0 }));
+    E = null; V = null; panelFin = false; ultimaCartaId = null; preguntada = ''; ocupado = false;
+    try { await Red.guardar(S.codigo, { jugadores: S.jugadores, estado: null, fase: 'espera', ultima_accion: S.ultima }); } catch (e) { toast('No se pudo actualizar la sala.'); }
+    toast('Tu amigo salió de la sala. Puedes esperar a otro con el mismo código.', 4500); dibujar();
   }
 
   // ---- lo que ocurre en cada jugada: animación, voz y letras grandes ----
@@ -126,7 +188,7 @@
     ocupado = true;
     const jug = eventos.find(e => e.tipo === 'jugada');
     if (jug && V && !rapido) { dibujar(); await animar(jug); }
-    V = clonar(snap || E);
+    V = clonar(snap || E); if (V.estado === 'jugando') panelFin = false;
     ultimaCartaId = jug ? ((V.table.find(c => c.id === jug.carta.id) || {}).id || null) : null;
     dibujar();
     Voz.hablarEventos(eventos, yo()); // la voz dice lo que pasó
@@ -143,9 +205,12 @@
         if (!rapido) await Efectos.grande(`FIN DEL CICLO\n${MAY(nom(0))}: ${a} CARTAS · ${MAY(nom(1))}: ${b} CARTAS\n${res}`, 4800);
       } else if (e.tipo === 'fin') {
         const mot = { cuatro: 'por cuatro cartas iguales', caida38: 'con una caída estando en 38', '40': 'al llegar a 40 puntos', abandono: 'porque el otro jugador salió de la partida' }[e.motivo] || '';
-        await ventana('¡GANA ' + MAY(nom(e.ganador)) + '!', `<p>${mot ? 'Gana ' + mot + '.\n' : ''}Marcador final: ${esc(nom(0))} ${e.puntos[0]} — ${esc(nom(1))} ${e.puntos[1]}</p>`, [{ txt: modo === 'red' ? 'SALIR' : 'NUEVA PARTIDA', val: 1, id: 'nuevaPartida' }]);
-        if (modo === 'red') await salirSala(false); else { E = null; V = null; modo = null; }
+        if (modo === 'local') victoriasLocal[e.ganador]++;
+        dibujar();
+        await ventana('¡GANA ' + MAY(nom(e.ganador)) + '!', `<p>${mot ? 'Gana ' + mot + '.\n' : ''}Marcador de esta partida: ${esc(nom(0))} ${e.puntos[0]} — ${esc(nom(1))} ${e.puntos[1]}\nPartidas ganadas: ${esc(marcadorPartidas())}</p>`, [{ txt: 'CONTINUAR', val: 1, id: 'continuarFin' }]);
         ultimaCartaId = null; preguntada = '';
+        if (modo === 'red' && S.anfitrion && S.jugadores.some(j => j.salio)) { await volverAlLobby(); } // el amigo ya se fue: la sala vuelve a esperar a alguien
+        else panelFin = true; // la sala sigue abierta: se puede jugar otra vez
       }
     }
     ocupado = false; dibujar(); avisarTurno();
@@ -219,7 +284,10 @@
 
   // ---- prueba local ----
   function comenzarLocal() {
-    nombres = [limpia($('#nom0').value) || 'Jugador 1', limpia($('#nom1').value) || 'Jugador 2'];
+    if (!esAdmin) return;
+    const nuevosNombres = [limpia($('#nom0').value) || 'Jugador 1', limpia($('#nom1').value) || 'Jugador 2'];
+    if (modo !== 'local' || nuevosNombres.join() !== nombres.join()) victoriasLocal = [0, 0]; // otra pareja: el marcador de partidas empieza de cero
+    nombres = nuevosNombres; panelFin = false;
     modo = 'local'; E = nueva({ rule38: $('#o38').checked, falta4: $('#o4f').checked }); V = null;
     ultimaCartaId = null; preguntada = ''; ocupado = false; $('#aviso').textContent = '';
     const iniciales = E.eventosIniciales || []; delete E.eventosIniciales;
@@ -229,13 +297,13 @@
   // ---- en línea ----
   function guardarSesion() { try { localStorage.setItem(CLAVE_SESION, JSON.stringify({ codigo: S.codigo, id: S.id, nombre: S.nombre, anfitrion: S.anfitrion })); } catch (e) { } }
   function borrarSesion() { try { localStorage.removeItem(CLAVE_SESION); } catch (e) { } }
-  const nombreEscrito = () => { const n = limpia($('#miNombre').value) || 'Jugador'; try { localStorage.setItem(CLAVE_NOMBRE, n); } catch (e) { } return n; };
+  const nombreEscrito = () => { const n = (patronClave($('#miNombre').value) ? '' : limpia($('#miNombre').value)) || 'Jugador'; try { localStorage.setItem(CLAVE_NOMBRE, n); } catch (e) { } return n; };
 
   function quitarEscuchas() { if (!S) return; ['escSala', 'escAcc', 'pres'].forEach(k => { if (S[k]) { try { S[k].parar(); } catch (e) { } S[k] = null; } }); }
   function entrarSala(sala, yoJ) {
     S = { codigo: sala.codigo, id: yoJ.id, nombre: yoJ.nombre, anfitrion: yoJ.anfitrion, asiento: Math.max(0, (sala.jugadores.find(j => j.id === yoJ.id) || { asiento: 0 }).asiento), jugadores: sala.jugadores, maximo: sala.maximo, opciones: sala.opciones || {},
       fase: sala.fase, version: sala.version, vistoEv: (sala.estado && sala.estado.evSeq) || 0, ultima: sala.ultima_accion || 0, conectados: [], enviando: false, rivalEn: null };
-    modo = 'red'; E = sala.estado ? sala.estado : null; V = E ? clonar(E) : null; ultimaCartaId = null; preguntada = ''; ocupado = false; turnoMioAntes = false;
+    modo = 'red'; E = sala.estado ? sala.estado : null; V = E ? clonar(E) : null; panelFin = !!(E && E.estado === 'fin'); ultimaCartaId = null; preguntada = ''; ocupado = false; turnoMioAntes = false;
     guardarSesion();
     S.escSala = Red.escucharSala(sala.codigo, aplicarSala); S.escSala.ver(sala);
     S.pres = Red.presencia(sala.codigo, { id: S.id, nombre: S.nombre }, ids => { if (!S) return; S.conectados = ids; avisarRival(); dibujar(); });
@@ -259,6 +327,8 @@
   }
 
   async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
+    const fin = (eventos || []).find(e => e.tipo === 'fin');
+    if (fin && (fin.ganador === 0 || fin.ganador === 1)) { const g = S.jugadores.find(j => j.asiento === fin.ganador); if (g) g.victorias = (g.victorias || 0) + 1; }
     const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
     if (E) {
       S.version++;
@@ -285,11 +355,15 @@
     } else if (E && E.estado === 'jugando' && seat >= 0) {
       if (a.tipo === 'jugar') { const r = jugar(E, seat, a.datos.carta, a.datos.indice); if (r.ok) eventos = r.eventos; }
       else if (a.tipo === 'ronda') { const r = reclamarRonda(E, seat); if (r.ok) eventos = r.eventos; }
-      else if (a.tipo === 'salir') eventos = abandono(seat);
-    }
+      else if (a.tipo === 'salir') { eventos = abandono(seat); const j = S.jugadores.find(x => x.id === a.jugador); if (j) j.salio = true; }
+    } else if (E && E.estado === 'fin' && seat >= 0) {
+      if (a.tipo === 'revancha') { const j = S.jugadores.find(x => x.id === a.jugador); if (j) j.listo = true; }
+      else if (a.tipo === 'salir') { const j = S.jugadores.find(x => x.id === a.jugador); if (j) j.salio = true; }
+    } else if (!E && a.tipo === 'salir' && seat > 0) { S.jugadores = S.jugadores.filter(x => x.id !== a.jugador); } // salió del lobby
     try { await publicar(eventos); } catch (e) { toast('No se pudo guardar la jugada. Revisa tu conexión.', 4000); console.error(e); }
     if (eventos.length) encolarEv(eventos, clonar(E));
-    else dibujar();
+    else if (E && E.estado === 'fin' && S.jugadores.some(j => j.salio)) await volverAlLobby();
+    else { dibujar(); await intentarRevancha(); }
   }
   async function comenzarRed() { // el anfitrión reparte
     if (!S || !S.anfitrion || E || S.jugadores.length < S.maximo) return;
@@ -346,7 +420,7 @@
     if (!ses || !ses.codigo || !ses.id || !Red.disponible()) return;
     try {
       const sala = await Red.leerSala(ses.codigo);
-      if (sala && sala.jugadores.some(j => j.id === ses.id) && !(sala.fase === 'fin')) { entrarSala(sala, ses); toast('Volviste a la sala ' + sala.codigo, 3000); }
+      if (sala && sala.jugadores.some(j => j.id === ses.id)) { entrarSala(sala, ses); toast('Volviste a la sala ' + sala.codigo, 3000); }
       else borrarSesion();
     } catch (e) { toast('Sin conexión: no se pudo volver a tu sala todavía.', 4000); }
   }
@@ -355,12 +429,15 @@
   $('#principal').onclick = () => {
     Efectos.desbloquear();
     if (!modo) comenzarLocal();
-    else if (modo === 'local') { if (E && E.estado === 'jugando') terminar(); else { E = null; V = null; modo = null; dibujar(); } }
+    else if (modo === 'local') { if (E && E.estado === 'jugando') terminar(); else { E = null; V = null; modo = null; panelFin = false; dibujar(); } }
     else if (!E) comenzarRed();
     else if (E.estado === 'jugando') terminar();
-    else salirSala(false);
+    else salirSala(true);
   };
   $('#btnCrear').onclick = crearSalaUI; $('#btnUnirme').onclick = unirmeUI;
+  $('#rvOtra').onclick = marcarListo;
+  $('#rvSalir').onclick = () => { if (modo === 'local') { E = null; V = null; modo = null; panelFin = false; dibujar(); } else salirSala(true); };
+  $('#miNombre').addEventListener('input', revisarAdmin);
   $('#lbSalir').onclick = () => salirSala(true);
   $('#lbCopiar').onclick = async () => { try { await navigator.clipboard.writeText(S.codigo); toast('Código copiado: ' + S.codigo, 2000); } catch (e) { toast('Código: ' + S.codigo, 3000); } };
   $('#btnVoz').onclick = () => { Voz.alternar(); dibujar(); if (Voz.activa()) Voz.hablar('La voz está activada.'); };
@@ -375,7 +452,8 @@
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
   try { $('#miNombre').value = localStorage.getItem(CLAVE_NOMBRE) || ''; } catch (e) { }
-  window.Mesa = { get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
+  window.Mesa = { forzarAdmin(v) { esAdmin = !!v; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
+  revisarAdmin();
   reanudar();
 })();

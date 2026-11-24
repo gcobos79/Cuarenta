@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#100f0d">
-<title>CUARENTA · Amigos V2.04</title>
+<title>CUARENTA · Amigos V2.05</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="estilos.css">
 </head><body>
@@ -73,10 +73,10 @@
  <header class="top">
   <div class="brand"><small>AMIGOS</small><h1>CUARENTA</h1></div>
   <div class="scores">
-   <div class="score" id="sc0"><label id="n0">Jugador 1</label><strong id="p0">0</strong></div>
-   <div class="score" id="sc1"><label id="n1">Jugador 2</label><strong id="p1">0</strong></div>
+   <div class="score" id="sc0"><label id="n0">Jugador 1</label><strong id="p0">0</strong><span class="gan" id="g0"></span></div>
+   <div class="score" id="sc1"><label id="n1">Jugador 2</label><strong id="p1">0</strong><span class="gan" id="g1"></span></div>
   </div>
-  <div class="version" id="version">V2.04</div>
+  <div class="version" id="version">V2.05</div>
  </header>
  <main class="board">
   <section class="fila opp"><span class="etq" id="e1"></span><div class="mano" id="mano1"></div><div class="pila" id="pila1"></div></section>
@@ -100,6 +100,12 @@
      <label class="opc"><span>Ver las cartas de los dos</span><input type="checkbox" id="oVer" checked></label>
      <p>Pulsa el botón de abajo para empezar la prueba.</p>
     </details>
+   </div>
+   <div class="lobby revancha" id="revancha" hidden>
+    <p class="lb-etq">PARTIDAS GANADAS</p>
+    <ul class="lb-jugadores rv-marcador" id="rvMarcador"></ul>
+    <p class="lb-ayuda" id="rvEstado">¿Otra partida en la misma sala?</p>
+    <div class="lb-botones"><button class="btn" id="rvOtra" type="button">JUGAR OTRA VEZ</button><button class="btn fin" id="rvSalir" type="button">SALIR DE LA SALA</button></div>
    </div>
    <div class="lobby" id="lobby" hidden>
     <p class="lb-etq">CÓDIGO DE LA SALA</p>

@@ -87,6 +87,7 @@
       rounda: [false, false], rondaVal: [null, null], rondaClaimed: [false, false], rondaFall: [false, false], s1Captured: [false, false],
       estado: 'jugando', ganador: null, motivo: ''
     };
+    E.dealerInicial = E.dealer; // quién repartió primero (en la revancha reparte el otro)
     const ev = []; repartir(E, ev); E.eventosIniciales = ev; return E;
   }
   function repartir(E, ev) {

@@ -144,3 +144,9 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .pie .salto{display:none}
 .pie .tg{padding:7px 9px;font-size:9px}
 @media (max-width:700px){.pie .salto{display:block;flex:0 0 100%;height:0}}
+
+/* V2.05 — partidas ganadas y revancha en la misma sala */
+.score .gan{display:block;margin-top:1px;font:600 8px "DM Sans",sans-serif;letter-spacing:.14em;color:#bba27b;text-transform:uppercase;white-space:nowrap}
+.revancha .rv-marcador li{justify-content:space-between}
+.revancha .rv-marcador b{font:800 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--oro-claro);letter-spacing:.05em}
+.revancha .rv-marcador li.gana{border-color:var(--oro-claro);box-shadow:0 0 12px 1px #f0d9a955}
