@@ -51,7 +51,7 @@
   function crearVuelo(el, ref) { // copia fija de la carta (o del dorso) sobre la pantalla
     const rect = (el || ref).getBoundingClientRect();
     const clone = (el || ref).cloneNode(true);
-    clone.classList.add('flight'); clone.classList.remove('is-focus', 'is-marked', 'lift-origin', 'jugable', 'ultima', 'back');
+    clone.classList.add('flight'); clone.classList.remove('is-focus', 'is-marked', 'lift-origin', 'jugable', 'ultima', 'back', 'agrandada', 'listo', 'arrastrando');
     Object.assign(clone.style, { position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px', margin: '0', transform: 'none', transition: 'none' });
     document.body.appendChild(clone);
     return clone;

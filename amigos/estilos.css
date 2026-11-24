@@ -319,3 +319,29 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .fila.con-agrandada{z-index:30}
 .card.agrandada{transform:scale(1.5)!important;transform-origin:50% 100%;z-index:31;filter:none!important;box-shadow:0 0 0 2px #f6d48d,0 14px 32px #000c;transition:transform .12s ease}
 @media (prefers-reduced-motion:reduce){.card.agrandada{transition:none}}
+
+/* V2.29 — el número y el palo de la esquina conservan su tamaño original; solo se separan un poquito */
+.card .idx .rk{display:block}
+.card .idx .st{display:block;font-style:normal;margin-top:calc(var(--ch)*.03)}
+/* V2.29 — marco exterior un 50 % menos grueso (7 → 3,5 px); el marco de la mesa no cambia */
+.board{border-width:3.5px}
+
+/* V2.29 — marcadores con el diseño B: etiqueta pequeña («PUNTOS», «CARTAS») arriba y el número grande abajo (dorado claro los puntos, azul claro las cartas) */
+.score .pc{display:flex;justify-content:space-around;align-items:flex-end;gap:6px;font:inherit;letter-spacing:0;color:inherit;white-space:nowrap}
+.score .pc .cl{display:flex;flex-direction:column;align-items:center;line-height:1;min-width:0}
+.score .pc .et{font:400 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.1em;color:#bba27b;text-transform:uppercase}
+.score .pc b{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;font-size:clamp(26px,7.4vw,34px);line-height:1.05;letter-spacing:0;color:#fff0cf}
+.score .pc .cl:last-child b{color:#bcd7f5}
+@media (max-width:700px){.score .pc{font-size:inherit}.score .pc .et{font-family:"League Gothic","Arial Narrow",sans-serif;font-size:13px;letter-spacing:.09em}}
+@media (min-width:701px){.score .pc b{font-size:32px}.score .pc .et{font-size:13px}.score .pc{gap:18px}}
+
+/* V2.29 — arrastrar una carta de abajo hacia arriba para botarla */
+.fila.yo .card{touch-action:none}
+.card.arrastrando{z-index:60;cursor:grabbing;filter:none!important;box-shadow:0 18px 38px #000d}
+.card.arrastrando.listo{box-shadow:0 0 0 3px #ffe27a,0 0 26px 8px #f6d48dcc}
+
+/* V2.29 — arrastrar una carta de abajo hacia arriba para botarla */
+.fila.yo .card{touch-action:none}
+.card.arrastrando{z-index:60;cursor:grabbing;filter:none!important;box-shadow:0 18px 38px #000d}
+.card.arrastrando.listo{box-shadow:0 0 0 3px #ffe27a,0 0 26px 8px #f6d48dcc}
+

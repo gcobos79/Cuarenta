@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.28', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.29', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -52,7 +52,7 @@
   const marcadorPartidas = () => `${nom(0)} ${ganadas(0)} — ${nom(1)} ${ganadas(1)}`;
   const cartaTxt = c => c.rank + c.suit;
   const esFigura = c => c.rank === 'J' || c.rank === 'Q' || c.rank === 'K';
-  const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx">${c.rank}<br>${c.suit}</span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom">${c.rank}<br>${c.suit}</span></div>`;
+  const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span></div>`;
   window.CartaHTML = c => cartaHTML(c);
   const dorsoHTML = '<div class="card back" aria-hidden="true"></div>';
 
@@ -503,6 +503,29 @@
     if (lupaEl) { lupaEl.remove(); lupaEl = null; lupaSuprime = Date.now() + 450; }
     if (cartaGrande) { cartaGrande.classList.remove('agrandada'); const f = cartaGrande.closest('.fila'); if (f) f.classList.remove('con-agrandada'); cartaGrande = null; lupaSuprime = Date.now() + 450; }
   }
+  // arrastrar una carta de abajo hacia arriba (al menos el alto de la carta) la juega, como si se botara; menos que eso y regresa a la mano
+  let arr = null; const MARGEN = 10; // px de margen para distinguir un toque de un arrastre
+  const puedeBotar = card => card.classList.contains('jugable') && card.closest('.fila.yo');
+  function arrastrar(e) {
+    const dx = e.clientX - arr.x, dy = e.clientY - arr.y;
+    arr.card.style.transform = `translate(${dx}px, ${dy}px)${arr.grande ? ' scale(1.5)' : ''}`;
+    arr.listo = -dy >= arr.alto; arr.card.classList.toggle('listo', arr.listo);
+  }
+  async function soltarArrastre() {
+    if (!arr) return; const a = arr; arr = null; lupaSuprime = Date.now() + 450;
+    const card = a.card; card.classList.remove('arrastrando');
+    if (a.listo && card.isConnected) {
+      const m = /translate\(([^,]+),\s*([^)]+)\)/.exec(card.style.transform || '');
+      card.classList.remove('agrandada', 'listo'); const f = card.closest('.fila'); if (f) f.classList.remove('con-agrandada'); cartaGrande = null;
+      card.style.transform = m ? `translate(${m[1]}, ${m[2]})` : ''; // la carta sale volando desde donde se soltó
+      const id = card.dataset.id, quien = jugadorEn(Number(card.parentElement.id.slice(4)));
+      await jugarCarta(quien, id);
+      if (card.isConnected) { card.style.transition = 'transform .15s'; card.style.transform = ''; setTimeout(() => { card.style.transition = ''; card.style.transformOrigin = ''; }, 200); }
+    } else if (card.isConnected) {
+      card.classList.remove('listo', 'agrandada'); const f = card.closest('.fila'); if (f) f.classList.remove('con-agrandada'); cartaGrande = null;
+      card.style.transition = 'transform .15s'; card.style.transform = ''; setTimeout(() => { card.style.transition = ''; card.style.transformOrigin = ''; }, 200);
+    }
+  }
   // cartas de abajo (las tuyas): al mantenerlas pulsadas la carta se agranda un 50 %, nada más
   function agrandar(card) {
     if (!card.isConnected) return;
@@ -525,11 +548,24 @@
     if (!card || (e.pointerType === 'mouse' && e.button !== 0)) return;
     if (card.closest('.fila.opp')) return; // las cartas de arriba (las del rival) nunca se agrandan, ni siquiera en el modo de administrador
     const abajo = !!card.closest('.fila.yo');
-    lupaCerrar(); lupaIni = { x: e.clientX, y: e.clientY };
+    lupaCerrar(); lupaIni = { x: e.clientX, y: e.clientY, card, id: e.pointerId };
     lupaT = setTimeout(() => (abajo ? agrandar(card) : lupaMostrar(card)), 300); // abajo: +50 %; las de la mesa conservan la lupa de siempre
   }, true);
-  document.addEventListener('pointermove', e => { if (lupaT && lupaIni && Math.hypot(e.clientX - lupaIni.x, e.clientY - lupaIni.y) > 14) { clearTimeout(lupaT); lupaT = null; } }, true);
-  ['pointerup', 'pointercancel'].forEach(n => addEventListener(n, lupaCerrar, true));
+  document.addEventListener('pointermove', e => {
+    if (arr) { e.preventDefault(); arrastrar(e); return; }
+    if (!lupaIni) return;
+    const dx = e.clientX - lupaIni.x, dy = e.clientY - lupaIni.y;
+    if (lupaIni.card && dy < -MARGEN && Math.abs(dx) <= Math.abs(dy) && puedeBotar(lupaIni.card)) { // empieza el arrastre hacia arriba
+      clearTimeout(lupaT); lupaT = null;
+      const card = lupaIni.card; arr = { card, x: lupaIni.x, y: lupaIni.y, alto: card.offsetHeight, grande: card.classList.contains('agrandada'), listo: false };
+      card.classList.add('arrastrando'); card.style.transition = 'none'; const f = card.closest('.fila'); if (f) f.classList.add('con-agrandada');
+      if (arr.grande) { card.classList.remove('agrandada'); card.style.transformOrigin = '50% 100%'; } // la escala de 1,5 pasa a ir en el transform en línea
+      try { card.setPointerCapture(lupaIni.id); } catch (x) { }
+      arrastrar(e); return;
+    }
+    if (lupaT && Math.hypot(dx, dy) > 14) { clearTimeout(lupaT); lupaT = null; }
+  }, true);
+  ['pointerup', 'pointercancel'].forEach(n => addEventListener(n, () => { if (arr) soltarArrastre(); lupaCerrar(); }, true));
   addEventListener('blur', e => { if (e.target === window) lupaCerrar(); }, true); // solo si la ventana pierde el foco (no cuando cambia el foco de un botón)
   document.addEventListener('visibilitychange', lupaCerrar);
   document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest('.card')) e.preventDefault(); }, true);
