@@ -80,6 +80,7 @@
     $('#n0').textContent = nom(0) + (red && S.asiento === 0 ? ' (tú)' : ''); $('#n1').textContent = nom(1) + (red && S.asiento === 1 ? ' (tú)' : '');
     $('#e0').textContent = nom(jugadorEn(0)); $('#e1').textContent = nom(jugadorEn(1));
     const finVisible = !!D && D.estado === 'fin' && panelFin;
+    document.body.classList.toggle('sin-mesa', !D || finVisible); // en el menú, el lobby y el panel de revancha no hay cartas: el tapete usa todo el espacio
     $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#turno').hidden = !jugando; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
     $('details.local').hidden = !esAdmin; // la prueba en esta pantalla solo la ve el administrador
     ['g0', 'g1'].forEach((id, p) => { const e = $('#' + id); e.hidden = !modo; e.textContent = modo ? 'GANADAS ' + ganadas(p) : ''; });

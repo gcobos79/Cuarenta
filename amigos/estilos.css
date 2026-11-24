@@ -153,3 +153,9 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .revancha .rv-marcador li{justify-content:space-between}
 .revancha .rv-marcador b{font:800 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--oro-claro);letter-spacing:.05em}
 .revancha .rv-marcador li.gana{border-color:var(--oro-claro);box-shadow:0 0 12px 1px #f0d9a955}
+
+/* V2.05 — el menú y el lobby se pueden recorrer completos en pantallas bajas: al centrar con márgenes automáticos, lo que no cabe se desplaza desde arriba (con justify-content:center se cortaba) */
+.felt{justify-content:flex-start;scrollbar-width:thin}
+.felt>.config,.felt>.lobby,.felt>.revancha{margin-top:auto;margin-bottom:auto;flex:none}
+.felt>.config:after,.felt>.lobby:after{content:"";display:block;height:6px}
+body.sin-mesa .fila{display:none}
