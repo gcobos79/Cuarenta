@@ -263,6 +263,7 @@
     });
   }
 
+  function irASolo() { try { if (!window.__sinSalto) location.href = '../'; } catch (e) { } } // TERMINAR PARTIDA devuelve al juego Solo
   async function terminar() {
     if (!E || E.estado !== 'jugando' || ocupado) return;
     const red = modo === 'red';
@@ -271,9 +272,9 @@
       [{ txt: 'SEGUIR JUGANDO', val: 0, id: 'seguir' }, { txt: red && !S.anfitrion ? 'SALIR' : 'TERMINAR PARTIDA', val: 1, clase: 'fin', id: 'terminarSi' }]);
     ocupado = false;
     if (r === 1) {
-      if (!red) { Voz.callar(); E = null; V = null; modo = null; ultimaCartaId = null; preguntada = ''; }
-      else if (S.anfitrion) await serie(async () => { const ev = abandono(S.asiento); await publicar(ev); encolarEv(ev, clonar(E)); });
-      else { try { await Red.enviarAccion(S.codigo, S.id, 'salir', {}); } catch (e) { } await salirSala(false); }
+      if (!red) { Voz.callar(); E = null; V = null; modo = null; ultimaCartaId = null; preguntada = ''; irASolo(); return; }
+      else if (S.anfitrion) { await serie(async () => { const ev = abandono(S.asiento); await publicar(ev); }); const cod = S.codigo; quitarEscuchas(); borrarSesion(); Voz.callar(); await new Promise(r => setTimeout(r, 2500)); try { await Red.cerrarSala(cod); } catch (e) { } irASolo(); return; } // el amigo alcanza a ver que ganó
+      else { try { await Red.enviarAccion(S.codigo, S.id, 'salir', {}); } catch (e) { } quitarEscuchas(); borrarSesion(); Voz.callar(); irASolo(); return; }
     }
     dibujar();
   }
