@@ -109,7 +109,7 @@
       $('#mesa').innerHTML = D.table.map(c => cartaHTML(c, c.id === ultimaCartaId ? ' ultima' : '')).join('');
       // una sola línea arriba del tapete: ciclo, sección y a quién le toca (lo propio en dorado)
       const mio = jugando && (red ? D.turn === S.asiento : false);
-      const quien = jugando ? ` · <b class="quien${mio ? ' mio' : ''}">${mio ? '¡TU TURNO!' : 'TURNO DE ' + esc(MAY(nom(D.turn)))}</b>` : '';
+      const quien = jugando ? ` · <b class="quien${mio ? ' mio' : ''}">${mio ? '¡TU TURNO!' : (red ? 'EN ESPERA…' : 'TURNO DE ' + esc(MAY(nom(D.turn))))}</b>` : '';
       $('#estado').innerHTML = `Ciclo ${D.cycle} · Sección ${D.section}/4${quien}`;
       if (red && jugando) {
         const riv = S.jugadores.find(j => j.asiento === arriba());

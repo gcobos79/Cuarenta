@@ -13,7 +13,7 @@ Cómo se juega en línea (1 contra 1)
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave», como en Solo).
 
-Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · TURNO DE ANA»), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa se achican solas lo necesario para que quepan todas (nunca se cortan).
+Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · EN ESPERA…» cuando juega tu amigo), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa se achican solas lo necesario para que quepan todas (nunca se cortan).
 
 Efectos y voz (V2.04)
 - Las jugadas se animan como en Solo: la carta sale de la mano y viaja a la mesa, las cartas de la captura se iluminan una por una y se levantan hacia el montón; suena el golpe de la carta.
@@ -21,7 +21,7 @@ Efectos y voz (V2.04)
 - La voz de Don Barajón dice lo que pasa (ya no salen mensajes de texto). Lo que haces tú usa las frases grabadas de Solo («Caída tuya.»);
   lo de tu amigo usa frases fijas y genéricas («Caída de tu amigo.»), sin nombres: se graban UNA sola vez y sirven para todas las partidas.
   Mientras una frase no esté grabada, suena la voz del aparato: en español y, si existe, de hombre (si solo hay voces de mujer, se baja el tono). Para grabar las 34 frases nuevas (≈ USD 0,02):  python3 amigos/voz/generar_amigos.py
-- Indicador de turno en la línea de estado: «¡TU TURNO!» (dorado y con un sonido suave) o «TURNO DE …», con la fila y el marcador de quien juega resaltados.
+- Indicador de turno en la línea de estado: «¡TU TURNO!» (dorado y con un sonido suave) o «EN ESPERA…», con la fila y el marcador de quien juega resaltados.
 - Botones VOZ y SONIDO para apagar cada cosa.
 
 Archivos
