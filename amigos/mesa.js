@@ -120,7 +120,7 @@
     const b = textoBoton(), pr = $('#principal');
     pr.hidden = !modo && !esAdmin; // sin modo y sin ser administrador no hay prueba local
     pr.textContent = b.t; pr.disabled = !!b.dis; pr.classList.toggle('fin', !!b.fin); pr.classList.toggle('espera', !!b.espera);
-    const solo = $('#irSolo'), bloquea = jugando || (red && !!D); solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0; solo.hidden = bloquea; // durante la partida no se muestra SOLO
+    const solo = $('#irSolo'), bloquea = jugando || red; solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0; solo.hidden = bloquea; /* dentro de una sala o jugando no se muestra SALIR: en la sala se usa SALIR DE LA SALA */
     $('#btnVoz').classList.toggle('off', !Voz.activa()); $('#btnVoz').setAttribute('aria-pressed', String(Voz.activa()));
     $('#btnSonido').classList.toggle('off', !Efectos.sonido()); $('#btnSonido').setAttribute('aria-pressed', String(Efectos.sonido()));
     ajustarMesa();
