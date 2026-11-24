@@ -213,3 +213,25 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .fila-h .extra{grid-column:1;font-size:11px;color:#d9e6fa;opacity:.9}
 .fila-h.actual{border-color:var(--oro-claro);box-shadow:0 0 10px #f0d9a933}
 .fila-h .quitar{grid-column:2;grid-row:2/4;align-self:center;padding:7px 10px;border-radius:8px;border:1px solid #a85e4c;background:#38201b;color:#f0c4b5;font:800 10px "DM Sans",sans-serif;letter-spacing:.06em;cursor:pointer}
+
+/* V2.07 — reloj de arena mientras juega el rival: la arena cae ~3 segundos y el reloj da la vuelta */
+.reloj{display:inline-block;vertical-align:middle;width:19px;height:26px;margin:-6px 3px -5px;color:#d9e6fa;animation:relojVuelta 3.6s ease-in-out infinite}
+.reloj svg{display:block;width:100%;height:100%;overflow:visible}
+.reloj .vidrio{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
+.reloj .tapa{fill:currentColor}
+.reloj .arena{fill:#f0d9a9;transform-box:view-box}
+.reloj .arriba{transform-origin:12px 14.6px;animation:relojArriba 3.6s linear infinite}
+.reloj .abajo{transform-origin:12px 27.4px;animation:relojAbajo 3.6s linear infinite}
+.reloj .hilo{stroke:#f0d9a9;stroke-width:1;stroke-dasharray:1.6 1.6;animation:relojHilo 3.6s linear infinite}
+@keyframes relojVuelta{0%,83%{transform:rotate(0)}100%{transform:rotate(180deg)}}
+@keyframes relojArriba{0%{transform:scaleY(1)}83%,100%{transform:scaleY(0)}}
+@keyframes relojAbajo{0%{transform:scaleY(0)}83%,100%{transform:scaleY(1)}}
+@keyframes relojHilo{0%,82%{opacity:1;stroke-dashoffset:0}83%,100%{opacity:0;stroke-dashoffset:-6}}
+@media (prefers-reduced-motion:reduce){.reloj,.reloj .arriba,.reloj .abajo,.reloj .hilo{animation:none}.reloj .arriba{transform:scaleY(.5)}.reloj .abajo{transform:scaleY(.5)}}
+
+/* V2.07 — lupa: carta de frente 3 veces más grande mientras se mantiene pulsada */
+.card{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.lupa{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none;background:#000a;animation:lupaEntra .12s ease-out}
+.lupa .card{transform:none!important;box-shadow:0 0 0 3px #f6d48d,0 18px 50px #000e;border-radius:calc(var(--ch)*.05);filter:none!important}
+@keyframes lupaEntra{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.lupa{animation:none}}

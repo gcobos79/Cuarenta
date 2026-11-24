@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.06', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.07', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -43,6 +43,8 @@
   const jugadorEn = dom => (dom === 0 ? abajo() : arriba());
   const nom = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).nombre || 'Esperando…') : nombres[p]);
   const MAY = t => String(t).toLocaleUpperCase();
+  // Reloj de arena (turno del rival): la arena cae unos 3 segundos y luego da la vuelta (ver estilos.css)
+  const RELOJ = '<span class="reloj" role="img" aria-label="En espera"><svg viewBox="0 0 24 32" aria-hidden="true"><path class="arena arriba" d="M6.6 4.6H17.4C17.1 9.6 13.8 11.7 12 14.6 10.2 11.7 6.9 9.6 6.6 4.6Z"/><path class="arena abajo" d="M6.6 27.4H17.4C16.4 23.6 13.5 22.1 12 20 10.5 22.1 7.6 23.6 6.6 27.4Z"/><line class="hilo" x1="12" y1="14.6" x2="12" y2="26.5"/><path class="vidrio" d="M5 3.5H19C19 11 14 13 12 16 14 19 19 21 19 28.5H5C5 21 10 19 12 16 10 13 5 11 5 3.5Z"/><rect class="tapa" x="3" y="1" width="18" height="2.5" rx="1"/><rect class="tapa" x="3" y="28.5" width="18" height="2.5" rx="1"/></svg></span>';
   const ganadas = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).victorias || 0) : victoriasLocal[p]);
   const marcadorPartidas = () => `${nom(0)} ${ganadas(0)} — ${nom(1)} ${ganadas(1)}`;
   const cartaTxt = c => c.rank + c.suit;
@@ -111,7 +113,7 @@
       $('#mesa').innerHTML = D.table.map(c => cartaHTML(c, c.id === ultimaCartaId ? ' ultima' : '')).join('');
       // una sola línea arriba del tapete: ciclo, sección y a quién le toca (lo propio en dorado)
       const mio = jugando && (red ? D.turn === S.asiento : false);
-      const quien = jugando ? ` · <b class="quien${mio ? ' mio' : ''}">${mio ? '¡TU TURNO!' : (red ? 'EN ESPERA…' : 'TURNO DE ' + esc(MAY(nom(D.turn))))}</b>` : '';
+      const quien = jugando ? ` · <b class="quien${mio ? ' mio' : ''}">${mio ? '¡TU TURNO!' : (red ? RELOJ : 'TURNO DE ' + esc(MAY(nom(D.turn))))}</b>` : '';
       $('#estado').innerHTML = `Ciclo ${D.cycle} · Sección ${D.section}/4${quien}`;
       if (red && jugando) {
         const riv = S.jugadores.find(j => j.asiento === arriba());
@@ -490,6 +492,32 @@
   $('#btnSonido').onclick = () => { Efectos.alternarSonido(); dibujar(); };
   $('#codigoSala').addEventListener('input', e => { e.target.value = Red.normaliza(e.target.value); });
   $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') e.preventDefault(); });
+  // ---- lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo se leen sin esfuerzo) ----
+  let lupaT = null, lupaEl = null, lupaIni = null, lupaSuprime = 0;
+  function lupaCerrar() { clearTimeout(lupaT); lupaT = null; lupaIni = null; if (lupaEl) { lupaEl.remove(); lupaEl = null; lupaSuprime = Date.now() + 450; } }
+  function lupaMostrar(card) {
+    if (!card.isConnected) return;
+    const r = card.getBoundingClientRect();
+    const alto = Math.max(r.height, Math.min(r.height * 3, innerHeight * .7, (innerWidth - 24) / .7)); // 3 veces, sin salirse de la pantalla
+    const v = document.createElement('div'); v.className = 'lupa'; v.setAttribute('aria-hidden', 'true');
+    const c = card.cloneNode(true);
+    c.classList.remove('jugable', 'ultima', 'is-focus', 'is-marked', 'lift-origin', 'flight'); c.removeAttribute('id');
+    c.style.cssText = `--ch:${alto}px;--cw:${alto * .7}px`;
+    v.appendChild(c); document.body.appendChild(v); lupaEl = v;
+    try { navigator.vibrate && navigator.vibrate(12); } catch (e) { }
+  }
+  document.addEventListener('pointerdown', e => {
+    const card = e.target.closest && e.target.closest('.card:not(.back):not(.flight):not(.lupa .card)');
+    if (!card || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    lupaCerrar(); lupaIni = { x: e.clientX, y: e.clientY };
+    lupaT = setTimeout(() => lupaMostrar(card), 300);
+  }, true);
+  document.addEventListener('pointermove', e => { if (lupaT && lupaIni && Math.hypot(e.clientX - lupaIni.x, e.clientY - lupaIni.y) > 14) { clearTimeout(lupaT); lupaT = null; } }, true);
+  ['pointerup', 'pointercancel'].forEach(n => addEventListener(n, lupaCerrar, true));
+  addEventListener('blur', e => { if (e.target === window) lupaCerrar(); }, true); // solo si la ventana pierde el foco (no cuando cambia el foco de un botón)
+  document.addEventListener('visibilitychange', lupaCerrar);
+  document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest('.card')) e.preventDefault(); }, true);
+  document.addEventListener('click', e => { if (Date.now() < lupaSuprime) { e.stopImmediatePropagation(); e.preventDefault(); } }, true); // soltar después de mirar con la lupa no juega la carta
   document.addEventListener('click', e => {
     const c = e.target.closest('.mano .card.jugable'); if (!c) return;
     jugarCarta(jugadorEn(Number(c.parentElement.id.slice(4))), c.dataset.id);

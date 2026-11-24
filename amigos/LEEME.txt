@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.06
+CUARENTA · AMIGOS — V2.07
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -12,6 +12,13 @@ Cómo se juega en línea (1 contra 1) — el menú de inicio lo explica en dos s
    (p. ej. Ana 1 — Beto 0). Cuando los DOS pulsan JUGAR OTRA VEZ empieza otra partida (reparte el otro). SALIR DE LA SALA: si sale el amigo, el anfitrión queda en la misma sala
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave», como en Solo).
+
+Historial, lupa y reloj (V2.07)
+- Historial de partidas: cada partida terminada (Solo contra Don Barajón y Amigos en línea) guarda una fila en la base de datos: fecha, hora, jugador 1, jugador 2 (Don Barajón en Solo), puntaje 1, puntaje 2 y ganador. Reemplaza el formulario de Google.
+  Solo el administrador ve el botón HISTORIAL DE PARTIDAS (menú de Amigos): filtros HOY / 3 DÍAS / 5 DÍAS / TODOS, primero los juegos actuales (salas en juego) y luego los anteriores por fecha y hora, y QUITAR para sacar una partida del listado (no se borra).
+  Seguridad: la página solo puede AGREGAR filas; leer y quitar se hace con funciones de la base que piden la huella de la clave del administrador (la primera vez que el administrador abre el historial queda registrada su huella). Ver supabase/003_partidas.sql.
+- Lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo); al soltar no se juega la carta.
+- Reloj de arena: cuando juega el rival, la línea de estado muestra un reloj de arena que cae ~3 segundos y da la vuelta.
 
 Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · EN ESPERA…» cuando juega tu amigo), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa se achican solas lo necesario para que quepan todas (nunca se cortan).
 
@@ -34,7 +41,8 @@ Archivos
 - mesa.js   : la pantalla (mesa, menú, lobby) y el flujo del anfitrión y de los invitados.
 - estilos.css e index.html : el aspecto (mismo que Solo, con tapete azul).
 - vendor/   : la librería de Supabase (supabase-js 2.118.0, licencia MIT), guardada dentro del sitio.
-- supabase/001_salas.sql y 002_revancha.sql : las tablas y permisos de la base de datos (002 añade la acción «revancha»).
+- historial.js : guarda las partidas terminadas y, para el administrador, lista y quita del listado.
+- supabase/001_salas.sql, 002_revancha.sql y 003_partidas.sql : las tablas y permisos de la base de datos (002 añade la acción «revancha»).
 - pruebas/reglas.test.js : pruebas de las reglas:  node --test amigos/pruebas/reglas.test.js
 
 Seguridad (modelo de confianza entre amigos): no hay cuentas; quien tenga el código puede entrar. Las cartas de los dos viajan dentro del estado de la sala,
