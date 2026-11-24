@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.08', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.09', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -521,13 +521,12 @@
   $('#oVer').addEventListener('change', dibujar);
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
-  // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y se puede cambiar con un toque.
+  // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y el campo ya no se muestra (sin avisos).
   try {
     const solo = localStorage.getItem('donBarajonPlayerName') || '', propio = localStorage.getItem(CLAVE_NOMBRE) || '';
     const guardado = patronClave(solo) ? '' : (propio || limpia(solo)); // el nombre «clave» de Solo no se copia: se detecta aparte como administrador
-    const ver = patronClave(solo) ? 'Administrador' : guardado;
     $('#miNombre').value = guardado;
-    if (ver) { $('#nombreCampo').hidden = true; $('#nombreListo').hidden = false; $('#nombreVer').textContent = ver; }
+    if (guardado || patronClave(solo)) $('#nombreCampo').hidden = true;
   } catch (e) { }
   // pestañas ANFITRIÓN / INVITADO (se recuerda la última que se usó)
   function elegirPestana(inv, enfocar) {
@@ -539,7 +538,6 @@
   $('#tabAnf').onclick = () => elegirPestana(false); $('#tabInv').onclick = () => elegirPestana(true);
   $('.pestanas').addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); elegirPestana(e.key === 'ArrowRight', true); } });
   try { elegirPestana(localStorage.getItem('amigosPestana') === 'invitado'); } catch (e) { }
-  $('#cambiarNombre').onclick = () => { $('#nombreListo').hidden = true; $('#nombreCampo').hidden = false; $('#miNombre').focus(); };
   window.Mesa = { forzarAdmin(v, clave) { esAdmin = !!v; if (clave) claveAdmin = clave; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
   revisarAdmin();
