@@ -30,3 +30,10 @@ test('fila: marca si participó el administrador (solo para poder ocultarla del 
   assert.equal(H.fila({ jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0, admin: true }).admin, true);
   assert.equal(H.fila({ jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0 }).admin, false);
 });
+
+test('fila: nivel «Amistoso» en Amigos y el nivel de Don Barajón en Solo (sin nivel si no se conoce)', () => {
+  assert.equal(H.fila({ modo: 'amigos', jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0 }).nivel, 'Amistoso');
+  assert.equal(H.fila({ modo: 'solo', nivel: 'Avanzado', jugador1: 'A', jugador2: 'Don Barajón', puntaje1: 1, puntaje2: 0 }).nivel, 'Avanzado');
+  assert.equal(H.fila({ modo: 'solo', jugador1: 'A', jugador2: 'Don Barajón', puntaje1: 1, puntaje2: 0 }).nivel, null);
+  assert.equal(H.fila({ modo: 'amigos', nivel: 'x'.repeat(50), jugador1: 'A', jugador2: 'B', puntaje1: 1, puntaje2: 0 }).nivel.length, 20);
+});

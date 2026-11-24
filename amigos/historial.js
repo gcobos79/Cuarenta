@@ -14,12 +14,14 @@
   const nombre = (t, otro) => String(t == null ? '' : t).replace(/\s+/g, ' ').trim().slice(0, 40) || otro;
   const punto = n => Math.max(0, Math.min(40, Math.round(Number(n) || 0)));
 
+  // Nivel de juego: el de Don Barajón en Solo (Normal, Avanzado o Experto) y «Amistoso» en Amigos
+  const nivelDe = p => { const n = String(p.nivel == null ? '' : p.nivel).trim().slice(0, 20); return n || (p.modo === 'solo' ? null : 'Amistoso'); };
   // Fila lista para guardar. p = { modo, jugador1, jugador2, puntaje1, puntaje2, ganador }
   function fila(p, ahora) {
     const d = ahora || new Date();
     const j1 = nombre(p.jugador1, 'Jugador 1'), j2 = nombre(p.jugador2, 'Jugador 2');
     return { id: p.id || nuevoId(), fecha: fechaLocal(d), hora: horaLocal(d), modo: p.modo === 'solo' ? 'solo' : 'amigos', jugador1: j1, jugador2: j2,
-      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), admin: !!p.admin, ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
+      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), admin: !!p.admin, nivel: nivelDe(p), ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
   }
   // Fecha «desde» para el filtro: hoy = 1 día, 3 días, 5 días; todos = null.
   function desde(dias, ahora) {
