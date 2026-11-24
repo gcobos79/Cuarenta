@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.12
+CUARENTA · AMIGOS — V2.13
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -11,7 +11,7 @@ Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas
 6. Revancha (V2.06): al terminar una partida se pulsa CONTINUAR y se queda en la misma sala. Cada marcador muestra «GANADAS n» y el panel lista las partidas ganadas de cada uno
    (p. ej. Ana 1 — Beto 0). Cuando los DOS pulsan JUGAR OTRA VEZ empieza otra partida (reparte el otro). SALIR DE LA SALA: si sale el amigo, el anfitrión queda en la misma sala
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
-La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave», como en Solo).
+La «prueba en esta pantalla» (dos personas con el mismo dispositivo) está oculta para todos; el código sigue en mesa.js por si se necesita de nuevo.
 
 Historial, lupa y reloj (V2.07)
 - Historial de partidas: cada partida terminada (Solo contra Don Barajón y Amigos en línea) guarda una fila en la base de datos: fecha, hora, jugador 1, jugador 2 (Don Barajón en Solo), puntaje 1, puntaje 2 y ganador. Reemplaza el formulario de Google.
