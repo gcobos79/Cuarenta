@@ -93,11 +93,28 @@
       const p = a.play(); if (p && p.catch) p.catch(() => termina(false));
     });
   }
-  function navegador(texto) { // si no hay grabación: la voz del navegador
+  // ---- voz del aparato: en español y, si se puede, de hombre (misma lógica que Solo) ----
+  const MASC = /\b(jorge|juan|diego|carlos|raul|raúl|pablo|alvaro|álvaro|miguel|enrique|andres|andrés|gonzalo|tomas|tomás|luciano|alejandro|male|masculin\w*|hombre|man)\b/i;
+  const FEM = /\b(monica|mónica|paulina|angelica|angélica|soledad|marisol|helena|laura|dalia|elena|sabela|lucia|lucía|esperanza|isabela|female|femenin\w*|mujer|woman|google espa\w*)\b/i;
+  const BLOQ = /\b(eddy|reed|rocko|grandpa|grandma|flo|sandy|shelley|albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|junior|kathy|organ|ralph|superstar|trinoids|whisper|wobble|zarvox|fred|princess|samantha|alex|daniel|karen|moira|tessa|fiona|victoria|allison|ava|susan|tom)\b/i;
+  const listaVoces = () => { try { return (root.speechSynthesis && root.speechSynthesis.getVoices && root.speechSynthesis.getVoices()) || []; } catch (e) { return []; } };
+  function elegirVoz(lista) { // 1.º las de hombre reconocidas, 2.º las no femeninas, 3.º cualquiera en español
+    const es = (lista || listaVoces()).filter(v => /^es([-_]|$)/i.test(v.lang || '') && !BLOQ.test(v.name || ''));
+    const rango = v => (/es[-_](mx|us|419)/i.test(v.lang) ? 0 : 1);
+    const masc = es.filter(v => MASC.test(v.name) && !FEM.test(v.name)).sort((a, b) => rango(a) - rango(b));
+    if (masc.length) return { voz: masc[0], masculina: true };
+    const neutras = es.filter(v => !FEM.test(v.name)).sort((a, b) => rango(a) - rango(b));
+    if (neutras.length) return { voz: neutras[0], masculina: false };
+    return { voz: es.sort((a, b) => rango(a) - rango(b))[0] || null, masculina: false };
+  }
+  function navegador(texto) { // si no hay grabación: la voz del aparato (español, de hombre si existe; si no, más grave)
     return new Promise(res => {
       try {
         if (!('speechSynthesis' in root)) { res(); return; }
-        const u = new SpeechSynthesisUtterance(texto); u.lang = 'es-419'; u.rate = 1.02; u.onend = u.onerror = () => res();
+        const { voz, masculina } = elegirVoz();
+        const u = new SpeechSynthesisUtterance(texto); u.lang = (voz && voz.lang) || 'es-MX'; if (voz) u.voice = voz;
+        u.rate = .93; u.volume = 1; u.pitch = masculina ? .9 : .78;
+        u.onend = u.onerror = () => res();
         root.speechSynthesis.speak(u); setTimeout(res, 9000);
       } catch (e) { res(); }
     });
@@ -110,7 +127,7 @@
   }
   function callar() { ficha++; try { if (el && !el.paused) el.pause(); } catch (e) { } try { if ('speechSynthesis' in root) root.speechSynthesis.cancel(); } catch (e) { } }
   function alternar() { activa = !activa; try { localStorage.setItem(CLAVE, String(activa)); } catch (e) { } if (!activa) callar(); return activa; }
-  const api = { frasesDeEvento, catalogoNuevo, catalogoReutilizado, huella, grabada, hablar, callar, alternar, activa: () => activa, INICIO_AMIGO, OTRAS, MIAS, AMIGO };
+  const api = { elegirVoz, frasesDeEvento, catalogoNuevo, catalogoReutilizado, huella, grabada, hablar, callar, alternar, activa: () => activa, INICIO_AMIGO, OTRAS, MIAS, AMIGO };
   api.hablarEventos = (eventos, yo) => eventos.forEach(e => frasesDeEvento(e, yo).forEach(f => api.hablar(f)));
   return api;
 });
