@@ -9,6 +9,7 @@
   const VERSION = 'V2.03', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
+  let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
   // Dos cadenas: «serie» aplica cambios al estado uno por uno; «serieEv» muestra los avisos y ventanas uno por uno (sin frenar a la anterior).
   let serieP = Promise.resolve(), evP = Promise.resolve();
   const serie = fn => (serieP = serieP.then(fn, fn).catch(e => { console.error(e); }));
@@ -72,8 +73,10 @@
     if (!E) {
       $('#p0').textContent = '0'; $('#p1').textContent = '0'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
       $('#pila0').innerHTML = ''; $('#pila1').innerHTML = ''; $('#sc0').classList.remove('activo'); $('#sc1').classList.remove('activo');
-      $('#aviso').textContent = !modo ? 'Crea una sala, únete con un código o prueba en esta pantalla.' : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
+      avisoFijo = !modo ? 'Crea una sala, únete con un código o prueba en esta pantalla.' : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
+      $('#aviso').textContent = avisoFijo;
     } else {
+      if (avisoFijo && $('#aviso').textContent === avisoFijo) { $('#aviso').textContent = ''; avisoFijo = ''; } // el mensaje del lobby no se queda durante la partida
       $('#p0').textContent = E.score[0]; $('#p1').textContent = E.score[1];
       const ver = $('#oVer').checked;
       [0, 1].forEach(dom => {

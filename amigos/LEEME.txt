@@ -1,15 +1,24 @@
-CUARENTA · AMIGOS — V2.03 (prueba local)
+CUARENTA · AMIGOS — V2.03
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
-Esta versión: la mesa (tapete azul) y las reglas del 1 contra 1, jugadas por dos personas en la misma pantalla. Todavía no hay conexión.
+
+Cómo se juega en línea (1 contra 1)
+1. Uno crea la sala (elige «38 que no juegan» y «4 de falta») y ve un código de 3 caracteres (letras y números, sin I, O, 0 ni 1).
+2. El amigo escribe el código y pulsa UNIRME. El anfitrión ve que entró y pulsa COMENZAR.
+3. El celular del anfitrión reparte y valida cada jugada con las reglas; cada jugador ve sus cartas de frente y las del rival boca abajo.
+4. Si alguien cierra la página o pierde la conexión, al volver a abrir Amigos retoma su lugar y la partida donde iba.
+5. Si un jugador sale, el otro gana por abandono. Las salas sin actividad se borran solas a las 24 horas.
+También hay una «prueba en esta pantalla» para dos personas con el mismo dispositivo.
 
 Archivos
-- reglas.js : las reglas del juego, sin pantalla (capturas por igualdad, suma y escalera; caída; limpia; ronda con bono de +4;
-              «38 que no juegan»; «4 de falta»; conteo de cartas). Copia la mecánica y el puntaje de Solo. El estado es JSON.
-- mesa.js   : la pantalla de prueba local.
+- reglas.js : las reglas del juego, sin pantalla (copia la mecánica y el puntaje de Solo). El estado es JSON.
+- red.js    : conexión con Supabase (salas, jugadas, tiempo real, presencia). Usa la llave PÚBLICA del proyecto cuarenta-amigos.
+- mesa.js   : la pantalla (mesa, menú, lobby) y el flujo del anfitrión y de los invitados.
 - estilos.css e index.html : el aspecto (mismo que Solo, con tapete azul).
-- pruebas/reglas.test.js : pruebas de las reglas. Se ejecutan con:  node --test amigos/pruebas/reglas.test.js
+- vendor/   : la librería de Supabase (supabase-js 2.118.0, licencia MIT), guardada dentro del sitio.
+- supabase/001_salas.sql : las tablas y permisos de la base de datos.
+- pruebas/reglas.test.js : pruebas de las reglas:  node --test amigos/pruebas/reglas.test.js
 
-Cómo se verificó que juega igual que Solo: las capturas (4.000 situaciones al azar), el conteo de cartas y las rondas se compararon
-con las funciones reales de Solo y no hubo ninguna diferencia.
-Siguientes pasos: sala con código y Supabase, reparto por el celular anfitrión, reconexión y parejas (2 contra 2).
+Seguridad (modelo de confianza entre amigos): no hay cuentas; quien tenga el código puede entrar. Las cartas de los dos viajan dentro del estado de la sala,
+así que alguien con conocimientos técnicos podría verlas. Para endurecerlo, el reparto pasaría a un servidor.
+Pendiente: parejas (2 contra 2), revancha, voz y sonidos.
