@@ -109,3 +109,26 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .lb-opc{margin:0;font-size:11px;color:#bba27b}
 .lb-botones{display:flex;gap:8px}.lb-botones .btn{margin-top:10px;padding:10px 8px}
 @media (max-height:760px){.lb-codigo{font-size:48px}.lb-ayuda{margin-bottom:4px}.lobby{padding:8px 10px}.lb-jugadores li{padding:5px 8px}}
+
+/* V2.04 — efectos de las cartas (los mismos de Solo), letras grandes, turno claro y botones de voz y sonido */
+.card.is-focus{z-index:40;transform:translateY(-12px) scale(1.07);box-shadow:0 16px 24px #000b,0 0 0 1px #f6d48d66;transition:transform .22s ease-out,box-shadow .22s ease-out}
+.card.is-marked{box-shadow:0 0 0 3px #f6d48d,0 0 20px 5px #f6d48dcc}
+.card.is-focus.is-marked{box-shadow:0 16px 24px #000b,0 0 0 3px #f6d48d,0 0 20px 5px #f6d48dcc}
+.card.flight{z-index:1001;pointer-events:none;box-shadow:0 15px 30px #000b;cursor:default}
+.card.lift-origin{opacity:0;transition:opacity .08s linear}
+.points{position:fixed;z-index:50;inset:0;display:grid;place-items:center;pointer-events:none;font:800 64px "Barlow Condensed","Arial Narrow",sans-serif;color:#ffe4a8;text-shadow:0 0 18px #e6a94e,0 4px 8px #000;animation:pop .95s ease-out forwards}
+@keyframes pop{0%{opacity:0;transform:scale(.5)}25%{opacity:1;transform:scale(1.15)}75%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.points.event-message{inset:0;width:100vw;max-width:none;padding:24px 5vw;display:grid;place-items:center;font-size:clamp(38px,6.5vw,72px);line-height:1.12;letter-spacing:2px;text-align:center;white-space:pre-line;animation:eventPop 1.8s ease-in-out forwards}
+@keyframes eventPop{0%{opacity:0;transform:scale(.78)}12%,84%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
+@media(max-width:680px){.points.event-message{font-size:clamp(30px,8vw,48px);padding:16px 5vw}}
+.derecha{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.ajustes{display:flex;gap:5px}
+.tg{font:700 9px "DM Sans",sans-serif;letter-spacing:.1em;padding:5px 7px;border-radius:6px;border:1px solid var(--oro);background:#171b17;color:var(--oro-claro);cursor:pointer}
+.tg.off{opacity:.5;text-decoration:line-through}
+.mesa{margin-top:46px}
+.turno{position:absolute;top:34px;left:50%;transform:translateX(-50%);max-width:92%;padding:6px 18px;border-radius:999px;font:800 clamp(13px,3.8vw,19px)/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;color:#d9e6fa;background:#0a1a33d9;border:1px solid #d9c18e55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
+.turno.mio{color:#2a1706;background:linear-gradient(180deg,#ffe27a,#e0b13a);border-color:#fff3b0;box-shadow:0 0 18px 3px #f6d48daa;animation:turnoPulso 1.3s ease-in-out infinite}
+@keyframes turnoPulso{0%,100%{box-shadow:0 0 10px 1px #f6d48d88}50%{box-shadow:0 0 24px 6px #f6d48dcc}}
+.fila.su-turno{border-radius:12px;background:linear-gradient(180deg,#f0d9a91c,transparent);box-shadow:inset 0 0 0 1px #f0d9a966}
+.fila.sin-turno .mano{opacity:.6}
+@media (prefers-reduced-motion:reduce){.turno.mio{animation:none}.points,.points.event-message{animation-duration:.01s}}

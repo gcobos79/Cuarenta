@@ -1,33 +1,39 @@
-/* CUARENTA · Amigos — mesa y salas (V2.03).
+/* CUARENTA · Amigos — mesa y salas (V2.04).
    Dos modos: «prueba local» (dos personas en la misma pantalla) y «en línea» (cada amigo desde su celular).
    En línea, el celular anfitrión reparte, valida las jugadas con reglas.js y guarda el estado de la sala; los demás envían sus jugadas
-   como acciones y dibujan lo que reciben. */
+   como acciones y dibujan lo que reciben.
+   E es el estado real (el más reciente); V es lo que se ve en pantalla: va un paso atrás mientras se anima cada jugada. */
 (function () {
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.03', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
-  let E = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
+  const VERSION = 'V2.04', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
-  // Dos cadenas: «serie» aplica cambios al estado uno por uno; «serieEv» muestra los avisos y ventanas uno por uno (sin frenar a la anterior).
+  let turnoMioAntes = false, pendEv = 0;
+  // Dos cadenas: «serie» aplica cambios al estado uno por uno; «serieEv» muestra animaciones y avisos uno por uno (sin frenar a la anterior).
   let serieP = Promise.resolve(), evP = Promise.resolve();
   const serie = fn => (serieP = serieP.then(fn, fn).catch(e => { console.error(e); }));
   const serieEv = fn => (evP = evP.then(fn, fn).catch(e => { console.error(e); }));
+  const clonar = o => JSON.parse(JSON.stringify(o));
 
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
   const limpia = t => (t || '').trim().replace(/\s+/g, ' ').slice(0, 20);
-  const abajo = () => (modo === 'red' ? S.asiento : 0), arriba = () => 1 - abajo();
+  const yo = () => (modo === 'red' ? S.asiento : 0);          // quién escucha y mira (en la prueba local, el de abajo)
+  const abajo = () => yo(), arriba = () => 1 - abajo();
   const jugadorEn = dom => (dom === 0 ? abajo() : arriba());
   const nom = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).nombre || 'Esperando…') : nombres[p]);
+  const MAY = t => String(t).toLocaleUpperCase();
   const cartaTxt = c => c.rank + c.suit;
   const esFigura = c => c.rank === 'J' || c.rank === 'Q' || c.rank === 'K';
   const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx">${c.rank}<br>${c.suit}</span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom">${c.rank}<br>${c.suit}</span></div>`;
+  window.CartaHTML = c => cartaHTML(c);
   const dorsoHTML = '<div class="card back" aria-hidden="true"></div>';
 
   // ---- avisos y ventanas ----
-  function toast(txt, ms) {
-    const f = $('.felt').getBoundingClientRect(); $('#toasts').style.top = Math.round(f.top + 34) + 'px'; // sobre el tapete, sin tapar los marcadores
+  function toast(txt, ms) { // solo para avisos del sistema (errores, conexión); lo que pasa en la partida se dice con la voz
+    const f = $('.felt').getBoundingClientRect(); $('#toasts').style.top = Math.round(f.top + 34) + 'px';
     const t = document.createElement('div'); t.className = 'toast'; t.textContent = txt; $('#toasts').appendChild(t);
     setTimeout(() => t.remove(), ms || 3200);
   }
@@ -43,21 +49,7 @@
     });
   }
 
-  function textoEvento(e) {
-    switch (e.tipo) {
-      case 'jugada': {
-        let t = e.captura.length ? `${nom(e.jugador)} levanta ${e.captura.length + 1} cartas con el ${cartaTxt(e.carta)}` : `${nom(e.jugador)} deja el ${cartaTxt(e.carta)} en la mesa`;
-        if (e.caida) t += ' · ¡CAÍDA! +2'; if (e.limpia) t += ' · ¡LIMPIA! +2'; return t;
-      }
-      case 'ronda': return `${nom(e.jugador)} cobra la ronda de ${e.valor}: +2`;
-      case 'bonoRonda': return `${nom(e.jugador)} hizo caída sobre la ronda: +4`;
-      case 'bloqueo38': return `${nom(e.jugador)} tiene 38: ${({ limpia: 'la limpia', ronda: 'la ronda', bono: 'el bono de la ronda', conteo: 'el conteo', falta: 'los 4 de falta' })[e.por]} no suma ${e.puntos}. Necesita una caída.`;
-      case 'llega38': return `${nom(e.jugador)} llegó a 38: ahora solo gana con una caída.`;
-      default: return '';
-    }
-  }
-
-  // ---- dibujo ----
+  // ---- dibujo (siempre desde V, lo que se ve) ----
   function textoBoton() {
     if (!modo) return { t: 'PRUEBA LOCAL', dis: false, fin: false, espera: true };
     if (modo === 'local') return E && E.estado === 'jugando' ? { t: 'TERMINAR PARTIDA', fin: true } : { t: 'COMENZAR' };
@@ -65,39 +57,48 @@
     return E.estado === 'jugando' ? { t: S.anfitrion ? 'TERMINAR PARTIDA' : 'SALIR DE LA PARTIDA', fin: true } : { t: 'SALIR' };
   }
   function dibujar() {
-    const red = modo === 'red', jugando = !!E && E.estado === 'jugando';
+    const red = modo === 'red', D = V, jugando = !!D && D.estado === 'jugando';
     $('#n0').textContent = nom(0) + (red && S.asiento === 0 ? ' (tú)' : ''); $('#n1').textContent = nom(1) + (red && S.asiento === 1 ? ' (tú)' : '');
     $('#e0').textContent = nom(jugadorEn(0)); $('#e1').textContent = nom(jugadorEn(1));
-    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !E); $('#estado').hidden = !E;
-    if (red && !E) dibujarLobby();
-    if (!E) {
+    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#turno').hidden = !jugando;
+    if (red && !D) dibujarLobby();
+    if (!D) {
       $('#p0').textContent = '0'; $('#p1').textContent = '0'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
-      $('#pila0').innerHTML = ''; $('#pila1').innerHTML = ''; $('#sc0').classList.remove('activo'); $('#sc1').classList.remove('activo');
+      $('#pila0').innerHTML = ''; $('#pila1').innerHTML = ''; ['sc0', 'sc1'].forEach(i => $('#' + i).classList.remove('activo')); ['.fila.yo', '.fila.opp'].forEach(s => $(s).classList.remove('su-turno', 'sin-turno'));
       avisoFijo = !modo ? 'Crea una sala, únete con un código o prueba en esta pantalla.' : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
-      $('#aviso').textContent = avisoFijo;
+      $('#aviso').textContent = avisoFijo; turnoMioAntes = false;
     } else {
       if (avisoFijo && $('#aviso').textContent === avisoFijo) { $('#aviso').textContent = ''; avisoFijo = ''; } // el mensaje del lobby no se queda durante la partida
-      $('#p0').textContent = E.score[0]; $('#p1').textContent = E.score[1];
+      $('#p0').textContent = D.score[0]; $('#p1').textContent = D.score[1];
       const ver = $('#oVer').checked;
       [0, 1].forEach(dom => {
         const p = jugadorEn(dom);
-        const activa = jugando && E.turn === p && !ocupado && (red ? p === S.asiento : true);
-        const cara = red ? p === S.asiento : (ver || E.turn === p);
+        const activa = jugando && D.turn === p && !ocupado && (red ? (p === S.asiento && !S.enviando) : true);
+        const cara = red ? p === S.asiento : (ver || D.turn === p);
         $('#mano' + dom).classList.toggle('activa', activa);
-        $('#mano' + dom).innerHTML = E.hands[p].map(c => cara ? cartaHTML(c, activa ? ' jugable' : '') : dorsoHTML).join('');
-        $('#pila' + dom).innerHTML = `Levantadas<b>${E.captured[p].length}</b>`;
+        $('#mano' + dom).innerHTML = D.hands[p].map(c => cara ? cartaHTML(c, activa ? ' jugable' : '') : dorsoHTML).join('');
+        $('#pila' + dom).innerHTML = `Levantadas<b>${D.captured[p].length}</b>`;
+        $(dom === 0 ? '.fila.yo' : '.fila.opp').classList.toggle('su-turno', jugando && D.turn === p);
+        $(dom === 0 ? '.fila.yo' : '.fila.opp').classList.toggle('sin-turno', jugando && D.turn !== p);
       });
-      [0, 1].forEach(p => $('#sc' + p).classList.toggle('activo', jugando && E.turn === p));
-      $('#mesa').innerHTML = E.table.map(c => cartaHTML(c, c.id === ultimaCartaId ? ' ultima' : '')).join('');
-      $('#estado').textContent = `Ciclo ${E.cycle} · Sección ${E.section} de 4 · Reparte ${nom(E.dealer)}` + (jugando ? ` · Turno de ${nom(E.turn)}` : '');
+      [0, 1].forEach(p => $('#sc' + p).classList.toggle('activo', jugando && D.turn === p));
+      $('#mesa').innerHTML = D.table.map(c => cartaHTML(c, c.id === ultimaCartaId ? ' ultima' : '')).join('');
+      $('#estado').textContent = `Ciclo ${D.cycle} · Sección ${D.section} de 4 · Reparte ${nom(D.dealer)}`;
+      // quién juega: grande y claro
+      const mio = jugando && (red ? D.turn === S.asiento : false);
+      const tu = $('#turno'); tu.classList.toggle('mio', mio);
+      tu.textContent = jugando ? (mio ? '¡TU TURNO!' : `TURNO DE ${MAY(nom(D.turn))}`) : '';
       if (red && jugando) {
         const riv = S.jugadores.find(j => j.asiento === arriba());
         if (riv && S.conectados.length && !S.conectados.includes(riv.id)) $('#aviso').textContent = `${riv.nombre} no está conectado. Cuando vuelva, la partida sigue donde se quedó.`;
+        else if ($('#aviso').textContent.endsWith('la partida sigue donde se quedó.')) $('#aviso').textContent = '';
       }
     }
     const b = textoBoton(), pr = $('#principal');
     pr.textContent = b.t; pr.disabled = !!b.dis; pr.classList.toggle('fin', !!b.fin); pr.classList.toggle('espera', !!b.espera);
-    const solo = $('#irSolo'), bloquea = jugando || (red && !!E); solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0;
+    const solo = $('#irSolo'), bloquea = jugando || (red && !!D); solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0;
+    $('#btnVoz').classList.toggle('off', !Voz.activa()); $('#btnVoz').setAttribute('aria-pressed', String(Voz.activa()));
+    $('#btnSonido').classList.toggle('off', !Efectos.sonido()); $('#btnSonido').setAttribute('aria-pressed', String(Efectos.sonido()));
   }
   function dibujarLobby() {
     $('#lbCodigo').textContent = S.codigo;
@@ -110,47 +111,65 @@
     const o = S.opciones || {}; $('#lbOpciones').textContent = `Reglas: ${o.rule38 ? '38 que no juegan' : 'sin 38'} · ${o.falta4 ? '4 de falta' : 'sin 4 de falta'}`;
   }
 
-  // ---- eventos de la partida (los dos modos) ----
-  async function procesar(eventos) {
-    ocupado = true; dibujar();
-    for (const e of eventos) if (e.tipo === 'jugada') { const j = E && E.table.find(c => c.id === e.carta.id); ultimaCartaId = j ? j.id : null; }
+  // ---- lo que ocurre en cada jugada: animación, voz y letras grandes ----
+  const grandeJugada = e => { // «¡CAÍDA!» / «¡LIMPIA!» con los puntos que sumó
+    if (e.puntos <= 0) return '';
+    const que = e.puntos >= 4 ? '¡CAÍDA Y LIMPIA!' : (e.caida ? '¡CAÍDA!' : '¡LIMPIA!');
+    return `${MAY(nom(e.jugador))}\n${que}\n+${e.puntos} PUNTOS`;
+  };
+  async function animar(jug) { // sobre lo que se ve ahora (V): sale de la mano, viaja a la mesa y se levantan las cartas
+    const dom = jugadorEn(0) === jug.jugador ? 0 : 1;
+    try { await Efectos.animarJugada({ carta: jug.carta, captura: jug.captura, mano: $('#mano' + dom), pila: $('#pila' + dom), mesa: $('#mesa'), vivo: () => !!modo }); }
+    catch (e) { console.error(e); document.querySelectorAll('.card.flight').forEach(x => x.remove()); }
+  }
+  async function procesar(eventos, snap, rapido) {
+    ocupado = true;
+    const jug = eventos.find(e => e.tipo === 'jugada');
+    if (jug && V && !rapido) { dibujar(); await animar(jug); }
+    V = clonar(snap || E);
+    ultimaCartaId = jug ? ((V.table.find(c => c.id === jug.carta.id) || {}).id || null) : null;
     dibujar();
-    const lineas = eventos.map(textoEvento).filter(Boolean);
-    if (lineas.length) { $('#aviso').textContent = lineas.join(' · '); lineas.forEach((l, i) => setTimeout(() => toast(l, 3200), i * 200)); }
+    Voz.hablarEventos(eventos, yo()); // la voz dice lo que pasó
     for (const e of eventos) {
-      if (e.tipo === 'rondaConfirmada') {
-        await ventana('RONDA CONFIRMADA', `<p>La ronda de ${esc(nom(e.jugador))} era de ${e.valor}.${e.caida ? `\n${esc(nom(1 - e.jugador))} hizo caída sobre la ronda.` : ''}</p>`, [{ txt: 'CONTINUAR', val: 1 }]);
-      } else if (e.tipo === 'falta4') {
-        await ventana('4 DE FALTA', `<p>${esc(nom(e.jugador))} cobra 4 puntos porque ${esc(nom(e.repartidor))} no levantó ninguna carta en la primera mano.</p>`, [{ txt: 'CONTINUAR', val: 1 }]);
-      } else if (e.tipo === 'conteo') {
+      if (e.tipo === 'jugada') { const g = grandeJugada(e); if (g && !rapido) Efectos.grande(g, 1700); }
+      else if (e.tipo === 'ronda') { if (!rapido) await Efectos.grande(`RONDA DE ${e.valor}\n${MAY(nom(e.jugador))}\n+2 PUNTOS`, 2200); }
+      else if (e.tipo === 'bonoRonda') { if (!rapido) await Efectos.grande(`CAÍDA SOBRE LA RONDA\n${MAY(nom(e.jugador))}\n+4 PUNTOS`, 3200); }
+      else if (e.tipo === 'falta4') { if (!rapido) await Efectos.grande(`4 DE FALTA\n${MAY(nom(e.jugador))} COBRA 4 PUNTOS\nPORQUE ${MAY(nom(e.repartidor))} NO LEVANTÓ NINGUNA CARTA`, 4200); }
+      else if (e.tipo === 'llega38') { if (!rapido) await Efectos.grande(`${MAY(nom(e.jugador))} LLEGÓ A 38\nAHORA SOLO GANA CON UNA CAÍDA`, 3200); }
+      else if (e.tipo === 'bloqueo38') { if (!rapido) await Efectos.grande(`${MAY(nom(e.jugador))} TIENE 38\nNO SUMA ${e.puntos} POR ${MAY(({ limpia: 'la limpia', ronda: 'la ronda', bono: 'el bono de la ronda', conteo: 'el conteo', falta: 'los 4 de falta' })[e.por])}`, 3400); }
+      else if (e.tipo === 'conteo') {
         const [a, b] = e.capturadas, [pa, pb] = e.puntos;
-        const res = pa || pb ? `${esc(nom(pa ? 0 : 1))} gana ${pa || pb} puntos por el conteo.` : 'Nadie suma puntos por el conteo.';
-        await ventana('FIN DEL CICLO', `<p>${esc(nom(0))}: ${a} cartas\n${esc(nom(1))}: ${b} cartas\n${res}</p>`, [{ txt: 'CONTINUAR', val: 1 }]);
-      } else if (e.tipo === 'reparto' && (e.seccion > 1 || e.ciclo > 1)) {
-        toast(`Sección ${e.seccion}${e.ciclo > 1 ? ' del ciclo ' + e.ciclo : ''}: reparte ${nom(e.repartidor)} y comienza ${nom(e.comienza)}`, 3000);
+        const res = pa || pb ? `${MAY(nom(pa ? 0 : 1))} GANA ${pa || pb} PUNTOS` : 'NADIE SUMA PUNTOS';
+        if (!rapido) await Efectos.grande(`FIN DEL CICLO\n${MAY(nom(0))}: ${a} CARTAS · ${MAY(nom(1))}: ${b} CARTAS\n${res}`, 4800);
       } else if (e.tipo === 'fin') {
         const mot = { cuatro: 'por cuatro cartas iguales', caida38: 'con una caída estando en 38', '40': 'al llegar a 40 puntos', abandono: 'porque el otro jugador salió de la partida' }[e.motivo] || '';
-        await ventana('¡GANA ' + nom(e.ganador).toLocaleUpperCase() + '!', `<p>${mot ? 'Gana ' + mot + '.\n' : ''}Marcador final: ${esc(nom(0))} ${e.puntos[0]} — ${esc(nom(1))} ${e.puntos[1]}</p>`, [{ txt: modo === 'red' ? 'SALIR' : 'NUEVA PARTIDA', val: 1, id: 'nuevaPartida' }]);
-        if (modo === 'red') await salirSala(false); else { E = null; modo = null; }
+        await ventana('¡GANA ' + MAY(nom(e.ganador)) + '!', `<p>${mot ? 'Gana ' + mot + '.\n' : ''}Marcador final: ${esc(nom(0))} ${e.puntos[0]} — ${esc(nom(1))} ${e.puntos[1]}</p>`, [{ txt: modo === 'red' ? 'SALIR' : 'NUEVA PARTIDA', val: 1, id: 'nuevaPartida' }]);
+        if (modo === 'red') await salirSala(false); else { E = null; V = null; modo = null; }
         ultimaCartaId = null; preguntada = '';
       }
     }
-    ocupado = false; dibujar(); preguntarRonda();
+    ocupado = false; dibujar(); avisarTurno();
+  }
+  function encolarEv(eventos, snap) { pendEv++; return serieEv(async () => { try { await procesar(eventos, snap, pendEv > 1); } finally { pendEv--; if (pendEv === 0) preguntarRonda(); } }); }
+  function avisarTurno() { // un sonido suave cuando te toca jugar (solo en línea)
+    const mio = modo === 'red' && !!V && V.estado === 'jugando' && V.turn === S.asiento;
+    if (mio && !turnoMioAntes) Efectos.sonidoTurno();
+    turnoMioAntes = mio;
   }
 
   async function preguntarRonda() {
-    if (!E || E.estado !== 'jugando' || ocupado) return;
+    if (!E || E.estado !== 'jugando' || ocupado || pendEv > 0) return;
     const p = E.turn; if (!puedeRonda(E, p)) return;
     if (modo === 'red' && p !== S.asiento) return; // cada jugador decide solo su ronda
     const clave = `${E.cycle}-${E.section}-${p}`; if (preguntada === clave) return;
     preguntada = clave; ocupado = true; dibujar();
     const cartas = E.hands[p].filter(c => c.value === E.rondaVal[p]);
-    const r = await ventana(`¡${nom(p).toLocaleUpperCase()} TIENE RONDA!`, `<div class="cartas">${cartas.map(c => cartaHTML(c, ' mini')).join('')}</div><p>¿Deseas cobrarla? Suma 2 puntos.</p><p style="font-size:12px;opacity:.85">Si respondes NO, ya no podrás cobrarla en esta sección.</p>`,
+    const r = await ventana(`¡${MAY(nom(p))} TIENE RONDA!`, `<div class="cartas">${cartas.map(c => cartaHTML(c, ' mini')).join('')}</div><p>¿Deseas cobrarla? Suma 2 puntos.</p><p style="font-size:12px;opacity:.85">Si respondes NO, ya no podrás cobrarla en esta sección.</p>`,
       [{ txt: 'NO', val: 0, id: 'rondaNo' }, { txt: 'SÍ', val: 1, id: 'rondaSi' }]);
     ocupado = false;
     if (r === 1) {
       if (modo === 'red' && !S.anfitrion) { await enviar('ronda', {}); dibujar(); return; }
-      await serie(async () => { const res = reclamarRonda(E, p); if (res.ok) { if (modo === 'red') await publicar(res.eventos); serieEv(() => procesar(res.eventos)); } });
+      await serie(async () => { const res = reclamarRonda(E, p); if (res.ok) { if (modo === 'red') await publicar(res.eventos); encolarEv(res.eventos, clonar(E)); } });
       return;
     }
     dibujar();
@@ -175,7 +194,7 @@
     if (modo === 'red' && !S.anfitrion) { await enviar('jugar', { carta: id, indice }); return; }
     await serie(async () => {
       const r = jugar(E, p, id, indice);
-      if (r.ok) { if (modo === 'red') await publicar(r.eventos); serieEv(() => procesar(r.eventos)); }
+      if (r.ok) { if (modo === 'red') await publicar(r.eventos); encolarEv(r.eventos, clonar(E)); }
     });
   }
 
@@ -187,8 +206,8 @@
       [{ txt: 'SEGUIR JUGANDO', val: 0, id: 'seguir' }, { txt: red && !S.anfitrion ? 'SALIR' : 'TERMINAR PARTIDA', val: 1, clase: 'fin', id: 'terminarSi' }]);
     ocupado = false;
     if (r === 1) {
-      if (!red) { E = null; modo = null; ultimaCartaId = null; preguntada = ''; }
-      else if (S.anfitrion) await serie(async () => { const ev = abandono(S.asiento); await publicar(ev); serieEv(() => procesar(ev)); });
+      if (!red) { Voz.callar(); E = null; V = null; modo = null; ultimaCartaId = null; preguntada = ''; }
+      else if (S.anfitrion) await serie(async () => { const ev = abandono(S.asiento); await publicar(ev); encolarEv(ev, clonar(E)); });
       else { try { await Red.enviarAccion(S.codigo, S.id, 'salir', {}); } catch (e) { } await salirSala(false); }
     }
     dibujar();
@@ -201,13 +220,10 @@
   // ---- prueba local ----
   function comenzarLocal() {
     nombres = [limpia($('#nom0').value) || 'Jugador 1', limpia($('#nom1').value) || 'Jugador 2'];
-    modo = 'local'; E = nueva({ rule38: $('#o38').checked, falta4: $('#o4f').checked });
+    modo = 'local'; E = nueva({ rule38: $('#o38').checked, falta4: $('#o4f').checked }); V = null;
     ultimaCartaId = null; preguntada = ''; ocupado = false; $('#aviso').textContent = '';
     const iniciales = E.eventosIniciales || []; delete E.eventosIniciales;
-    dibujar();
-    if (E.estado === 'fin') { procesar(iniciales); return; }
-    toast(`Reparte ${nom(E.dealer)} y comienza ${nom(1 - E.dealer)}`, 3000);
-    preguntarRonda();
+    encolarEv(iniciales, clonar(E));
   }
 
   // ---- en línea ----
@@ -216,20 +232,27 @@
   const nombreEscrito = () => { const n = limpia($('#miNombre').value) || 'Jugador'; try { localStorage.setItem(CLAVE_NOMBRE, n); } catch (e) { } return n; };
 
   function quitarEscuchas() { if (!S) return; ['escSala', 'escAcc', 'pres'].forEach(k => { if (S[k]) { try { S[k].parar(); } catch (e) { } S[k] = null; } }); }
-  function entrarSala(sala, yo) {
-    S = { codigo: sala.codigo, id: yo.id, nombre: yo.nombre, anfitrion: yo.anfitrion, asiento: Math.max(0, (sala.jugadores.find(j => j.id === yo.id) || { asiento: 0 }).asiento), jugadores: sala.jugadores, maximo: sala.maximo, opciones: sala.opciones || {},
-      fase: sala.fase, version: sala.version, vistoEv: (sala.estado && sala.estado.evSeq) || 0, ultima: sala.ultima_accion || 0, conectados: [], enviando: false };
-    modo = 'red'; E = sala.estado ? sala.estado : null; ultimaCartaId = null; preguntada = ''; ocupado = false;
+  function entrarSala(sala, yoJ) {
+    S = { codigo: sala.codigo, id: yoJ.id, nombre: yoJ.nombre, anfitrion: yoJ.anfitrion, asiento: Math.max(0, (sala.jugadores.find(j => j.id === yoJ.id) || { asiento: 0 }).asiento), jugadores: sala.jugadores, maximo: sala.maximo, opciones: sala.opciones || {},
+      fase: sala.fase, version: sala.version, vistoEv: (sala.estado && sala.estado.evSeq) || 0, ultima: sala.ultima_accion || 0, conectados: [], enviando: false, rivalEn: null };
+    modo = 'red'; E = sala.estado ? sala.estado : null; V = E ? clonar(E) : null; ultimaCartaId = null; preguntada = ''; ocupado = false; turnoMioAntes = false;
     guardarSesion();
     S.escSala = Red.escucharSala(sala.codigo, aplicarSala); S.escSala.ver(sala);
-    S.pres = Red.presencia(sala.codigo, { id: S.id, nombre: S.nombre }, ids => { if (S) { S.conectados = ids; dibujar(); } });
+    S.pres = Red.presencia(sala.codigo, { id: S.id, nombre: S.nombre }, ids => { if (!S) return; S.conectados = ids; avisarRival(); dibujar(); });
     if (S.anfitrion) S.escAcc = Red.escucharAcciones(sala.codigo, S.ultima, a => serie(() => aplicarAccion(a)));
     dibujar();
     if (E && E.estado === 'jugando') preguntarRonda();
   }
+  function avisarRival() { // la voz avisa si tu amigo se desconecta o vuelve durante la partida
+    if (!S || !E || E.estado !== 'jugando') { if (S) S.rivalEn = null; return; }
+    const riv = S.jugadores.find(j => j.asiento === 1 - S.asiento); if (!riv || !S.conectados.length) return;
+    const en = S.conectados.includes(riv.id);
+    if (S.rivalEn !== null && en !== S.rivalEn) Voz.hablar(en ? 'Tu amigo volvió.' : 'Tu amigo se desconectó.');
+    S.rivalEn = en;
+  }
   async function salirSala(avisar) {
-    if (!S) { modo = null; E = null; dibujar(); return; }
-    const s = S; quitarEscuchas(); borrarSesion(); S = null; modo = null; E = null; ultimaCartaId = null; preguntada = ''; ocupado = false;
+    if (!S) { modo = null; E = null; V = null; dibujar(); return; }
+    const s = S; quitarEscuchas(); borrarSesion(); Voz.callar(); S = null; modo = null; E = null; V = null; ultimaCartaId = null; preguntada = ''; ocupado = false;
     if (avisar && !s.anfitrion) { try { await Red.enviarAccion(s.codigo, s.id, 'salir', {}); } catch (e) { } }
     dibujar();
     if (s.anfitrion) setTimeout(() => { Red.cerrarSala(s.codigo).catch(() => { }); }, 4000); // un momento para que el otro vea el final
@@ -265,18 +288,15 @@
       else if (a.tipo === 'salir') eventos = abandono(seat);
     }
     try { await publicar(eventos); } catch (e) { toast('No se pudo guardar la jugada. Revisa tu conexión.', 4000); console.error(e); }
-    if (eventos.length) serieEv(() => procesar(eventos));
+    if (eventos.length) encolarEv(eventos, clonar(E));
     else dibujar();
   }
   async function comenzarRed() { // el anfitrión reparte
     if (!S || !S.anfitrion || E || S.jugadores.length < S.maximo) return;
     await serie(async () => {
-      E = nueva(S.opciones); preguntada = ''; ultimaCartaId = null;
+      E = nueva(S.opciones); V = null; preguntada = ''; ultimaCartaId = null;
       const ev = E.eventosIniciales || []; delete E.eventosIniciales;
-      await publicar(ev); dibujar();
-      if (E.estado === 'fin') { serieEv(() => procesar(ev)); return; }
-      toast(`Reparte ${nom(E.dealer)} y comienza ${nom(1 - E.dealer)}`, 3000);
-      preguntarRonda();
+      await publicar(ev); encolarEv(ev, clonar(E));
     });
   }
   function aplicarSala(sala) { // lo que llega de la sala (invitados; el anfitrión solo vigila que la sala exista)
@@ -287,7 +307,7 @@
     if (sala.estado && sala.version >= S.version) {
       const evs = sala.estado.ev || [], seq = sala.estado.evSeq || 0;
       E = sala.estado; S.version = sala.version; S.enviando = false;
-      if (seq > S.vistoEv) { S.vistoEv = seq; serieEv(() => procesar(evs)); } else dibujar();
+      if (seq > S.vistoEv) { S.vistoEv = seq; encolarEv(evs, clonar(sala.estado)); } else dibujar();
     } else dibujar();
   }
 
@@ -333,8 +353,9 @@
 
   // ---- eventos de la pantalla ----
   $('#principal').onclick = () => {
+    Efectos.desbloquear();
     if (!modo) comenzarLocal();
-    else if (modo === 'local') { if (E && E.estado === 'jugando') terminar(); else { E = null; modo = null; dibujar(); } }
+    else if (modo === 'local') { if (E && E.estado === 'jugando') terminar(); else { E = null; V = null; modo = null; dibujar(); } }
     else if (!E) comenzarRed();
     else if (E.estado === 'jugando') terminar();
     else salirSala(false);
@@ -342,6 +363,8 @@
   $('#btnCrear').onclick = crearSalaUI; $('#btnUnirme').onclick = unirmeUI;
   $('#lbSalir').onclick = () => salirSala(true);
   $('#lbCopiar').onclick = async () => { try { await navigator.clipboard.writeText(S.codigo); toast('Código copiado: ' + S.codigo, 2000); } catch (e) { toast('Código: ' + S.codigo, 3000); } };
+  $('#btnVoz').onclick = () => { Voz.alternar(); dibujar(); if (Voz.activa()) Voz.hablar('La voz está activada.'); };
+  $('#btnSonido').onclick = () => { Efectos.alternarSonido(); dibujar(); };
   $('#codigoSala').addEventListener('input', e => { e.target.value = Red.normaliza(e.target.value); });
   $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') e.preventDefault(); });
   document.addEventListener('click', e => {
@@ -352,7 +375,7 @@
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
   try { $('#miNombre').value = localStorage.getItem(CLAVE_NOMBRE) || ''; } catch (e) { }
-  window.Mesa = { get E() { return E; }, get S() { return S; }, get modo() { return modo; }, jugarCarta, dibujar, preguntarRonda };
+  window.Mesa = { get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
   reanudar();
 })();
