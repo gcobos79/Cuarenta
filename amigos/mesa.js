@@ -89,7 +89,7 @@
     if (!D) {
       $('#p0').textContent = '0'; $('#p1').textContent = '0'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
       $('#pila0').innerHTML = ''; $('#pila1').innerHTML = ''; ['sc0', 'sc1'].forEach(i => $('#' + i).classList.remove('activo')); ['.fila.yo', '.fila.opp'].forEach(s => $(s).classList.remove('su-turno', 'sin-turno'));
-      avisoFijo = !modo ? 'Crea una sala, únete con un código o prueba en esta pantalla.' : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
+      avisoFijo = !modo ? (esAdmin ? 'Administrador: también puedes probar en esta pantalla.' : '') : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
       $('#aviso').textContent = avisoFijo; turnoMioAntes = false;
     } else {
       if (avisoFijo && $('#aviso').textContent === avisoFijo) { $('#aviso').textContent = ''; avisoFijo = ''; } // el mensaje del lobby no se queda durante la partida

@@ -183,3 +183,5 @@ body.sin-mesa .fila{display:none}
 .tg .tacha{display:none;stroke:#f0c4b5;stroke-width:2.2}
 .tg.off{opacity:.65;text-decoration:none;color:#9d917a;border-color:#7a6a49}
 .tg.off .tacha{display:inline}
+.config p.como{font-size:13px;line-height:1.4;margin-bottom:8px}.config p.como b{color:var(--oro-claro)}
+body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se centra en el tapete */

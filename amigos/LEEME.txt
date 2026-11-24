@@ -2,7 +2,7 @@ CUARENTA · AMIGOS — V2.06
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
-Cómo se juega en línea (1 contra 1)
+Cómo se juega en línea (1 contra 1) — la pantalla de inicio lo explica: «Solo uno crea la sala 📱. El otro entra con el código que ve en ese celular 📲»
 1. Uno crea la sala (elige «38 que no juegan» y «4 de falta») y ve un código de 3 caracteres (letras y números, sin I, O, 0 ni 1).
 2. El amigo escribe el código y pulsa UNIRME. El anfitrión ve que entró y pulsa COMENZAR.
 3. El celular del anfitrión reparte y valida cada jugada con las reglas; cada jugador ve sus cartas de frente y las del rival boca abajo.
