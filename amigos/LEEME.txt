@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.11
+CUARENTA · AMIGOS — V2.12
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -17,7 +17,7 @@ Historial, lupa y reloj (V2.07)
 - Historial de partidas: cada partida terminada (Solo contra Don Barajón y Amigos en línea) guarda una fila en la base de datos: fecha, hora, jugador 1, jugador 2 (Don Barajón en Solo), puntaje 1, puntaje 2 y ganador. Reemplaza el formulario de Google.
   Solo el administrador lo ve: en Solo, Configuración → HISTÓRICOS (arriba, «HISTORIAL DE PARTIDAS · TODOS LOS JUGADORES») y también en el menú de Amigos (botón HISTORIAL DE PARTIDAS). Muestra lo mismo en los dos sitios: filtros HOY / 3 DÍAS / 5 DÍAS / TODOS y, primero los juegos actuales (salas en juego con actividad en los últimos 45 minutos) y luego los anteriores por fecha y hora. El interruptor «Ocultar al administrador» (activado por defecto) saca de los listados las partidas donde participó el administrador; no se borra nada.
   Seguridad: la página solo puede AGREGAR filas; leer se hace con funciones de la base que piden la huella de la clave del administrador (la primera vez que el administrador abre el historial queda registrada su huella). Ver supabase/003_partidas.sql.
-- El nombre solo se pide la primera vez: si ya está guardado (en Amigos o en Solo) el campo del nombre ya no se muestra (sin avisos).
+- El nombre solo se pide la primera vez: si ya está guardado (en Amigos o en Solo) el campo del nombre ya no se muestra (sin avisos). El administrador (nombre «clave» de Solo) escribe una sola vez el nombre que verá su amigo: la clave nunca se envía como nombre.
 - Lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo); al soltar no se juega la carta.
 - Reloj de arena: cuando juega el rival, la línea de estado muestra un reloj de arena que cae ~3 segundos y da la vuelta.
 

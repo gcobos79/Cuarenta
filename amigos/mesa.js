@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.11', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.12', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -524,9 +524,10 @@
   // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y el campo ya no se muestra (sin avisos).
   try {
     const solo = localStorage.getItem('donBarajonPlayerName') || '', propio = localStorage.getItem(CLAVE_NOMBRE) || '';
-    const guardado = patronClave(solo) ? '' : (propio || limpia(solo)); // el nombre «clave» de Solo no se copia: se detecta aparte como administrador
+    // El nombre «clave» de Solo (administrador) nunca se copia ni se envía al amigo: el administrador escribe aquí, una sola vez, el nombre que verá su amigo.
+    const guardado = patronClave(solo) ? (propio === 'Jugador' ? '' : propio) : (propio || limpia(solo));
     $('#miNombre').value = guardado;
-    if (guardado || patronClave(solo)) $('#nombreCampo').hidden = true;
+    if (guardado) $('#nombreCampo').hidden = true;
   } catch (e) { }
   // pestañas ANFITRIÓN / INVITADO (se recuerda la última que se usó)
   function elegirPestana(inv, enfocar) {
