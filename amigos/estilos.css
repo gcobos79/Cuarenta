@@ -266,3 +266,15 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .config .rol p{font-size:13px;line-height:1.5}
 .lobby p,.lb-ayuda{color:#fff;font-size:13px;line-height:1.5}
 @media (max-height:700px){.config p.como{padding:6px 10px;margin:0 0 4px;font-size:13px;line-height:1.4}.config h2{font-size:22px;margin-bottom:2px}.config label.nom{margin:4px 0 2px}.config .rol{padding:6px 8px 8px}.config .pestanas{margin-top:6px}}
+
+/* V2.16 — sin recuadro alrededor de las 5 cartas: ese espacio se usa para que las cartas de la mano sean un poco más grandes */
+.fila{padding:0}
+.fila.opp{border-bottom:0;padding-bottom:0}
+.fila.su-turno{border-radius:0;background:none;box-shadow:none}
+@media (max-width:700px){
+ :root{--ch:clamp(62px,min(15.5dvh,calc((100vw - 52px)/5/.72)),140px)}
+ .app{padding-left:6px;padding-right:6px}
+ .board{padding:6px 4px}
+ .mano{gap:3px}
+}
+@media (max-height:700px) and (max-width:700px){:root{--ch:clamp(50px,min(12.5dvh,calc((100vw - 52px)/5/.72)),140px)}}
