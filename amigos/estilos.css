@@ -237,9 +237,6 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 /* V2.07 — el historial oculta al administrador con un interruptor (no hay botón de quitar) y el nombre ya guardado no se pide de nuevo */
 .hist .opc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 8px;font-size:12px;color:#e6dcc3}
 .hist .opc input{width:20px;height:20px;accent-color:#c9a45c}
-.config .nombre-listo{margin:4px 0 0;font-size:13px;color:#d9e6fa}
-.config .nombre-listo b{color:var(--oro-claro);font-size:15px}
-.enlace{margin-left:6px;padding:4px 8px;border-radius:6px;border:1px solid #d9c18e88;background:transparent;color:var(--oro-claro);font:800 10px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
 .fila-h{grid-template-columns:1fr}
 
 /* V2.08 — ANFITRIÓN e INVITADO en pestañas separadas */
