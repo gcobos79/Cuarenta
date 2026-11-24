@@ -85,13 +85,21 @@
    <div class="mesa" id="mesa"></div>
    <div class="config" id="config">
     <h2>AMIGOS</h2>
-    <p class="como"><b>Solo uno crea la sala</b> 📱<br>El otro entra con el código que ve en ese celular 📲</p>
-    <label class="nom" for="miNombre">Tu nombre</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off">
-    <label class="opc"><span>38 que no juegan</span><input type="checkbox" id="o38"></label>
-    <label class="opc"><span>4 de falta</span><input type="checkbox" id="o4f"></label>
-    <button class="btn" id="btnCrear" type="button">CREAR SALA</button>
-    <label class="nom" for="codigoSala">¿Tu amigo ya creó la sala? Escribe su código</label>
-    <div class="unirse"><input type="text" id="codigoSala" maxlength="3" placeholder="ABC" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text"><button class="btn" id="btnUnirme" type="button">UNIRME</button></div>
+    <p class="como">Cada jugador usa <b>su propio celular</b>. Uno es el <b>anfitrión</b> y el otro es el <b>invitado</b>. <b>Solo el anfitrión crea la sala.</b></p>
+    <label class="nom" for="miNombre">Tu nombre (el que verá tu amigo)</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off">
+    <section class="rol" aria-labelledby="rolAnf">
+     <h3 id="rolAnf">📱 SI ERES EL ANFITRIÓN</h3>
+     <p>Tú creas la sala y repartes. Elige las reglas, pulsa <b>CREAR SALA</b> y verás un código de 3 caracteres. Díselo a tu amigo y, cuando él entre, pulsa <b>COMENZAR</b>.</p>
+     <label class="opc"><span>38 que no juegan</span><input type="checkbox" id="o38"></label>
+     <label class="opc"><span>4 de falta</span><input type="checkbox" id="o4f"></label>
+     <button class="btn" id="btnCrear" type="button">CREAR SALA</button>
+    </section>
+    <section class="rol" aria-labelledby="rolInv">
+     <h3 id="rolInv">📲 SI ERES EL INVITADO</h3>
+     <p><b>No crees una sala.</b> Pídele el código al anfitrión, escríbelo aquí y pulsa <b>UNIRME</b>. Después espera a que el anfitrión comience la partida.</p>
+     <label class="nom" for="codigoSala">Código de la sala</label>
+     <div class="unirse"><input type="text" id="codigoSala" maxlength="3" placeholder="ABC" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text"><button class="btn" id="btnUnirme" type="button">UNIRME</button></div>
+    </section>
     <details class="local">
      <summary>Prueba en esta pantalla</summary>
      <label class="nom" for="nom0">Jugador 1</label><input type="text" id="nom0" maxlength="20" value="Jugador 1" autocomplete="off">
