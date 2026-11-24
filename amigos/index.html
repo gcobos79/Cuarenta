@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#100f0d">
-<title>CUARENTA · Amigos V2.07</title>
+<title>CUARENTA · Amigos V2.08</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="estilos.css">
 </head><body>
@@ -76,7 +76,7 @@
    <div class="score" id="sc0"><label id="n0">Jugador 1</label><strong id="p0">0</strong><span class="gan" id="g0"></span></div>
    <div class="score" id="sc1"><label id="n1">Jugador 2</label><strong id="p1">0</strong><span class="gan" id="g1"></span></div>
   </div>
-  <div class="version" id="version">V2.07</div>
+  <div class="version" id="version">V2.08</div>
  </header>
  <main class="board">
   <section class="fila opp"><span class="etq" id="e1"></span><div class="mano" id="mano1"></div><div class="pila" id="pila1"></div></section>
@@ -88,15 +88,19 @@
     <p class="como">Cada jugador usa <b>su propio celular</b>. Uno es el <b>anfitrión</b> y el otro es el <b>invitado</b>. <b>Solo el anfitrión crea la sala.</b></p>
     <p class="nombre-listo" id="nombreListo" hidden>Jugarás como <b id="nombreVer"></b> <button type="button" class="enlace" id="cambiarNombre">CAMBIAR</button></p>
     <div id="nombreCampo"><label class="nom" for="miNombre">Tu nombre (el que verá tu amigo)</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off"></div>
-    <section class="rol" aria-labelledby="rolAnf">
-     <h3 id="rolAnf">📱 SI ERES EL ANFITRIÓN</h3>
+    <div class="pestanas" role="tablist" aria-label="¿Qué eres en esta partida?">
+     <button type="button" role="tab" class="pestana activa" id="tabAnf" aria-selected="true" aria-controls="panelAnf">📱 ANFITRIÓN</button>
+     <button type="button" role="tab" class="pestana" id="tabInv" aria-selected="false" aria-controls="panelInv" tabindex="-1">📲 INVITADO</button>
+    </div>
+    <section class="rol" id="panelAnf" role="tabpanel" aria-labelledby="tabAnf">
+     <p class="quien-es">Crea la sala</p>
      <p>Tú creas la sala y repartes. Elige las reglas, pulsa <b>CREAR SALA</b> y verás un código de 3 caracteres. Díselo a tu amigo y, cuando él entre, pulsa <b>COMENZAR</b>.</p>
      <label class="opc"><span>38 que no juegan</span><input type="checkbox" id="o38"></label>
      <label class="opc"><span>4 de falta</span><input type="checkbox" id="o4f"></label>
      <button class="btn" id="btnCrear" type="button">CREAR SALA</button>
     </section>
-    <section class="rol" aria-labelledby="rolInv">
-     <h3 id="rolInv">📲 SI ERES EL INVITADO</h3>
+    <section class="rol" id="panelInv" role="tabpanel" aria-labelledby="tabInv" hidden>
+     <p class="quien-es">Entra a la sala de tu amigo</p>
      <p><b>No crees una sala.</b> Pídele el código al anfitrión, escríbelo aquí y pulsa <b>UNIRME</b>. Después espera a que el anfitrión comience la partida.</p>
      <label class="nom" for="codigoSala">Código de la sala</label>
      <div class="unirse"><input type="text" id="codigoSala" maxlength="3" placeholder="ABC" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text"><button class="btn" id="btnUnirme" type="button">UNIRME</button></div>

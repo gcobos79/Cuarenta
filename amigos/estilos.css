@@ -241,3 +241,10 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .config .nombre-listo b{color:var(--oro-claro);font-size:15px}
 .enlace{margin-left:6px;padding:4px 8px;border-radius:6px;border:1px solid #d9c18e88;background:transparent;color:var(--oro-claro);font:800 10px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
 .fila-h{grid-template-columns:1fr}
+
+/* V2.08 — ANFITRIÓN e INVITADO en pestañas separadas */
+.config .pestanas{display:flex;gap:6px;margin:10px 0 0}
+.config .pestana{flex:1;padding:11px 8px;border-radius:10px 10px 0 0;border:1px solid #d9c18e55;border-bottom:none;background:#07142b66;color:#bba27b;font:800 12px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
+.config .pestana.activa{background:#07142bcc;color:var(--oro-claro);border-color:var(--oro);box-shadow:0 -2px 10px #f0d9a933}
+.config .rol{margin-top:0;border-radius:0 0 12px 12px;border-color:var(--oro)}
+.config .rol .quien-es{margin:0 0 4px;font:800 15px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;color:var(--oro-claro);text-transform:uppercase}

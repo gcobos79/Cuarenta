@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.07', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.08', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -529,6 +529,16 @@
     $('#miNombre').value = guardado;
     if (ver) { $('#nombreCampo').hidden = true; $('#nombreListo').hidden = false; $('#nombreVer').textContent = ver; }
   } catch (e) { }
+  // pestañas ANFITRIÓN / INVITADO (se recuerda la última que se usó)
+  function elegirPestana(inv, enfocar) {
+    $('#panelAnf').hidden = inv; $('#panelInv').hidden = !inv;
+    [['#tabAnf', !inv], ['#tabInv', inv]].forEach(([s, on]) => { const b = $(s); b.classList.toggle('activa', on); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+    try { localStorage.setItem('amigosPestana', inv ? 'invitado' : 'anfitrion'); } catch (e) { }
+    if (enfocar) $(inv ? '#tabInv' : '#tabAnf').focus();
+  }
+  $('#tabAnf').onclick = () => elegirPestana(false); $('#tabInv').onclick = () => elegirPestana(true);
+  $('.pestanas').addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); elegirPestana(e.key === 'ArrowRight', true); } });
+  try { elegirPestana(localStorage.getItem('amigosPestana') === 'invitado'); } catch (e) { }
   $('#cambiarNombre').onclick = () => { $('#nombreListo').hidden = true; $('#nombreCampo').hidden = false; $('#miNombre').focus(); };
   window.Mesa = { forzarAdmin(v, clave) { esAdmin = !!v; if (clave) claveAdmin = clave; dibujar(); }, get esAdmin() { return esAdmin; }, get E() { return E; }, get V() { return V; }, get S() { return S; }, get modo() { return modo; }, get ocupado() { return ocupado; }, jugarCarta, dibujar, preguntarRonda };
   dibujar();
