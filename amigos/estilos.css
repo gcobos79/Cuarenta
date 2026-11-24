@@ -256,3 +256,13 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .lb-jugadores li{background:#0a1a33aa;border-color:#d9c18e88}
 .lb-codigo{color:var(--oro-claro)}
 .config label.nom,.lobby .lb-etq{color:#f0d9a9}
+
+/* V2.11 — textos del menú más fáciles de leer: la explicación va sobre una franja azul marino, en blanco y más grande; las etiquetas, en dorado claro y en negrita */
+.config p.como{margin:2px 0 8px;padding:10px 12px;border-radius:12px;background:#07142bcc;border:1px solid #d9c18e55;font-size:14px;line-height:1.5;font-weight:500;color:#fff;text-align:center}
+.config p.como b{color:#ffe9b0;font-weight:800}
+.config label.nom{margin:8px 0 4px;font-size:12px;font-weight:800;letter-spacing:.06em;color:#ffe9b0;text-shadow:0 1px 2px #000a}
+.config h2{font-size:26px;text-shadow:0 1px 3px #000a}
+.config .rol p,.config .rol .quien-es{color:#fff}
+.config .rol p{font-size:13px;line-height:1.5}
+.lobby p,.lb-ayuda{color:#fff;font-size:13px;line-height:1.5}
+@media (max-height:700px){.config p.como{padding:6px 10px;margin:0 0 4px;font-size:13px;line-height:1.4}.config h2{font-size:22px;margin-bottom:2px}.config label.nom{margin:4px 0 2px}.config .rol{padding:6px 8px 8px}.config .pestanas{margin-top:6px}}

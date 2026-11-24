@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.10
+CUARENTA · AMIGOS — V2.11
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
