@@ -245,3 +245,14 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .config .pestana.activa{background:#07142bcc;color:var(--oro-claro);border-color:var(--oro);box-shadow:0 -2px 10px #f0d9a933}
 .config .rol{margin-top:0;border-radius:0 0 12px 12px;border-color:var(--oro)}
 .config .rol .quien-es{margin:0 0 4px;font:800 15px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;color:var(--oro-claro);text-transform:uppercase}
+
+/* V2.10 — los colores del panel del historial (azul con degradado, borde y títulos dorados, tarjetas azul marino) en el menú, la sala y el panel de revancha */
+.config,.lobby{background:radial-gradient(ellipse at 50% 0,var(--fieltro1) 0,var(--fieltro2) 62%,var(--fieltro3) 100%);border:2px solid #d9c18e;border-radius:20px;box-shadow:0 14px 40px #000a,inset 0 0 0 1px #0007}
+.config p,.lobby p{color:#e8eefb}
+.config .rol{background:#0a1a33aa;border-color:#d9c18e}
+.config .pestana{background:#0a1a3388;border-color:#d9c18e88}
+.config .pestana.activa{background:#0a1a33dd;border-color:#d9c18e}
+.config input[type=text],.lobby input[type=text]{background:#0a1a33aa;border-color:#d9c18e88}
+.lb-jugadores li{background:#0a1a33aa;border-color:#d9c18e88}
+.lb-codigo{color:var(--oro-claro)}
+.config label.nom,.lobby .lb-etq{color:#f0d9a9}
