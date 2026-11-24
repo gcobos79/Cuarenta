@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.22
+CUARENTA · AMIGOS — V2.23
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -13,7 +13,7 @@ Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave» de Solo).
 
-Encabezado nuevo (V2.20): el círculo 40 (negro con contorno dorado) reemplaza al texto «CUARENTA» en la esquina superior izquierda; se quitaron «AMIGOS» y la versión a la vista. La versión se ve flotando mientras se mantiene pulsado el círculo. Cada marcador muestra «Puntos: 00 • Cartas: 00» (letra League Gothic (ultra condensada), tamaño legible en celular) y ya no hay «Levantadas» en la mesa: las cartas levantadas vuelan hacia el marcador. El logo está en amigos/logo40.svg.
+Encabezado nuevo (V2.20): el círculo 40 (negro con contorno dorado) reemplaza al texto «CUARENTA» en la esquina superior izquierda; se quitaron «AMIGOS» y la versión a la vista. La versión se ve flotando mientras se mantiene pulsado el círculo. Cada marcador muestra «Puntos: 00 • Cartas: 00» (letra ultra condensada League Gothic solo en celulares; en iPad y computadora, Barlow Condensed) y ya no hay «Levantadas» en la mesa: las cartas levantadas vuelan hacia el marcador. El logo está en amigos/logo40.svg.
 
 Manos sin recuadro (V2.16): se quitó el recuadro alrededor de las 5 cartas de cada jugador y las cartas de la mano son un poco más grandes (el turno se ve en la línea de arriba y porque las cartas del otro se oscurecen).
 
