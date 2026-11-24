@@ -81,7 +81,7 @@
     $('#e0').textContent = nom(jugadorEn(0)); $('#e1').textContent = nom(jugadorEn(1));
     const finVisible = !!D && D.estado === 'fin' && panelFin;
     document.body.classList.toggle('sin-mesa', !D || finVisible); // en el menú, el lobby y el panel de revancha no hay cartas: el tapete usa todo el espacio
-    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#turno').hidden = !jugando; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
+    $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
     $('details.local').hidden = !esAdmin; // la prueba en esta pantalla solo la ve el administrador
     ['g0', 'g1'].forEach((id, p) => { const e = $('#' + id); e.hidden = !modo; e.textContent = modo ? 'GANADAS ' + ganadas(p) : ''; });
     if (finVisible) dibujarRevancha();
@@ -107,11 +107,10 @@
       });
       [0, 1].forEach(p => $('#sc' + p).classList.toggle('activo', jugando && D.turn === p));
       $('#mesa').innerHTML = D.table.map(c => cartaHTML(c, c.id === ultimaCartaId ? ' ultima' : '')).join('');
-      $('#estado').textContent = `Ciclo ${D.cycle} · Sección ${D.section} de 4 · Reparte ${nom(D.dealer)}`;
-      // quién juega: grande y claro
+      // una sola línea arriba del tapete: ciclo, sección y a quién le toca (lo propio en dorado)
       const mio = jugando && (red ? D.turn === S.asiento : false);
-      const tu = $('#turno'); tu.classList.toggle('mio', mio);
-      tu.textContent = jugando ? (mio ? '¡TU TURNO!' : `TURNO DE ${MAY(nom(D.turn))}`) : '';
+      const quien = jugando ? ` · <b class="quien${mio ? ' mio' : ''}">${mio ? '¡TU TURNO!' : 'TURNO DE ' + esc(MAY(nom(D.turn)))}</b>` : '';
+      $('#estado').innerHTML = `Ciclo ${D.cycle} · Sección ${D.section}/4${quien}`;
       if (red && jugando) {
         const riv = S.jugadores.find(j => j.asiento === arriba());
         if (riv && S.conectados.length && !S.conectados.includes(riv.id)) $('#aviso').textContent = `${riv.nombre} no está conectado. Cuando vuelva, la partida sigue donde se quedó.`;

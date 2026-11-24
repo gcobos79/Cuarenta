@@ -169,3 +169,10 @@ body.sin-mesa .fila{display:none}
 @media (max-height:700px) and (max-width:700px){:root{--ch:clamp(50px,min(12.5dvh,calc((100vw - 64px)/5/.74)),140px)}}
 @media (max-width:430px){.top{gap:6px}.brand h1{letter-spacing:3px;font-size:clamp(22px,6.4vw,30px)}.score{min-width:78px;padding:6px 6px}.scores{gap:6px}.version{font-size:9px;letter-spacing:.08em}} /* la versión ya no se corta */
 .mesa{--cw:calc(var(--ch)*.7)} /* el ancho sigue a la altura cuando ajustarMesa() achica las cartas */
+
+/* V2.06 — el turno va dentro de la línea de estado (ya no es una pastilla aparte que ocupe espacio) */
+.felt>.estado{font-size:11px;letter-spacing:.09em;line-height:1.35;opacity:1;padding:0 6px 2px}
+.estado .quien{color:#d9e6fa;font-weight:800;letter-spacing:.1em}
+.estado .quien.mio{color:#ffe27a;text-shadow:0 0 10px #f6d48daa;animation:turnoTexto 1.3s ease-in-out infinite}
+@keyframes turnoTexto{0%,100%{text-shadow:0 0 6px #f6d48d66}50%{text-shadow:0 0 14px #f6d48dee}}
+@media (prefers-reduced-motion:reduce){.estado .quien.mio{animation:none}}
