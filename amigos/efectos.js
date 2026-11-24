@@ -56,13 +56,15 @@
     document.body.appendChild(clone);
     return clone;
   }
-  function huecoMesa(mesa, tomadas) { // dónde quedará la carta nueva en la mesa, ya sin las cartas capturadas
+  function huecoMesa(mesa, tomadas, ajustar) { // dónde quedará la carta nueva en la mesa, ya sin las cartas capturadas
     const ocultas = [];
     for (const id of tomadas) { const el = mesa.querySelector(`[data-id="${id}"]`); if (el) { ocultas.push([el, el.style.display]); el.style.display = 'none'; } }
     const hueco = document.createElement('div'); hueco.className = 'card table-slot'; hueco.setAttribute('aria-hidden', 'true');
     hueco.style.cssText = 'visibility:hidden;pointer-events:none;flex:none;margin:0;'; mesa.appendChild(hueco);
+    if (ajustar) ajustar(); // la mesa se acomoda (cartas más chicas) con la carta nueva: el hueco se mide ya con ese tamaño, así el vuelo no se pasa del tapete
     const r = hueco.getBoundingClientRect(); hueco.remove();
     for (const [el, d] of ocultas) el.style.display = d;
+    if (ajustar) ajustar(); // y se deja la mesa como estaba mientras dura el vuelo
     return { left: r.left, top: r.top, width: r.width, height: r.height };
   }
   async function volarA(clone, left, top, ms) {
@@ -93,14 +95,14 @@
 
   // Anima una jugada sobre el dibujo ANTERIOR: sale de la mano, viaja a la mesa y, si captura, se levantan las cartas.
   // mano: elemento de la mano de quien juega; pila: su montón; mesa: la mesa; vivo(): false si hay que cortar.
-  async function animarJugada({ carta, captura, mano, pila, mesa, vivo }) {
+  async function animarJugada({ carta, captura, mano, pila, mesa, vivo, ajustar }) {
     const sigue = () => (vivo ? vivo() : true);
     const propia = mano.querySelector(`[data-id="${carta.id}"]`);
     const dorsos = mano.querySelectorAll('.card');
     const origen = propia || dorsos[Math.floor(dorsos.length / 2)];
     if (!origen) return;
     const tomadasIds = captura.map(x => x.id);
-    const destino = huecoMesa(mesa, tomadasIds);
+    const destino = huecoMesa(mesa, tomadasIds, ajustar);
     const clon = crearVuelo(origen);
     if (!propia) { // la carta del rival aparece de frente al salir de su mano
       const wrap = document.createElement('div'); wrap.innerHTML = root.CartaHTML(carta); const cara = wrap.firstElementChild;

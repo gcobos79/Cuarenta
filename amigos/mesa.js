@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.17', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.18', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -225,7 +225,7 @@
   };
   async function animar(jug) { // sobre lo que se ve ahora (V): sale de la mano, viaja a la mesa y se levantan las cartas
     const dom = jugadorEn(0) === jug.jugador ? 0 : 1;
-    try { await Efectos.animarJugada({ carta: jug.carta, captura: jug.captura, mano: $('#mano' + dom), pila: $('#pila' + dom), mesa: $('#mesa'), vivo: () => !!modo }); }
+    try { await Efectos.animarJugada({ carta: jug.carta, captura: jug.captura, mano: $('#mano' + dom), pila: $('#pila' + dom), mesa: $('#mesa'), vivo: () => !!modo, ajustar: ajustarMesa }); }
     catch (e) { console.error(e); document.querySelectorAll('.card.flight').forEach(x => x.remove()); }
   }
   async function procesar(eventos, snap, rapido) {
