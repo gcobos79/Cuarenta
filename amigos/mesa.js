@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.13', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.14', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -130,13 +130,14 @@
     $('#btnSonido').classList.toggle('off', !Efectos.sonido()); $('#btnSonido').setAttribute('aria-pressed', String(Efectos.sonido()));
     ajustarMesa();
   }
-  // Las cartas de la mesa se achican lo necesario para que quepan todas dentro del tapete (nunca se cortan)
+  // Las cartas de la mesa son un poco más grandes que las de la mano (hasta 1,3 veces, como en Solo) y se achican lo necesario para que quepan todas
   function ajustarMesa() {
     const m = $('#mesa'), f = $('.felt'); if (!m || !f || m.hidden) return;
     m.style.removeProperty('--ch');
     const c = m.querySelector('.card'); if (!c) return;
-    let h = c.getBoundingClientRect().height;
-    while (f.scrollHeight > f.clientHeight + 1 && h > 40) { h *= .92; m.style.setProperty('--ch', h.toFixed(1) + 'px'); }
+    let h = c.getBoundingClientRect().height * 1.3;
+    m.style.setProperty('--ch', h.toFixed(1) + 'px');
+    while (f.scrollHeight > f.clientHeight + 1 && h > 40) { h *= .95; m.style.setProperty('--ch', h.toFixed(1) + 'px'); }
   }
   window.addEventListener('resize', () => { if (window.Mesa) Mesa.dibujar(); });
   function dibujarLobby() {

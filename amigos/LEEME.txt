@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.13
+CUARENTA · AMIGOS — V2.14
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -21,7 +21,7 @@ Historial, lupa y reloj (V2.07)
 - Lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo); al soltar no se juega la carta.
 - Reloj de arena: cuando juega el rival, la línea de estado muestra un reloj de arena que cae ~3 segundos y da la vuelta.
 
-Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · EN ESPERA…» cuando juega tu amigo), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa se achican solas lo necesario para que quepan todas (nunca se cortan).
+Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · EN ESPERA…» cuando juega tu amigo), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa son un poco más grandes que las de la mano (hasta 1,3 veces, como en Solo) y se achican solas lo necesario para que quepan todas (nunca se cortan).
 
 Efectos y voz (V2.04)
 - Las jugadas se animan como en Solo: la carta sale de la mano y viaja a la mesa, las cartas de la captura se iluminan una por una y se levantan hacia el montón; suena el golpe de la carta.
