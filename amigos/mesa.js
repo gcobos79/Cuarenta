@@ -7,13 +7,14 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.16', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.17', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
   let turnoMioAntes = false, pendEv = 0;
   let claveAdmin = '', histDias = 1;
-  let pruebaLocal = false; // la «prueba en esta pantalla» está oculta para todos (solo se activa en las pruebas automáticas)
+  let pruebaLocal = false; // gancho de las pruebas automáticas: muestra la prueba local aunque no se sea administrador
+  const verLocal = () => esAdmin || pruebaLocal; // la «prueba en esta pantalla» la ve el administrador
   let esAdmin = false, panelFin = false, victoriasLocal = [0, 0]; // administrador (ve la prueba local); aviso de fin ya visto; partidas ganadas de la prueba local
   // ---- administrador: la misma clave de Solo (solo se guarda la huella, no la palabra). Se lee del nombre guardado en Solo o del nombre escrito aquí ----
   const CLAVE_SAL = 'cuarenta-don-barajon:clave-de-dueno:v1', CLAVE_HUELLA = 'f7a14d09feb58ab9df36a5d014abec123bc7fd2092dabc56d6dd16f5920c9e1e';
@@ -87,7 +88,7 @@
     document.body.classList.toggle('sin-mesa', !D || finVisible); // en el menú, el lobby y el panel de revancha no hay cartas: el tapete usa todo el espacio
     $('#config').hidden = !!modo; $('#lobby').hidden = !(red && !D); $('#estado').hidden = !D; $('#revancha').hidden = !finVisible; $('#mesa').hidden = finVisible;
     $('#btnHistorial').hidden = !esAdmin || !!modo; // el historial lo ve solo el administrador, desde el menú
-    $('details.local').hidden = !pruebaLocal; // la prueba en esta pantalla ya no se muestra
+    $('details.local').hidden = !verLocal(); // la prueba en esta pantalla solo la ve el administrador
     ['g0', 'g1'].forEach((id, p) => { const e = $('#' + id); e.hidden = !modo; e.textContent = modo ? 'GANADAS ' + ganadas(p) : ''; });
     if (finVisible) dibujarRevancha();
     if (red && !D) dibujarLobby();
@@ -123,7 +124,7 @@
       }
     }
     const b = textoBoton(), pr = $('#principal');
-    pr.hidden = !modo && !pruebaLocal; // sin partida no hay botón (PRUEBA LOCAL está oculto)
+    pr.hidden = !modo && !verLocal(); // sin partida, el botón PRUEBA LOCAL solo lo ve el administrador
     pr.textContent = b.t; pr.disabled = !!b.dis; pr.classList.toggle('fin', !!b.fin); pr.classList.toggle('espera', !!b.espera);
     const solo = $('#irSolo'), bloquea = jugando || red; solo.setAttribute('aria-disabled', String(bloquea)); solo.tabIndex = bloquea ? -1 : 0; solo.hidden = bloquea; /* dentro de una sala o jugando no se muestra SALIR: en la sala se usa SALIR DE LA SALA */
     $('#btnVoz').classList.toggle('off', !Voz.activa()); $('#btnVoz').setAttribute('aria-pressed', String(Voz.activa()));
@@ -328,7 +329,7 @@
 
   // ---- prueba local ----
   function comenzarLocal() {
-    if (!pruebaLocal) return;
+    if (!verLocal()) return;
     const nuevosNombres = [limpia($('#nom0').value) || 'Jugador 1', limpia($('#nom1').value) || 'Jugador 2'];
     if (modo !== 'local' || nuevosNombres.join() !== nombres.join()) victoriasLocal = [0, 0]; // otra pareja: el marcador de partidas empieza de cero
     nombres = nuevosNombres; panelFin = false;
