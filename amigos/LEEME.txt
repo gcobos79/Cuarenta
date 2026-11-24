@@ -22,7 +22,7 @@ Efectos y voz (V2.04)
   lo de tu amigo usa frases fijas y genéricas («Caída de tu amigo.»), sin nombres: se graban UNA sola vez y sirven para todas las partidas.
   Mientras una frase no esté grabada, suena la voz del aparato: en español y, si existe, de hombre (si solo hay voces de mujer, se baja el tono). Para grabar las 34 frases nuevas (≈ USD 0,02):  python3 amigos/voz/generar_amigos.py
 - Indicador de turno en la línea de estado: «¡TU TURNO!» (dorado y con un sonido suave) o «EN ESPERA…», con la fila y el marcador de quien juega resaltados.
-- Botones VOZ y SONIDO para apagar cada cosa.
+- Botones con icono para apagar cada cosa: globo de voz (voz de Don Barajón) y bocina (sonido de las cartas); apagados llevan una raya diagonal.
 
 Archivos
 - reglas.js : las reglas del juego, sin pantalla (copia la mecánica y el puntaje de Solo). El estado es JSON.

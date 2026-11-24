@@ -176,3 +176,10 @@ body.sin-mesa .fila{display:none}
 .estado .quien.mio{color:#ffe27a;text-shadow:0 0 10px #f6d48daa;animation:turnoTexto 1.3s ease-in-out infinite}
 @keyframes turnoTexto{0%,100%{text-shadow:0 0 6px #f6d48d66}50%{text-shadow:0 0 14px #f6d48dee}}
 @media (prefers-reduced-motion:reduce){.estado .quien.mio{animation:none}}
+
+/* V2.06 — VOZ y SONIDO son iconos (globo de voz y bocina); apagados llevan una raya diagonal */
+.pie .tg{display:inline-grid;place-items:center;width:40px;height:38px;padding:0;font-size:0;letter-spacing:0;border-radius:8px}
+.tg svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tg .tacha{display:none;stroke:#f0c4b5;stroke-width:2.2}
+.tg.off{opacity:.65;text-decoration:none;color:#9d917a;border-color:#7a6a49}
+.tg.off .tacha{display:inline}
