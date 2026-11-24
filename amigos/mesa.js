@@ -232,11 +232,14 @@
     if (s.anfitrion) setTimeout(() => { Red.cerrarSala(s.codigo).catch(() => { }); }, 4000); // un momento para que el otro vea el final
   }
 
-  async function publicar(eventos, extra) { // el anfitrión guarda el estado nuevo en la sala
-    S.version++;
-    const copia = Object.assign({}, E, { ev: eventos || [], evSeq: S.version });
-    delete copia.eventosIniciales;
-    await Red.guardar(S.codigo, Object.assign({ estado: copia, version: S.version, fase: E.estado === 'fin' ? 'fin' : 'jugando', jugadores: S.jugadores, ultima_accion: S.ultima }, extra || {}));
+  async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
+    const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
+    if (E) {
+      S.version++;
+      const copia = Object.assign({}, E, { ev: eventos || [], evSeq: S.version }); delete copia.eventosIniciales;
+      Object.assign(cambios, { estado: copia, version: S.version, fase: E.estado === 'fin' ? 'fin' : 'jugando' });
+    }
+    await Red.guardar(S.codigo, Object.assign(cambios, extra || {}));
   }
   async function enviar(tipo, datos) { // un invitado manda su jugada al anfitrión
     S.enviando = true; dibujar();
@@ -258,7 +261,7 @@
       else if (a.tipo === 'ronda') { const r = reclamarRonda(E, seat); if (r.ok) eventos = r.eventos; }
       else if (a.tipo === 'salir') eventos = abandono(seat);
     }
-    await publicar(eventos);
+    try { await publicar(eventos); } catch (e) { toast('No se pudo guardar la jugada. Revisa tu conexión.', 4000); console.error(e); }
     if (eventos.length) serieEv(() => procesar(eventos));
     else dibujar();
   }
