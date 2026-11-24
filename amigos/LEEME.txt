@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.05
+CUARENTA · AMIGOS — V2.06
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -8,10 +8,12 @@ Cómo se juega en línea (1 contra 1)
 3. El celular del anfitrión reparte y valida cada jugada con las reglas; cada jugador ve sus cartas de frente y las del rival boca abajo.
 4. Si alguien cierra la página o pierde la conexión, al volver a abrir Amigos retoma su lugar y la partida donde iba.
 5. Si un jugador sale, el otro gana por abandono. Las salas sin actividad se borran solas a las 24 horas.
-6. Revancha (V2.05): al terminar una partida se pulsa CONTINUAR y se queda en la misma sala. Cada marcador muestra «GANADAS n» y el panel lista las partidas ganadas de cada uno
+6. Revancha (V2.06): al terminar una partida se pulsa CONTINUAR y se queda en la misma sala. Cada marcador muestra «GANADAS n» y el panel lista las partidas ganadas de cada uno
    (p. ej. Ana 1 — Beto 0). Cuando los DOS pulsan JUGAR OTRA VEZ empieza otra partida (reparte el otro). SALIR DE LA SALA: si sale el amigo, el anfitrión queda en la misma sala
    esperando a otro y las partidas ganadas vuelven a 0; si sale el anfitrión, la sala se cierra.
 La «prueba en esta pantalla» (dos personas con el mismo dispositivo) solo la ve el administrador (nombre «clave», como en Solo).
+
+Distribución (V2.06): «¡TU TURNO!» y el estado del ciclo van en su propio renglón (ya no tapan las cartas de la mesa), el aviso vacío no ocupa espacio y la versión ya no se corta en celulares angostos.
 
 Efectos y voz (V2.04)
 - Las jugadas se animan como en Solo: la carta sale de la mano y viaja a la mesa, las cartas de la captura se iluminan una por una y se levantan hacia el montón; suena el golpe de la carta.
