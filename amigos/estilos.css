@@ -312,3 +312,9 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 /* V2.25 — los números de los marcadores van en letra normal (no condensada) y de tamaño normal */
 .score .pc b{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;font-size:.95em;letter-spacing:0;color:#fff0cf}
 @media (max-width:700px){.score .pc{font-size:min(clamp(14px,4.7vw,21px),11.6cqw)}}
+
+/* V2.26 — las cartas ocultas (el reverso de las del rival) no necesitan ser grandes: van más chicas y ese espacio lo usan la mesa y tu mano */
+.fila.opp{min-height:calc(var(--ch)*.66 + 6px)}
+.fila.opp .mano{min-height:calc(var(--ch)*.66)}
+.fila.opp .card.back{width:calc(var(--cw)*.66);height:calc(var(--ch)*.66);border-width:2px;border-radius:5px}
+.fila.opp .card.back:after{font-size:calc(var(--ch)*.15)}

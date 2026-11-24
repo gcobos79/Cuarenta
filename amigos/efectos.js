@@ -67,11 +67,14 @@
     if (ajustar) ajustar(); // y se deja la mesa como estaba mientras dura el vuelo
     return { left: r.left, top: r.top, width: r.width, height: r.height };
   }
-  async function volarA(clone, left, top, ms) {
+  async function volarA(clone, left, top, ms, ancho, alto) {
     if (sinMovimiento()) ms = 1;
-    const l0 = parseFloat(clone.style.left), t0 = parseFloat(clone.style.top);
-    const an = clone.animate([{ left: l0 + 'px', top: t0 + 'px' }, { left: left + 'px', top: top + 'px' }], { duration: ms, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
-    await an.finished; clone.style.left = left + 'px'; clone.style.top = top + 'px'; an.cancel();
+    const l0 = parseFloat(clone.style.left), t0 = parseFloat(clone.style.top), w0 = parseFloat(clone.style.width), h0 = parseFloat(clone.style.height);
+    const tam = ancho && alto; // si se pide, la carta pasa del tamaño de la mano al tamaño que tendrá en la mesa mientras vuela
+    const a = { left: l0 + 'px', top: t0 + 'px' }, z = { left: left + 'px', top: top + 'px' };
+    if (tam) { a.width = w0 + 'px'; a.height = h0 + 'px'; z.width = ancho + 'px'; z.height = alto + 'px'; }
+    const an = clone.animate([a, z], { duration: ms, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    await an.finished; clone.style.left = left + 'px'; clone.style.top = top + 'px'; if (tam) { clone.style.width = ancho + 'px'; clone.style.height = alto + 'px'; } an.cancel();
   }
   async function alMonton(el, pila) {
     if (!el) return;
@@ -108,9 +111,8 @@
       const wrap = document.createElement('div'); wrap.innerHTML = root.CartaHTML(carta); const cara = wrap.firstElementChild;
       clon.className = cara.className + ' flight'; clon.innerHTML = cara.innerHTML; origen.remove();
     } else origen.classList.add('lift-origin');
-    Object.assign(clon.style, { width: destino.width + 'px', height: destino.height + 'px' });
     await new Promise(requestAnimationFrame);
-    await volarA(clon, destino.left, destino.top, 900);
+    await volarA(clon, destino.left, destino.top, 900, destino.width, destino.height);
     sonidoCarta();
     if (!sigue()) { clon.remove(); return; }
     if (captura.length) {
