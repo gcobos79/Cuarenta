@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.27
+CUARENTA · AMIGOS — V2.28
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -24,7 +24,7 @@ Historial, lupa y reloj (V2.07)
   Solo el administrador lo ve: en Solo, Configuración → HISTÓRICOS (arriba, «HISTORIAL DE PARTIDAS · TODOS LOS JUGADORES») y también en el menú de Amigos (botón HISTORIAL DE PARTIDAS). Muestra lo mismo en los dos sitios: filtros HOY / 3 DÍAS / 5 DÍAS / TODOS y, primero los juegos actuales (salas en juego con actividad en los últimos 45 minutos) y luego los anteriores por fecha y hora. El interruptor «Ocultar al administrador» (activado por defecto) saca de los listados las partidas donde participó el administrador; no se borra nada.
   Seguridad: la página solo puede AGREGAR filas; leer se hace con funciones de la base que piden la huella de la clave del administrador (la primera vez que el administrador abre el historial queda registrada su huella). Ver supabase/003_partidas.sql.
 - El nombre solo se pide la primera vez: si ya está guardado (en Amigos o en Solo) el campo del nombre ya no se muestra (sin avisos). Si el nombre de Solo va entre « » (administrador), Amigos usa el nombre sin las flechas, como Solo.
-- Lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo); al soltar no se juega la carta.
+- Mantener pulsada una carta: en tu mano (abajo) la carta se agranda un 50 % y al soltar no se juega; las cartas de arriba (las del rival) nunca se agrandan, ni en el modo de administrador; las cartas de la mesa conservan la lupa de 3 veces.
 - Reloj de arena: cuando juega el rival, la línea de estado muestra un reloj de arena que cae ~3 segundos y da la vuelta.
 
 Distribución (V2.06): el turno va dentro de la línea de arriba del tapete («CICLO 1 · SECCIÓN 1/4 · ¡TU TURNO!» o «… · EN ESPERA…» cuando juega tu amigo), sin pastilla aparte que ocupe espacio ni tape cartas, el aviso vacío no ocupa espacio la versión ya no se corta en celulares angostos y las cartas de la mesa son un poco más grandes que las de la mano (hasta 1,3 veces, como en Solo) y se achican solas lo necesario para que quepan todas (nunca se cortan).

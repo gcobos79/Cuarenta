@@ -313,3 +313,9 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .score .pc b{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;font-size:.95em;letter-spacing:0;color:#fff0cf}
 @media (max-width:700px){.score .pc{font-size:min(clamp(14px,4.7vw,21px),11.6cqw)}}
 
+
+/* V2.28 — cartas de abajo (las tuyas): al mantenerlas pulsadas la carta se agranda un 50 %, hacia arriba para que no la tape el dedo */
+.fila.yo{position:relative}
+.fila.con-agrandada{z-index:30}
+.card.agrandada{transform:scale(1.5)!important;transform-origin:50% 100%;z-index:31;filter:none!important;box-shadow:0 0 0 2px #f6d48d,0 14px 32px #000c;transition:transform .12s ease}
+@media (prefers-reduced-motion:reduce){.card.agrandada{transition:none}}

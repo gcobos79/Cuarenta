@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.27', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.28', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -497,8 +497,18 @@
   $('#codigoSala').addEventListener('input', e => { e.target.value = Red.normaliza(e.target.value); });
   $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') e.preventDefault(); });
   // ---- lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo se leen sin esfuerzo) ----
-  let lupaT = null, lupaEl = null, lupaIni = null, lupaSuprime = 0;
-  function lupaCerrar() { clearTimeout(lupaT); lupaT = null; lupaIni = null; if (lupaEl) { lupaEl.remove(); lupaEl = null; lupaSuprime = Date.now() + 450; } }
+  let lupaT = null, lupaEl = null, lupaIni = null, lupaSuprime = 0, cartaGrande = null;
+  function lupaCerrar() {
+    clearTimeout(lupaT); lupaT = null; lupaIni = null;
+    if (lupaEl) { lupaEl.remove(); lupaEl = null; lupaSuprime = Date.now() + 450; }
+    if (cartaGrande) { cartaGrande.classList.remove('agrandada'); const f = cartaGrande.closest('.fila'); if (f) f.classList.remove('con-agrandada'); cartaGrande = null; lupaSuprime = Date.now() + 450; }
+  }
+  // cartas de abajo (las tuyas): al mantenerlas pulsadas la carta se agranda un 50 %, nada más
+  function agrandar(card) {
+    if (!card.isConnected) return;
+    card.classList.add('agrandada'); const f = card.closest('.fila'); if (f) f.classList.add('con-agrandada'); cartaGrande = card;
+    try { navigator.vibrate && navigator.vibrate(10); } catch (e) { }
+  }
   function lupaMostrar(card) {
     if (!card.isConnected) return;
     const r = card.getBoundingClientRect();
@@ -513,8 +523,10 @@
   document.addEventListener('pointerdown', e => {
     const card = e.target.closest && e.target.closest('.card:not(.back):not(.flight):not(.lupa .card)');
     if (!card || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if (card.closest('.fila.opp')) return; // las cartas de arriba (las del rival) nunca se agrandan, ni siquiera en el modo de administrador
+    const abajo = !!card.closest('.fila.yo');
     lupaCerrar(); lupaIni = { x: e.clientX, y: e.clientY };
-    lupaT = setTimeout(() => lupaMostrar(card), 300);
+    lupaT = setTimeout(() => (abajo ? agrandar(card) : lupaMostrar(card)), 300); // abajo: +50 %; las de la mesa conservan la lupa de siempre
   }, true);
   document.addEventListener('pointermove', e => { if (lupaT && lupaIni && Math.hypot(e.clientX - lupaIni.x, e.clientY - lupaIni.y) > 14) { clearTimeout(lupaT); lupaT = null; } }, true);
   ['pointerup', 'pointercancel'].forEach(n => addEventListener(n, lupaCerrar, true));
