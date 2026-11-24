@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#100f0d">
-<title>CUARENTA · Amigos V2.02</title>
+<title>CUARENTA · Amigos V2.03</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="estilos.css">
 </head><body>
@@ -76,7 +76,7 @@
    <div class="score" id="sc0"><label id="n0">Jugador 1</label><strong id="p0">0</strong></div>
    <div class="score" id="sc1"><label id="n1">Jugador 2</label><strong id="p1">0</strong></div>
   </div>
-  <div class="version" id="version">V2.02</div>
+  <div class="version" id="version">V2.03</div>
  </header>
  <main class="board">
   <section class="fila opp"><span class="etq" id="e1"></span><div class="mano" id="mano1"></div><div class="pila" id="pila1"></div></section>
@@ -84,25 +84,43 @@
    <div class="estado" id="estado" hidden></div>
    <div class="mesa" id="mesa"></div>
    <div class="config" id="config">
-    <h2>PRUEBA LOCAL</h2>
-    <p>Dos jugadores en esta pantalla. Más adelante cada amigo jugará desde su celular.</p>
-    <label class="nom" for="nom0">Jugador 1</label><input type="text" id="nom0" maxlength="20" value="Jugador 1" autocomplete="off">
-    <label class="nom" for="nom1">Jugador 2</label><input type="text" id="nom1" maxlength="20" value="Jugador 2" autocomplete="off">
+    <h2>AMIGOS</h2>
+    <p>Juega con un amigo desde otro celular: uno crea la sala y el otro entra con el código.</p>
+    <label class="nom" for="miNombre">Tu nombre</label><input type="text" id="miNombre" maxlength="20" placeholder="Tu nombre" autocomplete="off">
     <label class="opc"><span>38 que no juegan</span><input type="checkbox" id="o38"></label>
     <label class="opc"><span>4 de falta</span><input type="checkbox" id="o4f"></label>
-    <label class="opc"><span>Ver las cartas de los dos</span><input type="checkbox" id="oVer" checked></label>
+    <button class="btn" id="btnCrear" type="button">CREAR SALA</button>
+    <label class="nom" for="codigoSala">Código de la sala</label>
+    <div class="unirse"><input type="text" id="codigoSala" maxlength="3" placeholder="ABC" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text"><button class="btn" id="btnUnirme" type="button">UNIRME</button></div>
+    <details class="local">
+     <summary>Prueba en esta pantalla</summary>
+     <label class="nom" for="nom0">Jugador 1</label><input type="text" id="nom0" maxlength="20" value="Jugador 1" autocomplete="off">
+     <label class="nom" for="nom1">Jugador 2</label><input type="text" id="nom1" maxlength="20" value="Jugador 2" autocomplete="off">
+     <label class="opc"><span>Ver las cartas de los dos</span><input type="checkbox" id="oVer" checked></label>
+     <p>Pulsa el botón de abajo para empezar la prueba.</p>
+    </details>
+   </div>
+   <div class="lobby" id="lobby" hidden>
+    <p class="lb-etq">CÓDIGO DE LA SALA</p>
+    <div class="lb-codigo" id="lbCodigo" aria-live="polite">---</div>
+    <p class="lb-ayuda">Dile a tu amigo que entre a Amigos y escriba este código.</p>
+    <ul class="lb-jugadores" id="lbJugadores"></ul>
+    <p class="lb-opc" id="lbOpciones"></p>
+    <div class="lb-botones"><button class="btn" id="lbCopiar" type="button">COPIAR CÓDIGO</button><button class="btn fin" id="lbSalir" type="button">SALIR DE LA SALA</button></div>
    </div>
   </section>
   <section class="fila yo"><span class="etq" id="e0"></span><div class="mano" id="mano0"></div><div class="pila" id="pila0"></div></section>
   <footer class="pie">
    <div class="aviso" id="aviso" aria-live="polite"></div>
    <a class="btn" id="irSolo" href="../">SOLO</a>
-   <button class="btn espera" id="principal" type="button">COMENZAR</button>
+   <button class="btn espera" id="principal" type="button">PRUEBA LOCAL</button>
   </footer>
  </main>
 </div>
 <div id="velos"></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="vendor/supabase-js-2.118.0.umd.js"></script>
 <script src="reglas.js"></script>
+<script src="red.js"></script>
 <script src="mesa.js"></script>
 </body></html>

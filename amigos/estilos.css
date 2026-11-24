@@ -90,3 +90,22 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
  .mano{min-height:var(--ch)}
  .felt{border-radius:40px;border-width:6px;padding:8px 10px}
 }
+
+/* V2.03 — menú, lobby de la sala y estado de conexión */
+.config .btn,.lobby .btn{width:100%;margin-top:10px}
+.config .unirse{display:flex;gap:8px}.config .unirse input{flex:1 1 auto;min-width:0;text-transform:uppercase;text-align:center;letter-spacing:.3em;font-weight:800}
+.config .unirse .btn{width:auto;margin-top:0;flex:0 0 auto}
+.config details.local{margin-top:12px;text-align:left}
+.config details.local summary{cursor:pointer;font-size:12px;letter-spacing:.08em;color:#bba27b;text-transform:uppercase}
+.config details.local p{margin:8px 0 0;font-size:11px}
+.lobby{width:min(340px,100%);text-align:center;background:#0a1a33cc;border:1px solid #d9c18e88;border-radius:16px;padding:14px}
+.lb-etq{margin:0;font-size:10px;letter-spacing:.2em;color:#bba27b}
+.lb-codigo{font:800 clamp(52px,16vw,84px)/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;color:var(--oro-claro);text-shadow:0 2px 0 #5a3a0c,0 0 18px #f0c75e55;margin:2px 0 4px;padding-left:.14em}
+.lb-ayuda{margin:0 0 10px;font-size:12px;color:#d9e6fa}
+.lb-jugadores{list-style:none;margin:0 0 8px;padding:0;text-align:left}
+.lb-jugadores li{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;border:1px solid #d9c18e55;border-radius:10px;background:#0d2a4d;font-size:14px;color:#fff4d6}
+.lb-jugadores li.vacio{color:#9db4d6;border-style:dashed;font-style:italic}
+.punto{width:10px;height:10px;border-radius:50%;flex:none}.punto.on{background:#52d87a}.punto.off{background:#a85e4c}
+.lb-opc{margin:0;font-size:11px;color:#bba27b}
+.lb-botones{display:flex;gap:8px}.lb-botones .btn{margin-top:10px;padding:10px 8px}
+@media (max-height:760px){.lb-codigo{font-size:48px}.lb-ayuda{margin-bottom:4px}.lobby{padding:8px 10px}.lb-jugadores li{padding:5px 8px}}

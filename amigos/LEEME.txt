@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.02 (prueba local)
+CUARENTA · AMIGOS — V2.03 (prueba local)
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 Esta versión: la mesa (tapete azul) y las reglas del 1 contra 1, jugadas por dos personas en la misma pantalla. Todavía no hay conexión.

@@ -1,0 +1,2 @@
+supabase-js 2.118.0 (versión UMD) — https://github.com/supabase/supabase-js — licencia MIT (ver LICENSE-supabase-js.txt).
+Copia sin cambios del archivo dist/umd/supabase.js del paquete npm @supabase/supabase-js@2.118.0. Se guarda dentro del sitio para no depender de un servidor externo.
