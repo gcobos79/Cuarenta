@@ -1,4 +1,4 @@
-CUARENTA · AMIGOS — V2.03
+CUARENTA · AMIGOS — V2.04
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
@@ -10,8 +10,20 @@ Cómo se juega en línea (1 contra 1)
 5. Si un jugador sale, el otro gana por abandono. Las salas sin actividad se borran solas a las 24 horas.
 También hay una «prueba en esta pantalla» para dos personas con el mismo dispositivo.
 
+Efectos y voz (V2.04)
+- Las jugadas se animan como en Solo: la carta sale de la mano y viaja a la mesa, las cartas de la captura se iluminan una por una y se levantan hacia el montón; suena el golpe de la carta.
+- Letras grandes en el centro para caída, limpia, ronda, bonos, 38, 4 de falta y fin de ciclo (con el nombre de quien suma).
+- La voz de Don Barajón dice lo que pasa (ya no salen mensajes de texto). Lo que haces tú usa las frases grabadas de Solo («Caída tuya.»);
+  lo de tu amigo usa frases fijas y genéricas («Caída de tu amigo.»), sin nombres: se graban UNA sola vez y sirven para todas las partidas.
+  Mientras una frase no esté grabada, suena la voz del navegador. Para grabar las 34 frases nuevas (≈ USD 0,02):  python3 amigos/voz/generar_amigos.py
+- Indicador de turno: «¡TU TURNO!» (dorado y con un sonido suave) o «TURNO DE …», con la fila y el marcador de quien juega resaltados.
+- Botones VOZ y SONIDO para apagar cada cosa.
+
 Archivos
 - reglas.js : las reglas del juego, sin pantalla (copia la mecánica y el puntaje de Solo). El estado es JSON.
+- efectos.js: animación de las cartas, sonido y letras grandes.
+- voz.js    : qué se dice por cada evento y cómo se reproduce (grabación o voz del navegador).
+- voz/      : catálogo de las frases nuevas y el script para grabarlas.
 - red.js    : conexión con Supabase (salas, jugadas, tiempo real, presencia). Usa la llave PÚBLICA del proyecto cuarenta-amigos.
 - mesa.js   : la pantalla (mesa, menú, lobby) y el flujo del anfitrión y de los invitados.
 - estilos.css e index.html : el aspecto (mismo que Solo, con tapete azul).
@@ -21,4 +33,4 @@ Archivos
 
 Seguridad (modelo de confianza entre amigos): no hay cuentas; quien tenga el código puede entrar. Las cartas de los dos viajan dentro del estado de la sala,
 así que alguien con conocimientos técnicos podría verlas. Para endurecerlo, el reparto pasaría a un servidor.
-Pendiente: parejas (2 contra 2), revancha, voz y sonidos.
+Pendiente: parejas (2 contra 2), revancha y grabar las frases nuevas de la voz.
