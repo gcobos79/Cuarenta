@@ -345,3 +345,6 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .card.arrastrando{z-index:60;cursor:grabbing;filter:none!important;box-shadow:0 18px 38px #000d}
 .card.arrastrando.listo{box-shadow:0 0 0 3px #ffe27a,0 0 26px 8px #f6d48dcc}
 
+
+/* V2.30 — sin la sombra gris del toque (el celular dibuja el recuadro de la carta sin agrandar encima de la carta agrandada) */
+.card{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
