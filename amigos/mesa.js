@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.19', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.20', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -45,6 +45,7 @@
   const jugadorEn = dom => (dom === 0 ? abajo() : arriba());
   const nom = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).nombre || 'Esperando…') : nombres[p]);
   const MAY = t => String(t).toLocaleUpperCase();
+  const pad2 = n => String(Math.max(0, Math.round(Number(n) || 0))).padStart(2, '0');
   // Reloj de arena (turno del rival): la arena cae unos 3 segundos y luego da la vuelta (ver estilos.css)
   const RELOJ = '<span class="reloj" role="img" aria-label="En espera"><svg viewBox="0 0 24 32" aria-hidden="true"><path class="arena arriba" d="M6.6 4.6H17.4C17.1 9.6 13.8 11.7 12 14.6 10.2 11.7 6.9 9.6 6.6 4.6Z"/><path class="arena abajo" d="M6.6 27.4H17.4C16.4 23.6 13.5 22.1 12 20 10.5 22.1 7.6 23.6 6.6 27.4Z"/><line class="hilo" x1="12" y1="14.6" x2="12" y2="26.5"/><path class="vidrio" d="M5 3.5H19C19 11 14 13 12 16 14 19 19 21 19 28.5H5C5 21 10 19 12 16 10 13 5 11 5 3.5Z"/><rect class="tapa" x="3" y="1" width="18" height="2.5" rx="1"/><rect class="tapa" x="3" y="28.5" width="18" height="2.5" rx="1"/></svg></span>';
   const ganadas = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).victorias || 0) : victoriasLocal[p]);
@@ -93,13 +94,14 @@
     if (finVisible) dibujarRevancha();
     if (red && !D) dibujarLobby();
     if (!D) {
-      $('#p0').textContent = '0'; $('#p1').textContent = '0'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
-      $('#pila0').innerHTML = ''; $('#pila1').innerHTML = ''; ['sc0', 'sc1'].forEach(i => $('#' + i).classList.remove('activo')); ['.fila.yo', '.fila.opp'].forEach(s => $(s).classList.remove('su-turno', 'sin-turno'));
+      $('#p0').textContent = '00'; $('#p1').textContent = '00'; $('#c0').textContent = '00'; $('#c1').textContent = '00'; $('#mano0').innerHTML = ''; $('#mano1').innerHTML = ''; $('#mesa').innerHTML = '';
+      ['sc0', 'sc1'].forEach(i => $('#' + i).classList.remove('activo')); ['.fila.yo', '.fila.opp'].forEach(s => $(s).classList.remove('su-turno', 'sin-turno'));
       avisoFijo = !modo ? '' : (red ? (S.anfitrion ? 'Cuando entre tu amigo, pulsa COMENZAR.' : 'Esperando a que el anfitrión comience la partida.') : '');
       $('#aviso').textContent = avisoFijo; turnoMioAntes = false;
     } else {
       if (avisoFijo && $('#aviso').textContent === avisoFijo) { $('#aviso').textContent = ''; avisoFijo = ''; } // el mensaje del lobby no se queda durante la partida
-      $('#p0').textContent = D.score[0]; $('#p1').textContent = D.score[1];
+      $('#p0').textContent = pad2(D.score[0]); $('#p1').textContent = pad2(D.score[1]);
+      $('#c0').textContent = pad2(D.captured[0].length); $('#c1').textContent = pad2(D.captured[1].length); // cartas levantadas de cada jugador (ya no hay «Levantadas» en la mesa)
       const ver = $('#oVer').checked;
       [0, 1].forEach(dom => {
         const p = jugadorEn(dom);
@@ -107,7 +109,6 @@
         const cara = red ? p === S.asiento : (ver || D.turn === p);
         $('#mano' + dom).classList.toggle('activa', activa);
         $('#mano' + dom).innerHTML = D.hands[p].map(c => cara ? cartaHTML(c, activa ? ' jugable' : '') : dorsoHTML).join('');
-        $('#pila' + dom).innerHTML = `Levantadas<b>${D.captured[p].length}</b>`;
         $(dom === 0 ? '.fila.yo' : '.fila.opp').classList.toggle('su-turno', jugando && D.turn === p);
         $(dom === 0 ? '.fila.yo' : '.fila.opp').classList.toggle('sin-turno', jugando && D.turn !== p);
       });
@@ -229,7 +230,7 @@
   };
   async function animar(jug) { // sobre lo que se ve ahora (V): sale de la mano, viaja a la mesa y se levantan las cartas
     const dom = jugadorEn(0) === jug.jugador ? 0 : 1;
-    try { await Efectos.animarJugada({ carta: jug.carta, captura: jug.captura, mano: $('#mano' + dom), pila: $('#pila' + dom), mesa: $('#mesa'), vivo: () => !!modo, ajustar: ajustarMesa }); }
+    try { await Efectos.animarJugada({ carta: jug.carta, captura: jug.captura, mano: $('#mano' + dom), pila: $('#sc' + jug.jugador), mesa: $('#mesa'), vivo: () => !!modo, ajustar: ajustarMesa }); }
     catch (e) { console.error(e); document.querySelectorAll('.card.flight').forEach(x => x.remove()); }
   }
   async function procesar(eventos, snap, rapido) {
@@ -528,6 +529,14 @@
   $('#oVer').addEventListener('change', dibujar);
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
+  // la versión se ve flotando mientras se mantiene pulsado el círculo 40
+  { const logo = $('#logo40'), ver = $('#version'); let tv = null;
+    const ocultar = () => { clearTimeout(tv); tv = null; ver.hidden = true; };
+    logo.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button !== 0) return; ocultar(); tv = setTimeout(() => { ver.hidden = false; try { navigator.vibrate && navigator.vibrate(10); } catch (x) { } }, 250); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(n => logo.addEventListener(n, ocultar));
+    logo.addEventListener('contextmenu', e => e.preventDefault());
+    logo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ver.hidden = false; setTimeout(() => { ver.hidden = true; }, 2000); } });
+  }
   // El nombre se pide solo la primera vez: si ya está guardado (aquí o en Solo) se usa y el campo ya no se muestra (sin avisos).
   try {
     const solo = localStorage.getItem('donBarajonPlayerName') || '', propio = localStorage.getItem(CLAVE_NOMBRE) || '';
