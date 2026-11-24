@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.18', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.19', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -135,8 +135,12 @@
   function ajustarMesa() {
     const m = $('#mesa'), f = $('.felt'); if (!m || !f || m.hidden) return;
     m.style.removeProperty('--ch');
-    const c = m.querySelector('.card'); if (!c) return;
-    let h = c.getBoundingClientRect().height * 1.3;
+    if (!m.querySelector('.card')) return;
+    // tamaño base = el de las cartas de la mano. Se mide con una carta de prueba invisible: medir una carta de la mesa fallaba cuando estaba oculta (alto 0) y la carta en vuelo salía de 2 px
+    const sonda = document.createElement('div'); sonda.className = 'card'; sonda.style.cssText = 'position:fixed;left:-999px;top:0;visibility:hidden;pointer-events:none';
+    document.body.appendChild(sonda); const base = sonda.getBoundingClientRect().height; sonda.remove();
+    if (!(base > 20)) return;
+    let h = base * 1.3;
     m.style.setProperty('--ch', h.toFixed(1) + 'px');
     while (f.scrollHeight > f.clientHeight + 1 && h > 40) { h *= .95; m.style.setProperty('--ch', h.toFixed(1) + 'px'); }
   }
