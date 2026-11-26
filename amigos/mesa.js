@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.34', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.35', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -51,8 +51,9 @@
   const ganadas = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).victorias || 0) : victoriasLocal[p]);
   const marcadorPartidas = () => `${nom(0)} ${ganadas(0)} — ${nom(1)} ${ganadas(1)}`;
   const esFigura = c => c.rank === 'J' || c.rank === 'Q' || c.rank === 'K';
-  const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span></div>`;
+  const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''} foto" data-id="${c.id}" style="--foto:url(cartas/${c.id}.webp)"><span class="idx"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span></div>`;
   window.CartaHTML = c => cartaHTML(c);
+  try { (window.requestIdleCallback || (f => setTimeout(f, 800)))(() => { for (let s = 0; s < 4; s++) ['A', '2', '3', '4', '5', '6', '7', 'J', 'Q', 'K'].forEach(r => { new Image().src = 'cartas/' + r + '.' + s + '.webp'; }); }); } catch (e) { } // las 40 imágenes se descargan en segundo plano
   const dorsoHTML = '<div class="card back" aria-hidden="true"></div>';
 
   // ---- avisos y ventanas ----

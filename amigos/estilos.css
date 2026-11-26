@@ -329,3 +329,7 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 
 /* V2.30 — sin la sombra gris del toque (el celular dibuja el recuadro de la carta sin agrandar encima de la carta agrandada) */
 .card{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+
+/* V2.35 — las caras de las cartas son imágenes fijas (amigos/cartas/<id>.webp, hechas a partir del diseño anterior) */
+html body .card.foto{background-image:var(--foto)!important;background-size:100% 100%!important;background-repeat:no-repeat!important;background-position:center!important;background-origin:border-box!important;background-clip:border-box!important;background-color:transparent!important;border-color:transparent!important}
+html body .card.foto>*{visibility:hidden!important}

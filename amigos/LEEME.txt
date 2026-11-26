@@ -1,9 +1,11 @@
-CUARENTA · AMIGOS — V2.34
+CUARENTA · AMIGOS — V2.35
 
 Barajado nuevo (V2.33): la baraja se mezcla con el generador criptográfico del navegador (crypto.getRandomValues, 53 bits por número) en lugar de Math.random. Solo las pruebas automáticas pasan su propio generador repetible.
 Historial completo (Solo, V1.03.77): al terminar cada partida de Solo se guarda, además del resultado, el registro completo de jugadas con el diagnóstico, el orden de la baraja de cada ciclo con las manos repartidas, y los ases ganados del jugador (supabase/007_registro_completo.sql). En Configuración → HISTÓRICOS el administrador puede elegir una o varias partidas, EVALUARLAS (resumen y prueba del barajado) y COPIAR EL HISTORIAL al portapapeles; también ve el CONTROL DE ASES de cada jugador. Las partidas de Amigos solo guardan el resultado rápido.
 
 Cómo terminó cada partida (V2.34 / Solo V1.03.78): el historial guarda el «motivo» (40 puntos, cuatro cartas iguales —termina el juego al instante, incluso con 0–0— o abandono) y la lista lo aclara en vez de mostrar un ganador con 0–0. Históricos de Solo ahora tiene tres vistas: RESUMEN (cuántas veces le ganan a Don Barajón, por nivel, por día, por cuánto y quién), PARTIDAS (lista, evaluar, copiar) y JUGADORES (resultados por jugador y control de ases). supabase/008_motivo_fin_partida.sql.
+
+Cartas como imágenes (V2.35 / Solo V1.03.79): las 40 caras de las cartas son imágenes fijas WebP (cartas/ en Solo y amigos/cartas/ en Amigos), hechas a partir del diseño que ya se usaba, con las esquinas transparentes. Así el aspecto no depende del tamaño ni de la letra del teléfono. El texto y los símbolos siguen en el HTML pero ocultos. Los reversos no cambian. En Solo, el texto de ciclo/sección y turno va en dos líneas y los comentarios de Don aparecen cuando empieza su voz y se quitan al terminar; el botón de configuración se ve todo el tiempo.
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
