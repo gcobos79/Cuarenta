@@ -951,6 +951,16 @@ body .score .score-line .cl:last-child strong{color:#bcd7f5!important}
  filter:drop-shadow(0 0 4px #f6d48d) drop-shadow(0 0 8px #f6d48d99);animation:luzGiro 6s linear infinite}
 @keyframes luzGiro{to{--luz-giro:360deg}}
 @media (prefers-reduced-motion:reduce){#modeBtn::after{animation:none;display:none}}
+/* V1.03.81 — COMENZAR lleva la misma luz de cometa que CON AMIGOS (en vez de parpadear); el engranaje de Configuración queda siempre igual, sin luz ni parpadeo */
+#beginGame{position:relative}
+#beginGame:not(.is-end):not(:disabled)::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;pointer-events:none;
+ background:conic-gradient(from var(--luz-giro),transparent 0deg,transparent 230deg,#f6d48d33 270deg,#f6d48dcc 325deg,#fff8dc 356deg,transparent 360deg);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+ mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+ filter:drop-shadow(0 0 4px #f6d48d) drop-shadow(0 0 8px #f6d48d99);animation:luzGiro 6s linear infinite}
+#beginGame.expect,#beginGame.blink-8s{animation:none!important;filter:none!important}
+@media (prefers-reduced-motion:reduce){#beginGame::after{animation:none!important;display:none!important}}
+#settingsBtn,#settingsBtn.expect,#settingsBtn.blink-8s,#settingsBtn:hover,#settingsBtn:active,#settingsBtn:focus{animation:none!important;filter:none!important;box-shadow:none!important;opacity:1!important;transform:none!important}
 /* V1.03.72 — (1) las estrellas del nivel viven en el tapete, abajo a la derecha, por debajo de las cartas; (2) botones de voz y sonido de carta abajo a la izquierda;
    (3) durante la partida se oculta el botón de configuración y los marcadores ocupan todo el ancho */
 .felt{position:relative}
@@ -1292,7 +1302,7 @@ const R=['A','2','3','4','5','6','7','J','Q','K'],SU=['♠','♥','♦','♣'],V
 var metaQ=[],metaBusy=false,metaSkip=false;
 // las 40 imágenes de las caras se descargan en segundo plano para que no parpadeen al salir
 try{const precargar=()=>{const R=['A','2','3','4','5','6','7','J','Q','K'];for(let s=0;s<4;s++)R.forEach(r=>{const i=new Image();i.src='cartas/'+r+'.'+s+'.webp'})};(window.requestIdleCallback||(f=>setTimeout(f,800)))(precargar)}catch(e){}
-const GAME_VERSION='V1.03.80'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
+const GAME_VERSION='V1.03.81'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
 let gameSession=0;
 let ADMIN_PRUEBAS_ON=false; // V1.03.43: la prueba de galardones (solo administrador) queda oculta; el código se conserva y se activa con ADMIN_PRUEBAS_ON=true
 let S={deck:[],hands:[[],[]],table:[],captured:[[],[]],score:[0,0],dealer:1,turn:0,section:1,mode:'assisted',started:false,lastPlayed:null,rounda:[false,false],rondaClaimed:[false,false],rondaVal:[null,null],rondaFall:[false,false],s1Captured:[false,false],pending:null,cycleNo:1,busy:false,paused:false,aiLevel:1,firstPlayer:0};
@@ -3451,9 +3461,9 @@ function refreshExpected(){
  const $$=id=>document.getElementById(id),mark=(el,on)=>{if(el)el.classList.toggle('expect',!!on&&!el.disabled)};
  const panel=!$$('gamePanel').classList.contains('hidden'),cfg=!$$('settings').classList.contains('hidden'),win=!$$('victory').classList.contains('hidden');
  mark($$('gpYes'),panel);
- mark($$('beginGame'),!panel&&!cfg&&!win&&!S.started);
+ mark($$('beginGame'),false); // V1.03.81: COMENZAR ya no parpadea; lleva la luz de cometa (CSS)
  if(cfg&&!cfgSeen)cfgSeen=true;
- mark($$('settingsBtn'),!panel&&!cfg&&!win&&!S.started&&!cfgSeen); // el engranaje late hasta que se abre Configuración por primera vez
+ mark($$('settingsBtn'),false); // V1.03.81: el engranaje nunca se ilumina ni parpadea
  const lvUp=$$('levelUp');
  const cer=!$$('ceremonia').classList.contains('hidden');
  {const ag=$$('again'),dos=!!(ag&&!ag.hidden&&lvUp&&!lvUp.hidden); // V1.03.43: con dos botones ninguno parpadea (decide el jugador); con uno solo, ese parpadea
