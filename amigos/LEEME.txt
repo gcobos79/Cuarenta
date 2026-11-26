@@ -7,6 +7,8 @@ Cómo terminó cada partida (V2.34 / Solo V1.03.78): el historial guarda el «mo
 
 Cartas como imágenes (V2.35 / Solo V1.03.79): las 40 caras de las cartas son imágenes fijas WebP (cartas/ en Solo y amigos/cartas/ en Amigos), hechas a partir del diseño que ya se usaba, con las esquinas transparentes. Así el aspecto no depende del tamaño ni de la letra del teléfono. El texto y los símbolos siguen en el HTML pero ocultos. Los reversos no cambian. En Solo, el texto de ciclo/sección y turno va en dos líneas y los comentarios de Don aparecen cuando empieza su voz y se quitan al terminar; el botón de configuración se ve todo el tiempo.
 
+Administrador en Solo (V1.03.80): durante la partida el botón de configuración solo lo ve el administrador (antes y después de jugar lo ven todos). Además, dos dedos deslizados hacia arriba (unos 80 píxeles) abren Configuración en HISTÓRICOS, antes o durante la partida; el juego sigue detrás. Con un dedo no pasa nada y no interfiere con arrastrar ni mantener pulsada una carta.
+
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
 Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas: ANFITRIÓN (crea la sala, elige reglas, comparte el código y pulsa COMENZAR) e INVITADO (no crea sala: escribe el código y pulsa UNIRME). Se recuerda la última pestaña usada.
