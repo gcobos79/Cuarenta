@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.36', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.37', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -199,7 +199,7 @@
   const sinAdmin = () => { const c = $('#histSinAdmin'); return !c || c.checked; }; // por defecto el administrador no aparece en los listados
   // cómo terminó la partida (lo guardado o, en las antiguas, lo deducido: Solo sin 40 puntos = cuatro iguales; Amigos sin 40 = abandono)
   const motivoTxt = p => {
-    const m = (p.motivo === 'puntos' || p.motivo === 'cuatro' || p.motivo === 'abandono') ? p.motivo : (Math.max(p.puntaje1 | 0, p.puntaje2 | 0) >= 40 ? 'puntos' : (p.modo === 'solo' ? 'cuatro' : 'abandono'));
+    const m = Math.max(p.puntaje1 | 0, p.puntaje2 | 0) >= 40 ? 'puntos' : ((p.modo ? p.modo === 'solo' : p.jugador2 === 'Don Barajón') ? 'cuatro' : 'abandono'); // la lista del servidor no trae el modo: en Solo el rival es Don Barajón
     return m === 'cuatro' ? ' · por cuatro cartas iguales' : (m === 'abandono' ? ' · porque el otro salió (sin terminar)' : '');
   };
   const fechaCorta = f => { const [, m, d] = String(f).split('-'); return `${d}/${m}`; };
@@ -384,7 +384,7 @@
   async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
     const fin = (eventos || []).find(e => e.tipo === 'fin');
     if (fin && (fin.ganador === 0 || fin.ganador === 1)) { const g = S.jugadores.find(j => j.asiento === fin.ganador); if (g) g.victorias = (g.victorias || 0) + 1; }
-    if (fin) { try { Historial.guardar({ modo: 'amigos', nivel: 'Amistoso', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '', motivo: fin.motivo === 'abandono' ? 'abandono' : (fin.motivo === 'cuatro' ? 'cuatro' : 'puntos'), admin: S.jugadores.some(j => j.adm) }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
+    if (fin) { try { Historial.guardar({ modo: 'amigos', nivel: 'Amistoso', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '', admin: S.jugadores.some(j => j.adm) }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
     const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
     if (E) {
       S.version++;

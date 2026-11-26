@@ -21,7 +21,7 @@
     const d = ahora || new Date();
     const j1 = nombre(p.jugador1, 'Jugador 1'), j2 = nombre(p.jugador2, 'Jugador 2');
     return { id: p.id || nuevoId(), fecha: fechaLocal(d), hora: horaLocal(d), modo: p.modo === 'solo' ? 'solo' : 'amigos', jugador1: j1, jugador2: j2,
-      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), admin: !!p.admin, nivel: nivelDe(p), ...(['puntos', 'cuatro', 'abandono'].includes(p.motivo) ? { motivo: p.motivo } : {}), ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
+      puntaje1: punto(p.puntaje1), puntaje2: punto(p.puntaje2), admin: !!p.admin, nivel: nivelDe(p), ganador: nombre(p.ganador, punto(p.puntaje1) >= punto(p.puntaje2) ? j1 : j2) };
   }
   // Fecha «desde» para el filtro: hoy = 1 día, 3 días, 5 días; todos = null.
   function desde(dias, ahora) {
