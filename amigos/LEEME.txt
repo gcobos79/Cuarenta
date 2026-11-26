@@ -1,4 +1,7 @@
-CUARENTA · AMIGOS — V2.28
+CUARENTA · AMIGOS — V2.33
+
+Barajado nuevo (V2.33): la baraja se mezcla con el generador criptográfico del navegador (crypto.getRandomValues, 53 bits por número) en lugar de Math.random. Solo las pruebas automáticas pasan su propio generador repetible.
+Historial completo (Solo, V1.03.77): al terminar cada partida de Solo se guarda, además del resultado, el registro completo de jugadas con el diagnóstico, el orden de la baraja de cada ciclo con las manos repartidas, y los ases ganados del jugador (supabase/007_registro_completo.sql). En Configuración → HISTÓRICOS el administrador puede elegir una o varias partidas, EVALUARLAS (resumen y prueba del barajado) y COPIAR EL HISTORIAL al portapapeles; también ve el CONTROL DE ASES de cada jugador. Las partidas de Amigos solo guardan el resultado rápido.
 
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 

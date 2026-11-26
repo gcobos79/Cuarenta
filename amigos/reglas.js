@@ -15,8 +15,15 @@
     SU.forEach((s, i) => R.forEach(r => out.push({ id: r + '.' + i, rank: r, suit: s, value: V[r], color: (i === 1 || i === 2) ? 'red' : 'black' })));
     return out;
   }
+  // V2.33: el azar sale del generador criptográfico del navegador (53 bits por número); solo las pruebas pasan su propio generador repetible
+  function azarSeguro() {
+    const c = (typeof crypto !== 'undefined') ? crypto : (typeof self !== 'undefined' ? self.crypto : null);
+    if (!c || !c.getRandomValues) return Math.random();
+    const b = new Uint32Array(2); c.getRandomValues(b);
+    return ((b[0] >>> 5) * 67108864 + (b[1] >>> 6)) / 9007199254740992;
+  }
   function mezclar(a, rnd) {
-    rnd = rnd || Math.random; a = a.slice();
+    rnd = rnd || azarSeguro; a = a.slice();
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
@@ -79,7 +86,7 @@
 
   // ---- partida ----
   function nueva(op) {
-    op = op || {}; const rnd = op.rnd || Math.random;
+    op = op || {}; const rnd = op.rnd || azarSeguro;
     const E = {
       v: 1, opts: { rule38: !!op.rule38, falta4: !!op.falta4 },
       deck: mezclar(crearBaraja(), rnd), hands: [[], []], table: [], captured: [[], []], score: [0, 0],
