@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.35', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.36', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -583,16 +583,8 @@
   $('#oVer').addEventListener('change', dibujar);
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.opcion')) { e.preventDefault(); e.target.click(); } });
   $('#version').textContent = VERSION;
-  // la versión se ve flotando mientras se mantiene pulsado el círculo 40
-  { const logo = $('#logo40'), ver = $('#version'); let tv = null;
-    const ocultar = () => { clearTimeout(tv); tv = null; ver.hidden = true; };
-    logo.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button !== 0) return; ocultar(); tv = setTimeout(() => { ver.hidden = false; try { navigator.vibrate && navigator.vibrate(10); } catch (x) { } }, 250); });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(n => logo.addEventListener(n, ocultar));
-    logo.addEventListener('contextmenu', e => e.preventDefault());
-    logo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ver.hidden = false; setTimeout(() => { ver.hidden = true; }, 2000); } });
-    // el círculo 40 se ve unos 5 segundos al abrir y luego desaparece: los marcadores usan ese espacio
-    setTimeout(() => { logo.classList.add('saliendo'); setTimeout(() => { logo.hidden = true; }, 500); }, 5000);
-    // sin el círculo, la versión se ve manteniendo pulsado un marcador (1 segundo)
+  // la versión se ve manteniendo pulsado un marcador (1 segundo)
+  { const ver = $('#version');
     const marc = document.querySelector('.scores'); let tm = null;
     const quitarM = () => { clearTimeout(tm); tm = null; ver.hidden = true; };
     marc.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button !== 0) return; quitarM(); tm = setTimeout(() => { ver.hidden = false; try { navigator.vibrate && navigator.vibrate(10); } catch (x) { } }, 1000); });

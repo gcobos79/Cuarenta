@@ -1,4 +1,6 @@
-CUARENTA · AMIGOS — V2.35
+CUARENTA · AMIGOS — V2.36
+
+Sin círculo 40 (V2.36): se quitó por completo el círculo 40 del encabezado (y amigos/logo40.svg). Los marcadores ocupan todo el ancho desde el inicio. La versión se ve manteniendo pulsado un marcador durante 1 segundo.
 
 Barajado nuevo (V2.33): la baraja se mezcla con el generador criptográfico del navegador (crypto.getRandomValues, 53 bits por número) en lugar de Math.random. Solo las pruebas automáticas pasan su propio generador repetible.
 Historial completo (Solo, V1.03.77): al terminar cada partida de Solo se guarda, además del resultado, el registro completo de jugadas con el diagnóstico, el orden de la baraja de cada ciclo con las manos repartidas, y los ases ganados del jugador (supabase/007_registro_completo.sql). En Configuración → HISTÓRICOS el administrador puede elegir una o varias partidas, EVALUARLAS (resumen y prueba del barajado) y COPIAR EL HISTORIAL al portapapeles; también ve el CONTROL DE ASES de cada jugador. Las partidas de Amigos solo guardan el resultado rápido.
