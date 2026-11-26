@@ -8,27 +8,25 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .app{height:100vh;height:100dvh;display:flex;flex-direction:column;max-width:1200px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px calc(env(safe-area-inset-bottom,0px) + 8px)}
 
 /* encabezado */
-.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.top{display:flex;align-items:center;margin-bottom:8px}
 .brand small{display:block;font-size:9px;letter-spacing:3px;color:#c2a778}
 .brand h1{font:800 clamp(24px,5vw,44px)/.95 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:5px;color:var(--oro-claro);margin:4px 0 0}
-.scores{display:flex;gap:9px}
-.score{min-width:92px;max-width:34vw;text-align:center;border:1px solid #a88754aa;background:#1a1712;border-radius:10px;padding:6px 10px;transition:box-shadow .25s,border-color .25s}
+.score{text-align:center;border:1px solid #a88754aa;background:#1a1712;border-radius:10px;transition:box-shadow .25s,border-color .25s}
 .score.activo{border-color:var(--oro-claro);box-shadow:0 0 12px 1px #f0d9a966}
-.score label{display:block;font-size:9px;letter-spacing:2px;color:#bba27b;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score label{display:block;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .score strong{font:700 30px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;color:#f4dfb4}
 .version{font-size:10px;letter-spacing:.14em;color:#a89a7a;text-align:right}
 
 /* tablero */
 .board{flex:1;display:flex;flex-direction:column;min-height:0;border:7px solid #3b291e;border-radius:24px;padding:8px 10px;background:linear-gradient(145deg,#16202e,#0b121c);box-shadow:0 25px 70px #000b,inset 0 0 0 1px #c19a5b66}
 .fila{display:flex;align-items:center;gap:10px;min-height:calc(var(--ch) + 6px)}
-.fila.opp{border-bottom:1px solid #bca16d33;padding-bottom:6px}
 .etq{flex:0 0 auto;font:600 10px "DM Sans",sans-serif;letter-spacing:.14em;color:#bba27b;writing-mode:horizontal-tb;max-width:64px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis}
 .mano{flex:1;display:flex;justify-content:center;align-items:center;gap:clamp(3px,.8vw,9px);min-height:var(--ch)}
 .pila{flex:0 0 auto;text-align:center;font-size:9px;color:#c9b795;line-height:1.2;min-width:54px}
 .pila b{display:block;font:700 22px/1 "Barlow Condensed",sans-serif;color:#fff0cf}
-.felt{position:relative;flex:1;min-height:96px;margin:6px 0;border-radius:70px;background:radial-gradient(ellipse,var(--fieltro1),var(--fieltro2) 58%,var(--fieltro3));border:7px solid #65462f;box-shadow:inset 0 0 40px #031026aa,0 9px 22px #0009;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 14px;overflow:auto}
+.felt{position:relative;flex:1;min-height:96px;margin:6px 0;border-radius:70px;background:radial-gradient(ellipse,var(--fieltro1),var(--fieltro2) 58%,var(--fieltro3));border:7px solid #65462f;box-shadow:inset 0 0 40px #031026aa,0 9px 22px #0009;display:flex;flex-direction:column;align-items:center;padding:10px 14px;overflow:auto}
 .estado{position:absolute;top:8px;left:0;right:0;text-align:center;font:600 10px "DM Sans",sans-serif;letter-spacing:.16em;color:#d9e6fa;opacity:.85;text-transform:uppercase;padding:0 14px}
-.mesa{display:flex;flex-wrap:wrap;gap:clamp(4px,1vw,9px);justify-content:center;align-items:center;width:100%;margin-top:14px}
+.mesa{display:flex;flex-wrap:wrap;gap:clamp(4px,1vw,9px);justify-content:center;align-items:center;width:100%}
 
 /* cartas (mismas proporciones y figuras que Solo) */
 .card{width:var(--cw);height:var(--ch);background:linear-gradient(135deg,#fffef9,#e8e0d1);border:1px solid #d2c7b5;border-radius:7px;color:#171717;position:relative;box-shadow:0 6px 12px #0009;flex:none;font-family:Georgia,serif;cursor:default;transition:transform .2s,box-shadow .2s}
@@ -48,7 +46,7 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .card.mini{--ch:84px;--cw:calc(var(--ch)*.7);cursor:default}
 
 /* pie y botones */
-.pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;padding:8px 2px 0}
+.pie{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:8px 2px 0}
 .aviso{flex:1 0 100%;min-height:2.4em;font-size:12px;line-height:1.3;color:#d7c5a4}
 .btn{display:inline-block;border:1px solid var(--oro);background:#171b17;color:var(--oro-claro);padding:12px 20px;border-radius:8px;font:800 11px "DM Sans",sans-serif;letter-spacing:1px;text-decoration:none;cursor:pointer;box-shadow:0 0 8px 1px #c9a45c4d;text-align:center}
 .btn:disabled,.btn[aria-disabled="true"]{opacity:.45;box-shadow:none;cursor:not-allowed}
@@ -58,10 +56,10 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .btn.espera:not(:disabled){animation:pulso 1s ease-in-out infinite}
 
 /* configuración dentro del tapete */
-.config{width:min(340px,100%);text-align:center;background:#0a1a33cc;border:1px solid #d9c18e88;border-radius:16px;padding:14px 14px 12px}
+.config{text-align:center;background:#0a1a33cc;border:1px solid #d9c18e88;border-radius:16px;padding:14px 14px 12px}
 .config h2{margin:0 0 4px;font:800 22px "Barlow Condensed",sans-serif;letter-spacing:2px;color:var(--oro-claro)}
 .config p{margin:0 0 10px;font-size:12px;line-height:1.35;color:#d9e6fa}
-.config label.nom{display:block;text-align:left;font-size:10px;letter-spacing:.12em;color:#bba27b;margin:6px 0 2px;text-transform:uppercase}
+.config label.nom{display:block;text-align:left;text-transform:uppercase}
 .config input[type=text]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d9c18e88;background:#0d2a4d;color:#fff4d6;font-size:16px}
 .config .opc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 0;font-size:12px;color:#e6dcc3;text-align:left}
 .config .opc input{width:20px;height:20px;accent-color:#c9a45c}
@@ -100,10 +98,10 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .config details.local p{margin:8px 0 0;font-size:11px}
 .lobby{width:min(340px,100%);text-align:center;background:#0a1a33cc;border:1px solid #d9c18e88;border-radius:16px;padding:14px}
 .lb-etq{margin:0;font-size:10px;letter-spacing:.2em;color:#bba27b}
-.lb-codigo{font:800 clamp(52px,16vw,84px)/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;color:var(--oro-claro);text-shadow:0 2px 0 #5a3a0c,0 0 18px #f0c75e55;margin:2px 0 4px;padding-left:.14em}
+.lb-codigo{font:800 clamp(52px,16vw,84px)/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-shadow:0 2px 0 #5a3a0c,0 0 18px #f0c75e55;margin:2px 0 4px;padding-left:.14em}
 .lb-ayuda{margin:0 0 10px;font-size:12px;color:#d9e6fa}
 .lb-jugadores{list-style:none;margin:0 0 8px;padding:0;text-align:left}
-.lb-jugadores li{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;border:1px solid #d9c18e55;border-radius:10px;background:#0d2a4d;font-size:14px;color:#fff4d6}
+.lb-jugadores li{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;border:1px solid #d9c18e55;border-radius:10px;font-size:14px;color:#fff4d6}
 .lb-jugadores li.vacio{color:#9db4d6;border-style:dashed;font-style:italic}
 .punto{width:10px;height:10px;border-radius:50%;flex:none}.punto.on{background:#52d87a}.punto.off{background:#a85e4c}
 .lb-opc{margin:0;font-size:11px;color:#bba27b}
@@ -121,35 +119,28 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 .points.event-message{inset:0;width:100vw;max-width:none;padding:24px 5vw;display:grid;place-items:center;font-size:clamp(38px,6.5vw,72px);line-height:1.12;letter-spacing:2px;text-align:center;white-space:pre-line;animation:eventPop 1.8s ease-in-out forwards}
 @keyframes eventPop{0%{opacity:0;transform:scale(.78)}12%,84%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
 @media(max-width:680px){.points.event-message{font-size:clamp(30px,8vw,48px);padding:16px 5vw}}
-.derecha{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.derecha{flex-direction:column;align-items:flex-end;gap:5px}
 .ajustes{display:flex;gap:5px}
 .tg{font:700 9px "DM Sans",sans-serif;letter-spacing:.1em;padding:5px 7px;border-radius:6px;border:1px solid var(--oro);background:#171b17;color:var(--oro-claro);cursor:pointer}
-.tg.off{opacity:.5;text-decoration:line-through}
 .mesa{margin-top:46px}
 .turno{position:absolute;top:34px;left:50%;transform:translateX(-50%);max-width:92%;padding:6px 18px;border-radius:999px;font:800 clamp(13px,3.8vw,19px)/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;color:#d9e6fa;background:#0a1a33d9;border:1px solid #d9c18e55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
 .turno.mio{color:#2a1706;background:linear-gradient(180deg,#ffe27a,#e0b13a);border-color:#fff3b0;box-shadow:0 0 18px 3px #f6d48daa;animation:turnoPulso 1.3s ease-in-out infinite}
 @keyframes turnoPulso{0%,100%{box-shadow:0 0 10px 1px #f6d48d88}50%{box-shadow:0 0 24px 6px #f6d48dcc}}
-.fila.su-turno{border-radius:12px;background:linear-gradient(180deg,#f0d9a91c,transparent);box-shadow:inset 0 0 0 1px #f0d9a966}
 /* las cartas de quien no tiene el turno se oscurecen y se aclaran cuando le toca */
 .fila .card{transition:transform .2s,box-shadow .2s,filter .35s}
 .fila.sin-turno .card{filter:brightness(.42) saturate(.8)}
 @media (prefers-reduced-motion:reduce){.turno.mio{animation:none}.points,.points.event-message{animation-duration:.01s}}
 /* ajustes: voz y sonido a la izquierda de la fila de botones; marcos de turno sin rozar las cartas */
 .derecha{display:none}
-.pie .ajustes{margin-right:auto;display:flex;gap:6px;align-items:center}
-.pie .tg{padding:9px 10px;font-size:10px}
-.fila{padding:3px 4px}
-.pie .aviso{flex:1 1 0;min-width:0}
-.pie .ajustes{margin-right:0}
-.pie .salto{display:none}
-.pie .tg{padding:7px 9px;font-size:9px}
+.pie .ajustes{display:flex;align-items:center}
+.pie .aviso{min-width:0}
 .pie .salto{display:none}
 .pie{flex-wrap:wrap}.pie .aviso{flex:1 1 100%}
 .pie .ajustes{margin-right:auto;gap:4px}
 @media (max-width:700px){.pie{gap:5px}.pie .tg{padding:7px 7px;font-size:8.5px;letter-spacing:.04em}.pie .btn{padding-left:10px;padding-right:10px;font-size:12px;letter-spacing:.04em;white-space:nowrap}}
 
 /* V2.05 — partidas ganadas y revancha en la misma sala */
-.score .gan{display:block;margin-top:1px;font:600 8px "DM Sans",sans-serif;letter-spacing:.14em;color:#bba27b;text-transform:uppercase;white-space:nowrap}
+.score .gan{display:block;font:600 8px "DM Sans",sans-serif;letter-spacing:.14em;color:#bba27b;text-transform:uppercase;white-space:nowrap}
 .revancha .rv-marcador li{justify-content:space-between}
 .revancha .rv-marcador b{font:800 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--oro-claro);letter-spacing:.05em}
 .revancha .rv-marcador li.gana{border-color:var(--oro-claro);box-shadow:0 0 12px 1px #f0d9a955}
@@ -161,9 +152,9 @@ body{margin:0;background:#100f0d;color:#f3ead9;font-family:"DM Sans",system-ui,-
 body.sin-mesa .fila{display:none}
 
 /* V2.06 — mejor distribución: «¡TU TURNO!» y el estado van en su propio renglón (ya no tapan las cartas de la mesa) y el aviso vacío no ocupa espacio */
-.felt>.estado{position:static;flex:none;width:100%;padding:0 4px;margin-top:0}
+.felt>.estado{position:static;flex:none;width:100%;margin-top:0}
 .felt>.turno{position:static;transform:none;flex:none;margin:5px 0 4px}
-.felt>.mesa{margin-top:0;flex:1 1 auto;min-height:0;align-content:center}
+.felt>.mesa{margin-top:0;min-height:0;align-content:center}
 .aviso:empty{display:none}
 .felt>.mesa{flex:1 0 auto} /* si no cabe, el tapete se desplaza en vez de montar las cartas sobre el turno */
 @media (max-height:700px) and (max-width:700px){:root{--ch:clamp(50px,min(12.5dvh,calc((100vw - 64px)/5/.74)),140px)}}
@@ -183,16 +174,13 @@ body.sin-mesa .fila{display:none}
 .tg .tacha{display:none;stroke:#f0c4b5;stroke-width:2.2}
 .tg.off{opacity:.65;text-decoration:none;color:#9d917a;border-color:#7a6a49}
 .tg.off .tacha{display:inline}
-.config p.como{font-size:13px;line-height:1.4;margin-bottom:8px}.config p.como b{color:var(--oro-claro)}
 body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se centra en el tapete */
 
 /* V2.06 — el menú separa lo que hace el anfitrión y lo que hace el invitado */
 .config{width:min(380px,100%)}
-.config p.como{font-size:12px;line-height:1.4;margin-bottom:6px}
-.config p.como b{color:var(--oro-claro)}
-.config .rol{margin-top:10px;padding:8px 10px 10px;border:1px solid #d9c18e55;border-radius:12px;background:#07142b88;text-align:left}
+.config .rol{padding:8px 10px 10px;border:1px solid #d9c18e55;text-align:left}
 .config .rol h3{margin:0 0 4px;font:800 15px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;color:var(--oro-claro)}
-.config .rol p{margin:0 0 4px;font-size:11.5px;line-height:1.4;color:#d9e6fa;text-align:left}
+.config .rol p{margin:0 0 4px;color:#d9e6fa;text-align:left}
 .config .rol p b{color:#fff4d6}
 .config .rol .btn{margin-top:8px}
 
@@ -206,7 +194,7 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 #histLista{max-height:52dvh;overflow:auto;padding-right:2px}
 .hist h4{margin:10px 0 4px;font:800 14px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;color:var(--oro-claro)}
 .hist .vacio{margin:4px 0 8px;font-size:12px;color:#d9e6fa;opacity:.85}
-.fila-h{display:grid;grid-template-columns:1fr auto;gap:1px 8px;align-items:center;padding:7px 8px;margin:4px 0;border:1px solid #d9c18e44;border-radius:10px;background:#07142b99;font-size:12px}
+.fila-h{display:grid;gap:1px 8px;align-items:center;padding:7px 8px;margin:4px 0;border:1px solid #d9c18e44;border-radius:10px;background:#07142b99;font-size:12px}
 .fila-h .cuando{grid-column:1/-1;font-size:10px;letter-spacing:.1em;color:#bba27b;text-transform:uppercase}
 .fila-h .quien{font-weight:600;color:#fff4d6}.fila-h .quien b{color:var(--oro-claro);font-size:15px}
 .fila-h .extra{grid-column:1;font-size:11px;color:#d9e6fa;opacity:.9}
@@ -228,7 +216,6 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 @media (prefers-reduced-motion:reduce){.reloj,.reloj .arriba,.reloj .abajo,.reloj .hilo{animation:none}.reloj .arriba{transform:scaleY(.5)}.reloj .abajo{transform:scaleY(.5)}}
 
 /* V2.07 — lupa: carta de frente 3 veces más grande mientras se mantiene pulsada */
-.card{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .lupa{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none;background:#000a;animation:lupaEntra .12s ease-out}
 .lupa .card{transform:none!important;box-shadow:0 0 0 3px #f6d48d,0 18px 50px #000e;border-radius:calc(var(--ch)*.05);filter:none!important}
 @keyframes lupaEntra{from{opacity:0}to{opacity:1}}
@@ -241,9 +228,9 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 
 /* V2.08 — ANFITRIÓN e INVITADO en pestañas separadas */
 .config .pestanas{display:flex;gap:6px;margin:10px 0 0}
-.config .pestana{flex:1;padding:11px 8px;border-radius:10px 10px 0 0;border:1px solid #d9c18e55;border-bottom:none;background:#07142b66;color:#bba27b;font:800 12px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
-.config .pestana.activa{background:#07142bcc;color:var(--oro-claro);border-color:var(--oro);box-shadow:0 -2px 10px #f0d9a933}
-.config .rol{margin-top:0;border-radius:0 0 12px 12px;border-color:var(--oro)}
+.config .pestana{flex:1;padding:11px 8px;border-radius:10px 10px 0 0;border:1px solid #d9c18e55;border-bottom:none;color:#bba27b;font:800 12px "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
+.config .pestana.activa{color:var(--oro-claro);box-shadow:0 -2px 10px #f0d9a933}
+.config .rol{margin-top:0;border-radius:0 0 12px 12px}
 .config .rol .quien-es{margin:0 0 4px;font:800 15px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;color:var(--oro-claro);text-transform:uppercase}
 
 /* V2.10 — los colores del panel del historial (azul con degradado, borde y títulos dorados, tarjetas azul marino) en el menú, la sala y el panel de revancha */
@@ -287,8 +274,7 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .scores{flex:1 1 auto;min-width:0;display:flex;gap:6px}
 .score{flex:1 1 0;min-width:0;max-width:none;padding:5px 6px}
 .score label{font-size:10px;letter-spacing:.1em;color:#e8d9b4}
-.score .pc{display:flex;align-items:baseline;justify-content:center;gap:5px;white-space:nowrap;font:600 clamp(12px,3.6vw,15px)/1.25 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.02em;color:#d9c9a3}
-.score .pc b{font-weight:800;font-size:1.25em;color:#f4dfb4;letter-spacing:.03em}
+.score .pc{font:600 clamp(12px,3.6vw,15px)/1.25 "Barlow Condensed","Arial Narrow",sans-serif;color:#d9c9a3}
 .score .pc i{font-style:normal;color:#a88754}
 .score .gan{font-size:8px;margin-top:0}
 .ver-flot{position:fixed;left:calc(env(safe-area-inset-left,0px) + 10px);top:calc(env(safe-area-inset-top,0px) + 70px);z-index:70;padding:6px 12px;border-radius:999px;background:#0a0a0af2;border:1.5px solid #d9c18e;color:#f0d9a9;font:800 13px/1 "Barlow Condensed","DM Sans",sans-serif;letter-spacing:.12em;box-shadow:0 8px 22px #000b;pointer-events:none}
@@ -306,11 +292,9 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 .score{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 @media (max-width:700px){
  .score{container-type:inline-size}
- .score .pc{font-size:min(clamp(14px,4.7vw,21px),13.2cqw)}
 }
 
 /* V2.25 — los números de los marcadores van en letra normal (no condensada) y de tamaño normal */
-.score .pc b{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;font-size:.95em;letter-spacing:0;color:#fff0cf}
 @media (max-width:700px){.score .pc{font-size:min(clamp(14px,4.7vw,21px),11.6cqw)}}
 
 
@@ -336,9 +320,6 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 @media (min-width:701px){.score .pc b{font-size:32px}.score .pc .et{font-size:13px}.score .pc{gap:18px}}
 
 /* V2.29 — arrastrar una carta de abajo hacia arriba para botarla */
-.fila.yo .card{touch-action:none}
-.card.arrastrando{z-index:60;cursor:grabbing;filter:none!important;box-shadow:0 18px 38px #000d}
-.card.arrastrando.listo{box-shadow:0 0 0 3px #ffe27a,0 0 26px 8px #f6d48dcc}
 
 /* V2.29 — arrastrar una carta de abajo hacia arriba para botarla */
 .fila.yo .card{touch-action:none}

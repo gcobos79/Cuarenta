@@ -1,5 +1,0 @@
-40 SOLO — copia estable de CUARENTA · Don Barajón V1.03.49
-Etiqueta de git: 40-solo-v1.03.49 (commit ea51ad7). Esta copia NO se modifica.
-Único cambio respecto al original: las rutas relativas apuntan a la carpeta superior (../manifest.webmanifest, ../icon-*.png,
-../apple-touch-icon.png y ../audio/) para que funcione desde esta subcarpeta. La carpeta audio/ es compartida y solo crece:
-no se borra ni se renombra ningún archivo existente.

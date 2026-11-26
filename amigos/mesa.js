@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.31', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.32', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -50,7 +50,6 @@
   const RELOJ = '<span class="reloj" role="img" aria-label="En espera"><svg viewBox="0 0 24 32" aria-hidden="true"><path class="arena arriba" d="M6.6 4.6H17.4C17.1 9.6 13.8 11.7 12 14.6 10.2 11.7 6.9 9.6 6.6 4.6Z"/><path class="arena abajo" d="M6.6 27.4H17.4C16.4 23.6 13.5 22.1 12 20 10.5 22.1 7.6 23.6 6.6 27.4Z"/><line class="hilo" x1="12" y1="14.6" x2="12" y2="26.5"/><path class="vidrio" d="M5 3.5H19C19 11 14 13 12 16 14 19 19 21 19 28.5H5C5 21 10 19 12 16 10 13 5 11 5 3.5Z"/><rect class="tapa" x="3" y="1" width="18" height="2.5" rx="1"/><rect class="tapa" x="3" y="28.5" width="18" height="2.5" rx="1"/></svg></span>';
   const ganadas = p => (modo === 'red' ? ((S.jugadores.find(j => j.asiento === p) || {}).victorias || 0) : victoriasLocal[p]);
   const marcadorPartidas = () => `${nom(0)} ${ganadas(0)} — ${nom(1)} ${ganadas(1)}`;
-  const cartaTxt = c => c.rank + c.suit;
   const esFigura = c => c.rank === 'J' || c.rank === 'Q' || c.rank === 'K';
   const cartaHTML = (c, extra) => `<div class="card ${c.color}${esFigura(c) ? ' figcard' : ''}${extra || ''}" data-id="${c.id}"><span class="idx"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span>${esFigura(c) ? `<svg class="fig" viewBox="0 0 200 280" aria-hidden="true"><use href="#fig${c.rank}"/></svg>` : `<b class="pip">${c.suit}</b>`}<span class="idx bottom"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span></div>`;
   window.CartaHTML = c => cartaHTML(c);
@@ -197,7 +196,7 @@
 
   // ---- historial de partidas (solo el administrador) ----
   const sinAdmin = () => { const c = $('#histSinAdmin'); return !c || c.checked; }; // por defecto el administrador no aparece en los listados
-  const fechaCorta = f => { const [y, m, d] = String(f).split('-'); return `${d}/${m}`; };
+  const fechaCorta = f => { const [, m, d] = String(f).split('-'); return `${d}/${m}`; };
   async function cargarHistorial() {
     const lista = $('#histLista'); if (!lista) return; lista.innerHTML = '<p class="vacio">Cargando…</p>';
     document.querySelectorAll('#histPanel .chip').forEach(c => c.classList.toggle('activo', Number(c.dataset.dias) === histDias));
@@ -312,7 +311,7 @@
     });
   }
 
-  function irASolo() { try { if (!window.__sinSalto) location.href = '../'; } catch (e) { } } // TERMINAR PARTIDA devuelve al juego Solo
+  function irASolo() { try { if (!window.__sinSalto) location.href = '../?v=' + Date.now(); } catch (e) { } } // TERMINAR PARTIDA devuelve al juego Solo
   async function terminar() {
     if (!E || E.estado !== 'jugando' || ocupado) return;
     const red = modo === 'red';
@@ -495,7 +494,8 @@
   $('#btnVoz').onclick = () => { Voz.alternar(); dibujar(); if (Voz.activa()) Voz.hablar('La voz está activada.'); };
   $('#btnSonido').onclick = () => { Efectos.alternarSonido(); dibujar(); };
   $('#codigoSala').addEventListener('input', e => { e.target.value = Red.normaliza(e.target.value); });
-  $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') e.preventDefault(); });
+  $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; } e.preventDefault(); irASolo(); }); // V2.32: siempre pide a la red la versión publicada de Solo
+  window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); }); // al volver con «atrás» no se muestra una copia vieja
   // ---- lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo se leen sin esfuerzo) ----
   let lupaT = null, lupaEl = null, lupaIni = null, lupaSuprime = 0, cartaGrande = null;
   function lupaCerrar() {
