@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.33', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.34', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -196,6 +196,11 @@
 
   // ---- historial de partidas (solo el administrador) ----
   const sinAdmin = () => { const c = $('#histSinAdmin'); return !c || c.checked; }; // por defecto el administrador no aparece en los listados
+  // cómo terminó la partida (lo guardado o, en las antiguas, lo deducido: Solo sin 40 puntos = cuatro iguales; Amigos sin 40 = abandono)
+  const motivoTxt = p => {
+    const m = (p.motivo === 'puntos' || p.motivo === 'cuatro' || p.motivo === 'abandono') ? p.motivo : (Math.max(p.puntaje1 | 0, p.puntaje2 | 0) >= 40 ? 'puntos' : (p.modo === 'solo' ? 'cuatro' : 'abandono'));
+    return m === 'cuatro' ? ' · por cuatro cartas iguales' : (m === 'abandono' ? ' · porque el otro salió (sin terminar)' : '');
+  };
   const fechaCorta = f => { const [, m, d] = String(f).split('-'); return `${d}/${m}`; };
   async function cargarHistorial() {
     const lista = $('#histLista'); if (!lista) return; lista.innerHTML = '<p class="vacio">Cargando…</p>';
@@ -204,7 +209,7 @@
       const r = await Historial.listar(claveAdmin, histDias, sinAdmin()), act = r.actuales || [], par = r.partidas || [];
       if (!$('#histLista')) return;
       let h = `<h4>JUEGOS ACTUALES (${act.length})</h4>` + (act.length ? act.map(a => `<div class="fila-h actual"><span class="cuando">Sala ${esc(a.codigo)}</span><span class="quien">${esc(a.jugador1)} <b>${a.puntaje1}</b> – <b>${a.puntaje2}</b> ${esc(a.jugador2)}</span><span class="extra">Ciclo ${a.ciclo || 1} · sección ${a.seccion || 1}/4 · en juego</span></div>`).join('') : '<p class="vacio">No hay juegos en curso.</p>');
-      h += `<h4>ANTERIORES (${par.length})</h4>` + (par.length ? par.map(p => `<div class="fila-h"><span class="cuando">${fechaCorta(p.fecha)} · ${esc(p.hora)}</span><span class="quien">${esc(p.jugador1)} <b>${p.puntaje1}</b> – <b>${p.puntaje2}</b> ${esc(p.jugador2)}</span><span class="extra">Ganó ${esc(p.ganador)}${p.nivel ? ` · Nivel ${esc(p.nivel)}` : ''}</span></div>`).join('') : '<p class="vacio">No hay partidas terminadas en este periodo.</p>');
+      h += `<h4>ANTERIORES (${par.length})</h4>` + (par.length ? par.map(p => `<div class="fila-h"><span class="cuando">${fechaCorta(p.fecha)} · ${esc(p.hora)}</span><span class="quien">${esc(p.jugador1)} <b>${p.puntaje1}</b> – <b>${p.puntaje2}</b> ${esc(p.jugador2)}</span><span class="extra">Ganó ${esc(p.ganador)}${motivoTxt(p)}${p.nivel ? ` · Nivel ${esc(p.nivel)}` : ''}</span></div>`).join('') : '<p class="vacio">No hay partidas terminadas en este periodo.</p>');
       lista.innerHTML = h;
     } catch (e) {
       lista.innerHTML = `<p class="vacio">${e.message === 'acceso-denegado' ? 'Acceso denegado: la clave de administrador no coincide con la registrada en el historial.' : 'No se pudo cargar el historial. Revisa tu conexión.'}</p>`;
@@ -378,7 +383,7 @@
   async function publicar(eventos, extra) { // el anfitrión guarda lo nuevo en la sala (sin partida todavía: solo la lista de jugadores)
     const fin = (eventos || []).find(e => e.tipo === 'fin');
     if (fin && (fin.ganador === 0 || fin.ganador === 1)) { const g = S.jugadores.find(j => j.asiento === fin.ganador); if (g) g.victorias = (g.victorias || 0) + 1; }
-    if (fin) { try { Historial.guardar({ modo: 'amigos', nivel: 'Amistoso', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '', admin: S.jugadores.some(j => j.adm) }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
+    if (fin) { try { Historial.guardar({ modo: 'amigos', nivel: 'Amistoso', jugador1: nom(0), jugador2: nom(1), puntaje1: fin.puntos[0], puntaje2: fin.puntos[1], ganador: fin.ganador === 0 || fin.ganador === 1 ? nom(fin.ganador) : '', motivo: fin.motivo === 'abandono' ? 'abandono' : (fin.motivo === 'cuatro' ? 'cuatro' : 'puntos'), admin: S.jugadores.some(j => j.adm) }); } catch (e) { console.error(e); } } // el anfitrión guarda la partida terminada en el historial
     const cambios = { jugadores: S.jugadores, ultima_accion: S.ultima };
     if (E) {
       S.version++;
