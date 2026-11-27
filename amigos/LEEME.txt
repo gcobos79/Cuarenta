@@ -16,6 +16,8 @@ Cambiar el nivel deslizando (Solo, V1.03.81): antes de pulsar COMENZAR, deslizar
 
 Botones y código de la sala (Amigos V2.39): CREAR SALA, UNIRME y el botón principal de abajo (cuando está activo) llevan una luz de cometa dorada que da una vuelta al contorno cada 6 s (el botón principal ya no late; con «reducir movimiento» no hay luz). El campo «Código de la sala» muestra en gris cómo se escribe: cursor parpadeante, A, AB, ABC (un paso por segundo), ABC unos 4 s, se borra y se repite; se detiene al tocar el campo o escribir, y con «reducir movimiento» queda «ABC» fijo.
 
+Voces de Amigos (V2.40): se agregaron a audio/ las 34 grabaciones de las frases fijas de Amigos («Caída de tu amigo.», «Tu amigo reclama ronda…», etc.; lista en amigos/voz/catalogo-amigos.json), con la misma voz de Don Barajón, y se registraron en audio/index.js. Cada archivo se llama como la huella de su frase.
+
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
 Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas: ANFITRIÓN (crea la sala, elige reglas, comparte el código y pulsa COMENZAR) e INVITADO (no crea sala: escribe el código y pulsa UNIRME). Se recuerda la última pestaña usada.
