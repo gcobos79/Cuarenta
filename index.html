@@ -791,6 +791,7 @@ html.rot-land #rotateOverlay{display:flex} /* V1.03.20: lo activa updateRotate()
 :root,html[data-nivel="1"]{--rv-base:#9b1c2c;--rv-line:#dcbc6c;--rv-border:#e8c978;--rv-star:#f3d58a}
 html[data-nivel="2"]{--rv-base:#1b3f7d;--rv-line:#dcbc6c;--rv-border:#e8c978;--rv-star:#f3d58a}
 html[data-nivel="3"]{--rv-base:#cfa84b;--rv-line:#15110c;--rv-border:#15110c;--rv-star:#15110c}
+html[data-nivel="4"]{--rv-base:#15110c;--rv-line:#cfa84b;--rv-border:#e8c978;--rv-star:#f3d58a} /* V1.03.84: Leyenda = negro con dorado */
 /* V1.03.26 — ESTÁNDAR DE BOTÓN (modelo: CERRAR de Configuración): fondo oscuro, letra dorada clara, sin borde, esquinas de 8 px.
    Lo usan todos los botones que parpadean; el rojo de «peligro» conserva su color de aviso. */
 #closeSettings,#viewBack,#helpBtn,#helpClose,#shareClose,#gpYes,#gpNo:not(.danger),#beginGame,#rpYes,#rpNo,#again,#levelUp,#shareBtn,#installApp,#helpShare,.share-opt,#claimRonda{background:#171b17!important;color:#d9c69f!important;border:0!important;border-radius:8px!important;font-weight:800;letter-spacing:1px}
@@ -1125,7 +1126,7 @@ html body .card.foto>*{visibility:hidden!important}
 
 <div class="layout"><div class="ver-flot" id="verFlot" hidden role="status"></div><div class="top"><div class="scores"><div class="score"><label id="playerScoreLabel">TÚ</label><div class="score-line"><span class="pc-i cl"><em>PUNTOS</em><strong id="score0">00</strong></span><span class="pc-i cl" id="cardsBox0"><em>CARTAS</em><strong id="cards0">00</strong></span></div><div class="wins-line"><span>PARTIDAS GANADAS</span><strong id="wins0">0</strong></div></div><div class="score"><label>DON BARAJÓN</label><div class="score-line"><span class="pc-i cl"><em>PUNTOS</em><strong id="score1">00</strong></span><span class="pc-i cl" id="cardsBox1"><em>CARTAS</em><strong id="cards1">00</strong></span></div><div class="wins-line"><span>PARTIDAS GANADAS</span><strong id="wins1">0</strong></div></div></div><div class="credit-neon" aria-hidden="true"></div><div class="settings-stack"><div class="match-elapsed" aria-live="off"><span>TIEMPO DE PARTIDA</span><strong id="matchElapsed">00:00</strong></div></div></div>
 <main class="board">
-<section class="rowhand opponent"><div class="avatar"><div class="face">😎</div><b>DON BARAJÓN</b><button id="donLevelBadge" class="don-level-badge" type="button" title="Cambiar nivel de Don Barajón">NIVEL 1 · NORMAL</button><div id="quickLevelPanel" class="quick-level-panel hidden"><input id="quickAiLevel" type="range" min="1" max="3" step="1" value="1" aria-label="Cambiar nivel rápidamente"><small id="quickLevelText">1 · NORMAL</small></div><button class="voice-btn" id="voiceToggle" type="button">🔊 CONOCERLO</button></div><div id="hand1" class="hand"></div><div class="pile" id="pile1" aria-label="Cartas levantadas de Don Barajón"></div></section>
+<section class="rowhand opponent"><div class="avatar"><div class="face">😎</div><b>DON BARAJÓN</b><button id="donLevelBadge" class="don-level-badge" type="button" title="Cambiar nivel de Don Barajón">NIVEL 1 · NORMAL</button><div id="quickLevelPanel" class="quick-level-panel hidden"><input id="quickAiLevel" type="range" min="1" max="4" step="1" value="1" aria-label="Cambiar nivel rápidamente"><small id="quickLevelText">1 · NORMAL</small></div><button class="voice-btn" id="voiceToggle" type="button">🔊 CONOCERLO</button></div><div id="hand1" class="hand"></div><div class="pile" id="pile1" aria-label="Cartas levantadas de Don Barajón"></div></section>
 <section class="felt"><div class="meta" id="meta"><span id="round">PARTIDA NUEVA</span><span id="turn">ESPERANDO</span><div class="meta-msg" id="metaMsg" aria-live="polite"><div class="meta-msg-in" id="metaMsgIn"></div></div></div><label>MESA DE JUEGO</label><span class="stars-meter" id="starsMeter" role="img" aria-label="Estrellas del nivel"></span><div id="table" class="table"></div></section>
 <section class="rowhand player"><div id="hand0" class="hand"></div><div class="pile" id="pile0" aria-label="Tus cartas levantadas"></div></section>
 <div class="footer">
@@ -1164,8 +1165,9 @@ html body .card.foto>*{visibility:hidden!important}
    </div>
    <div class="settings-option">
     <div class="setup-level-head"><span class="setup-label">NIVEL DE DON BARAJÓN</span><strong id="levelValue">1 · NORMAL</strong></div>
-    <input id="aiLevel" type="range" min="1" max="3" step="1" value="1" aria-label="Nivel de Don Barajón">
-    <div class="level-marks"><span>Normal</span><span>Avanzado</span><span>Experto</span></div>
+    <input id="aiLevel" type="range" min="1" max="4" step="1" value="1" aria-label="Nivel de Don Barajón">
+    <div class="level-marks"><span>Normal</span><span>Avanzado</span><span>Experto</span><span>Leyenda</span></div>
+    <p class="option-help" id="levelLockNote"></p>
    </div>
   </section>
   </section>
@@ -1302,13 +1304,14 @@ html body .card.foto>*{visibility:hidden!important}
   +L+'="3"]'+P+L+'="3"]'+Q+'{background:'+B3+'!important}'
   +'@media (max-width:600px) and (pointer:coarse),(orientation:landscape) and (max-height:520px) and (pointer:fine){'+L+']'+P+L+']'+Q+'{background:none!important}}';
  var el=document.createElement('style');el.id='xmasBacks';el.textContent=css;document.head.appendChild(el);
- function sync(){var b=document.getElementById('donLevelBadge'),m=b&&/(\d)/.exec(b.textContent||''),n=m?Number(m[1]):1;if(n<1||n>3)n=1;if(document.body.dataset.xmasLvl!==String(n))document.body.dataset.xmasLvl=String(n)}
+ function sync(){var b=document.getElementById('donLevelBadge'),m=b&&/(\d)/.exec(b.textContent||''),n=m?Number(m[1]):1;if(n>3)n=3;if(n<1)n=1;if(document.body.dataset.xmasLvl!==String(n))document.body.dataset.xmasLvl=String(n)}
  sync();
  var b=document.getElementById('donLevelBadge');if(b&&window.MutationObserver)new MutationObserver(sync).observe(b,{childList:true,characterData:true,subtree:true});
  setInterval(sync,1500);
 })();
 </script>
 <script src="audio/index.js"></script>
+<script src="motor/nivel4.js?v=V1.03.84"></script><!-- V1.03.84: Nivel 4 · Leyenda (motor/nivel4.js) -->
 <script>
 const R=['A','2','3','4','5','6','7','J','Q','K'],SU=['♠','♥','♦','♣'],V=Object.fromEntries(R.map((r,i)=>[r,i+1]));
 // V1.03.20: estado de la línea de avisos (se declara al principio para que prepareNewGame pueda usarlo durante el arranque)
@@ -1325,7 +1328,7 @@ function setTwoSwitch(el,right){if(!el)return;el.setAttribute('aria-checked',Str
 document.addEventListener('click',e=>{const side=e.target.closest&&e.target.closest('.switch-side[data-for]');if(!side)return;const btn=document.getElementById(side.dataset.for);if(!btn||btn.disabled)return;if((btn.getAttribute('aria-checked')==='true')!==(side.dataset.right==='1'))btn.click()});
 // V1.03: el juego tiene 3 niveles. Nivel 1 = antiguo 4, Nivel 2 = antiguo 5, Nivel 3 = antiguo 6.
 const DON_LEVEL_KEY='donBarajonDifficultyV103b',CAND_DON_LEVEL_KEY='donBarajonDifficultyV103',OLD_DON_LEVEL_KEY='donBarajonDifficultyV73';
-function readSavedDonLevel(){try{const raw=localStorage.getItem(DON_LEVEL_KEY);if(raw!==null){const n=Number(raw);return Number.isInteger(n)&&n>=1&&n<=3?n:1}
+function readSavedDonLevel(){try{const raw=localStorage.getItem(DON_LEVEL_KEY);if(raw!==null){const n=Number(raw);return Number.isInteger(n)&&n>=1&&n<=4?n:1}
  // Conversión conservando el motor: antiguo 4→1, 5→3, 6→2; la versión candidata anterior de V1.03 (2↔3).
  const cand=localStorage.getItem(CAND_DON_LEVEL_KEY);if(cand!==null)return {1:1,2:3,3:2}[Number(cand)]||1;
  return {4:1,5:3,6:2}[Number(localStorage.getItem(OLD_DON_LEVEL_KEY))]||1}catch(e){return 1}}
@@ -1804,7 +1807,8 @@ function showEventMessage(message,duration=5500){
 }
 // V1.03.44: un solo botón: COMENZAR antes de la partida, TERMINAR PARTIDA mientras se juega
 // V1.03.47: estrellas del nivel (solo el marcador) a la izquierda del botón; 3 vacías si aún no hay
-function renderStarsMeter(){try{const el=document.getElementById('starsMeter');if(!el)return;const lv=Math.max(1,Math.min(3,Number((S.started&&S.aiLevel)||document.getElementById('aiLevel').value||1)));const rr=leerRachas()[lv],M=metaEstrellas(rr.p),r=Math.max(0,Math.min(M,rr.r|0));const k=lv+'-'+r+'-'+M;if(el.dataset.k===k)return;el.dataset.k=k;el.dataset.m=String(M);el.innerHTML='★'.repeat(r)+'<span class="off">'+'★'.repeat(M-r)+'</span>';const tx=`${r} de ${M} estrellas en ${NIVEL_NOMBRE[lv]}`;el.setAttribute('aria-label',tx);el.title=tx}catch(e){}}
+function renderStarsMeter(){try{const el=document.getElementById('starsMeter');if(!el)return;if(Number((S.started&&S.aiLevel)||document.getElementById('aiLevel').value||1)===4){if(el.dataset.k!=='L'){el.dataset.k='L';el.innerHTML='';el.setAttribute('aria-label','Leyenda no da estrellas');el.title=''}return} // V1.03.84
+ const lv=Math.max(1,Math.min(3,Number((S.started&&S.aiLevel)||document.getElementById('aiLevel').value||1)));const rr=leerRachas()[lv],M=metaEstrellas(rr.p),r=Math.max(0,Math.min(M,rr.r|0));const k=lv+'-'+r+'-'+M;if(el.dataset.k===k)return;el.dataset.k=k;el.dataset.m=String(M);el.innerHTML='★'.repeat(r)+'<span class="off">'+'★'.repeat(M-r)+'</span>';const tx=`${r} de ${M} estrellas en ${NIVEL_NOMBRE[lv]}`;el.setAttribute('aria-label',tx);el.title=tx}catch(e){}}
 // V1.03.50: botón AMIGOS (destino). Solo lo ve el supervisor por ahora y se bloquea durante una partida
 function syncModeBtn(){const b=document.getElementById('modeBtn');if(!b)return;b.hidden=false;b.disabled=!!S.started} // V1.03.51: el botón AMIGOS lo ve todo el mundo (antes solo el supervisor)
 function syncMainBtn(){renderStarsMeter();syncModeBtn();const b=document.getElementById('beginGame');if(!b)return;const v=document.getElementById('victory'),jugando=!!S.started&&(!v||v.classList.contains('hidden'));const txt=jugando?'TERMINAR PARTIDA':'COMENZAR';if(b.textContent!==txt)b.textContent=txt;b.classList.toggle('is-end',jugando)}
@@ -1922,6 +1926,7 @@ function donRondaFallChanceOnPlayer(c){
  return c.value===v&&cands.includes(v)?1/cands.length:0;
 }
 function prepareReadyHand(){
+ donSecHist=[];
  if(!currentGameStartedAt)auditRecords=[]; // V1.02: los registros previos al inicio pertenecen solo al reparto vigente.
  const first=Number($('#firstToggle').dataset.player||0),level=preferredAiLevel;
  const deck=shuffle(makeDeck()),hands=[[],[]],dealer=1-first;
@@ -1948,7 +1953,7 @@ function showPendingDeal(){
  $('#hand1').innerHTML=Array.from({length:5},()=>card(null,true)).join('');
 }
 const LAST_FIRST_KEY='donBarajonLastFirstV1';
-function prepareNewGame(){if(palcoMuestra)pruebaReset();else renderMedalla(); // V1.03.42: se quita la vista previa del administrador
+function prepareNewGame(){preferredAiLevel=Math.max(1,Math.min(preferredAiLevel,maxOpenLevel())); /* V1.03.84: un nivel cerrado no se puede usar */if(palcoMuestra)pruebaReset();else renderMedalla(); // V1.03.42: se quita la vista previa del administrador
  {const f=document.getElementById('fireworks');if(f)f.remove()} // V1.03.40: se apagan las estrellitas al empezar otra partida
  
  syncDonVoiceControls();
@@ -1971,7 +1976,7 @@ function prepareNewGame(){if(palcoMuestra)pruebaReset();else renderMedalla(); //
  showPendingDeal(); // V1.02: el reparto ocurre al pulsar COMENZAR
 }
 function updateLevelLabel(){const v=Number($('#aiLevel').value);document.documentElement.setAttribute('data-nivel',String(v)); // V1.03.39: color del reverso según el nivel
- const names={1:'NORMAL',2:'AVANZADO',3:'EXPERTO'};$('#levelValue').textContent=`${v} · ${names[v]}`;const badge=$('#donLevelBadge');if(badge)badge.textContent=`NIVEL ${v} · ${names[v]}`;document.querySelectorAll('.level-marks span').forEach((el,i)=>el.classList.toggle('active',i===v-1));const quick=$('#quickAiLevel');if(quick)quick.value=String(v);const quickText=$('#quickLevelText');if(quickText)quickText.textContent=`${v} · ${names[v]}`;}
+ const names={1:'NORMAL',2:'AVANZADO',3:'EXPERTO',4:'LEYENDA'};$('#levelValue').textContent=`${v} · ${names[v]}`;const badge=$('#donLevelBadge');if(badge)badge.textContent=`NIVEL ${v} · ${names[v]}`;document.querySelectorAll('.level-marks span').forEach((el,i)=>el.classList.toggle('active',i===v-1));const quick=$('#quickAiLevel');if(quick)quick.value=String(v);const quickText=$('#quickLevelText');if(quickText)quickText.textContent=`${v} · ${names[v]}`;try{renderLevelLocks()}catch(e){}}
 function activateGame(){
  if(S.started)return;
  syncDonVoiceControls();
@@ -2019,7 +2024,7 @@ function terminateGame(){
 }
 
 function dealSection(){if(!donPersonality&&!(S.cycleNo===1&&S.section===1))natSay(natSectionText());appendCycleSectionMarkers(S.cycleNo,S.section);if(S.section===1)S.s1Captured=[false,false]; // V1.03: para «4 de falta»
-let first=1-S.dealer;S.hands=[[],[]];for(let i=0;i<5;i++){S.hands[first].push(S.deck.shift());S.hands[S.dealer].push(S.deck.shift())}ordenaMano(S.hands[0]);S.turn=first;S.lastPlayed=null;S.rondaClaimed=[false,false];S.rondaFall=[false,false];S.rondaVal=S.hands.map(rondaValueOfHand);S.rounda=S.hands.map(h=>h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})&&Object.values(h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})).some(n=>n===3));let four=S.hands.findIndex(h=>Object.values(h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})).some(n=>n===4));render();if(four!==-1){finish(four,'¡CUATRO CARTAS IGUALES!');return}say('Cartas repartidas');if(S.rounda[1]&&donShouldClaimRonda()){const before=[...S.score];S.rondaClaimed[1]=true;S.score[1]+=2;rule38After(1,before[1]);appendAuditRecord(`CICLO ${S.cycleNo} · SECCIÓN ${S.section}\nDON BARAJÓN CONFIRMA RONDA: +2 puntos\nMARCADOR ANTES: ${before[0]}–${before[1]} · MARCADOR DESPUÉS: ${S.score[0]}–${S.score[1]}`,'',S.section,S.cycleNo);animatePoints(1,2);render();say('Don Barajón tiene ronda y reclama 2 puntos.');donRondaSay(1);if(S.score[1]>=40){finish(1,'RONDA');return;}}else if(S.rounda[0]){if(rule38At38(0)){rule38Blocked(0,2,'ronda');say('Tienes ronda, pero con 38 no suma puntos: necesitas una caída para ganar.')}else say('Tienes ronda. Puedes reclamar 2 puntos antes de jugar.')}if(S.turn===1){const session=gameSession;setTimeout(()=>{if(session===gameSession)aiTurn()},1800)}}
+let first=1-S.dealer;S.hands=[[],[]];for(let i=0;i<5;i++){S.hands[first].push(S.deck.shift());S.hands[S.dealer].push(S.deck.shift())}ordenaMano(S.hands[0]);S.turn=first;S.lastPlayed=null;donSecHist=[];S.rondaClaimed=[false,false];S.rondaFall=[false,false];S.rondaVal=S.hands.map(rondaValueOfHand);S.rounda=S.hands.map(h=>h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})&&Object.values(h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})).some(n=>n===3));let four=S.hands.findIndex(h=>Object.values(h.reduce((m,c)=>(m[c.value]=(m[c.value]||0)+1,m),{})).some(n=>n===4));render();if(four!==-1){finish(four,'¡CUATRO CARTAS IGUALES!');return}say('Cartas repartidas');if(S.rounda[1]&&donShouldClaimRonda()){const before=[...S.score];S.rondaClaimed[1]=true;S.score[1]+=2;rule38After(1,before[1]);appendAuditRecord(`CICLO ${S.cycleNo} · SECCIÓN ${S.section}\nDON BARAJÓN CONFIRMA RONDA: +2 puntos\nMARCADOR ANTES: ${before[0]}–${before[1]} · MARCADOR DESPUÉS: ${S.score[0]}–${S.score[1]}`,'',S.section,S.cycleNo);animatePoints(1,2);render();say('Don Barajón tiene ronda y reclama 2 puntos.');donRondaSay(1);if(S.score[1]>=40){finish(1,'RONDA');return;}}else if(S.rounda[0]){if(rule38At38(0)){rule38Blocked(0,2,'ronda');say('Tienes ronda, pero con 38 no suma puntos: necesitas una caída para ganar.')}else say('Tienes ronda. Puedes reclamar 2 puntos antes de jugar.')}if(S.turn===1){const session=gameSession;setTimeout(()=>{if(session===gameSession)aiTurn()},1800)}}
 function miniCard(c){
  return `<div class="card ${c.color}${isFace(c)?' figcard':''} foto" style="--foto:url(cartas/${c.id}.webp)"><span class="idx"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span>${pipOrFig(c)}<span class="idx bottom"><b class="rk">${c.rank}</b><i class="st">${c.suit}</i></span></div>`;
 }
@@ -2301,6 +2306,7 @@ async function commit(p,c,take,choiceAudit=null){
  if(pts){S.score[p]+=pts;animatePoints(p,pts)}
  rule38After(p,before38);
  S.lastPlayed={player:p,card:c};
+ donSecHist.push({p,c,capturo:take.length>0,mesaAntes:tableBefore}); // V1.03.84: jugadas públicas de la sección, para el Nivel 4
  if(take.length&&S.section===1&&S.s1Captured)S.s1Captured[p]=true; // V1.03: quién levantó cartas en la primera mano
  if(caida&&S.rondaClaimed[1-p]&&S.rondaVal&&S.rondaVal[1-p]===c.value)S.rondaFall[p]=true; // V1.03: caída sobre una carta de la ronda reclamada
  S.turn=1-p;
@@ -2356,6 +2362,25 @@ ${detail}`;
 
 // DON BARAJÓN NIVEL 5 — motor experimental basado únicamente en información observable.
 let donStrategicNote='';
+// V1.03.84 — NIVEL 4 «LEYENDA»: motor DonNivel4 (motor/nivel4.js). Piensa como máximo 1,2 s por tandas, sin trabar la pantalla.
+let donSecHist=[],don4Busy=false,don4Engine=null;
+function donNivel4Turn(candidates){
+ if(don4Busy)return;
+ if(candidates.length===1){commit(1,candidates[0].c,candidates[0].o);return;}
+ const session=gameSession,t0=Date.now();
+ const fallback=()=>{const p=chooseDonLevel5(candidates);commit(1,p.c,p.o)};
+ if(!window.DonNivel4){fallback();return;}
+ don4Busy=true;
+ if(!don4Engine)don4Engine=DonNivel4.crear({makeDeck,legalCaptures,conteo:(a,b,d)=>cardCountPointsExpected(a,b,d)});
+ const V={...S,played:[0,1].map(p=>donSecHist.filter(x=>x.p===p).map(x=>x.c)),historial:donSecHist.slice()};
+ const alive=()=>session===gameSession&&S.started&&S.turn===1&&!S.busy;
+ don4Engine.elegirSinTrabar(V,1200).then(pick=>{
+  don4Busy=false;if(!alive())return;
+  if(!pick||!S.hands[1].some(x=>x.id===pick.c.id)){fallback();return;}
+  donStrategicNote=`\n\nDECISIÓN DE DON BARAJÓN — NIVEL 4 · LEYENDA\nOpciones legales evaluadas: ${pick.opciones}.\nManos posibles del rival calculadas hasta el final de la sección: ${pick.muestras}.\nTiempo de cálculo: ${((Date.now()-t0)/1000).toFixed(1)} s.\nCriterio: cálculo completo de la sección con cada mano posible del rival (solo cartas no vistas), medido en puntos reales: caída, limpia, ronda, conteo y llegada a 40.`;
+  commit(1,pick.c,pick.o);
+ }).catch(()=>{don4Busy=false;if(alive())fallback()});
+}
 function knownOutsidePlayerHand(){
  const known=[...S.hands[1],...S.table,...S.captured[0],...S.captured[1]];
  const ids=new Set(known.map(c=>c.id));
@@ -2521,6 +2546,7 @@ function aiTurn(){
  const candidates=[];
  for(const c of S.hands[1]){const opts=legalCaptures(c,S.table);if(opts.length){for(const o of opts)candidates.push({c,o});}else candidates.push({c,o:[]});}
  if(!candidates.length)return;
+ if(Number(S.aiLevel)===4){donNivel4Turn(candidates);return;} // V1.03.84: Nivel 4 · Leyenda
  const level={1:4,2:6,3:5}[S.aiLevel||1]||4; // V1.03: Nivel 1 = motor antiguo 4, Nivel 2 = antiguo 6, Nivel 3 = antiguo 5 (el más fuerte en las simulaciones)
  if(level===1){const captures=candidates.filter(x=>x.o.length);const pool=captures.length?captures:candidates;const pick=pool[Math.floor(Math.random()*pool.length)];commit(1,pick.c,pick.o);return;}
  if(level===5){const pick=chooseDonLevel5(candidates);commit(1,pick.c,pick.o);return;}
@@ -2711,10 +2737,16 @@ function analyzeCompletedGame(winner){
 }
 // ===== V1.03.40: PREMIOS. Racha de 3 victorias seguidas por nivel (Normal → As de Bronce · Avanzado → As de Plata · Experto → As de Oro) =====
 const RACHAS_KEY='donBarajonRachasV1';
-const NIVEL_NOMBRE={1:'Normal',2:'Avanzado',3:'Experto'},PREMIO_NOMBRE={1:'Bronce',2:'Plata',3:'Oro'};
+const NIVEL_NOMBRE={1:'Normal',2:'Avanzado',3:'Experto',4:'Leyenda'},PREMIO_NOMBRE={1:'Bronce',2:'Plata',3:'Oro'};
 function leerRachas(){const base={1:{r:0,p:0},2:{r:0,p:0},3:{r:0,p:0}};try{const x=JSON.parse(localStorage.getItem(RACHAS_KEY)||'null');if(x&&typeof x==='object'){[1,2,3].forEach(n=>{if(x[n]&&Number.isFinite(x[n].r)&&Number.isFinite(x[n].p))base[n]={r:Math.max(0,Math.min(4,x[n].r|0)),p:Math.max(0,x[n].p|0)}})}}catch(e){}return base}
 // V1.03.70: estrellas que pide cada as. Cada metal va por separado: el 1.º as pide 3 estrellas, el 2.º pide 4 y del 3.º en adelante 5
 const metaEstrellas=p=>p>=2?5:(p===1?4:3),ESTR_PALABRA={3:'Tres',4:'Cuatro',5:'Cinco'};
+// V1.03.84 — NIVELES POR ASES: al empezar solo está abierto Normal. Cada as abre el nivel siguiente
+// (Bronce → Avanzado, Plata → Experto, Oro → Leyenda). Un as alto abre también los niveles de abajo, pero no regala los ases
+// que faltan: esos se ganan solo con sus estrellas. Con la clave de dueño, todos los niveles están abiertos. Leyenda no da estrellas.
+function maxOpenLevel(){let own=false;try{own=ownerUnlocked}catch(e){}if(own)return 4;let x;try{x=leerRachas()}catch(e){return 1}const h=[3,2,1].find(l=>x[l]&&x[l].p>0)||0;return h+1}
+function lockedLevelMsg(v){return `🔒 El nivel ${NIVEL_NOMBRE[v]} se abre con el As de ${PREMIO_NOMBRE[v-1]}: consíguelo en ${NIVEL_NOMBRE[v-1]}.`}
+function renderLevelLocks(){const mx=maxOpenLevel();document.querySelectorAll('.level-marks span').forEach((el,i)=>{const lv=i+1;el.textContent=(lv>mx?'🔒 ':'')+NIVEL_NOMBRE[lv]});const n=document.getElementById('levelLockNote');if(n)n.textContent=mx>=4?'':`Consigue el As de ${PREMIO_NOMBRE[mx]} en ${NIVEL_NOMBRE[mx]} para abrir el nivel ${NIVEL_NOMBRE[mx+1]}.`}
 function guardarRachas(x){try{localStorage.setItem(RACHAS_KEY,JSON.stringify(x))}catch(e){}}
 // Registra el resultado de una partida del jugador contra Don en el nivel dado. gana=true: suma; gana=false (derrota o partida terminada): la racha vuelve a cero.
 function registrarRacha(gana,nivel){
@@ -2929,7 +2961,7 @@ function finish(p,title){
  if(!currentResultRecorded){
   if(p===0)matchWins.player++;else if(p===1)matchWins.don++;
   const archived=archiveCurrentMatch(p,analysis);currentMatchArchiveId=archived?.id||null;currentResultRecorded=true;saveMatchWins();
-  try{lastRachaInfo=registrarRacha(p===0,S.aiLevel||preferredAiLevel)}catch(e){lastRachaInfo=null} // V1.03.40: racha de victorias del nivel
+  try{lastRachaInfo=Number(S.aiLevel)===4?null:registrarRacha(p===0,S.aiLevel||preferredAiLevel)}catch(e){lastRachaInfo=null} // V1.03.84: Leyenda no da ni quita estrellas // V1.03.40: racha de victorias del nivel
   try{queueResult(buildResultRecord(p))}catch(e){} // V1.03: el resultado se envía al marcador general (formulario de Google)
  }
  lockSetup(false);$('#beginGame').disabled=true;$('#endGame').disabled=true;
@@ -3027,7 +3059,7 @@ function hdbRenderResumen(){
  const box=$('#hdbVres');if(!box)return;const par=hdbDatos.par,solo=par.filter(hdbEsSolo),am=par.length-solo.length;
  if(!solo.length){box.innerHTML=`<p class="gx-vacio">No hay partidas de Solo en este periodo.${am?` (Hay ${am} de Amigos: míralas en PARTIDAS.)`:''}</p>`;return}
  const gj=solo.filter(p=>!hdbDonGana(p)).length,gd=solo.length-gj,cuatro=solo.filter(p=>hdbMotivo(p)==='cuatro').length;
- const lv=['Normal','Avanzado','Experto'],porNivel=lv.map(n=>{const s=solo.filter(p=>p.nivel===n);return{et:n,g:s.filter(p=>!hdbDonGana(p)).length,d:s.filter(p=>hdbDonGana(p)).length}});
+ const lv=['Normal','Avanzado','Experto','Leyenda'],porNivel=lv.map(n=>{const s=solo.filter(p=>p.nivel===n);return{et:n,g:s.filter(p=>!hdbDonGana(p)).length,d:s.filter(p=>hdbDonGana(p)).length}});
  const sinN=solo.filter(p=>!p.nivel);if(sinN.length)porNivel.push({et:'Sin nivel',g:sinN.filter(p=>!hdbDonGana(p)).length,d:sinN.filter(p=>hdbDonGana(p)).length});
  // por día (los últimos 14 días con partidas)
  const dias={};solo.forEach(p=>{const k=p.fecha;(dias[k]=dias[k]||{g:0,d:0});hdbDonGana(p)?dias[k].d++:dias[k].g++});
@@ -3104,11 +3136,14 @@ function showLevelUp(p,rinfo){
  const up=$('#levelUp'),note=$('#victoryNote');if(!up||!note)return;
  { const ag=$('#again');if(ag){ag.hidden=false;ag.textContent='NUEVA PARTIDA'} } // V1.03.43: valores por defecto
  if(p!==0){up.hidden=true;up.classList.remove('blink-8s');note.hidden=true;return}
- const lv=Math.max(1,Math.min(3,Number(S.aiLevel||1))),n=directAddress();
+ const lv=Math.max(1,Math.min(4,Number(S.aiLevel||1))),n=directAddress();
+ const nextLv=Math.min(4,lv+1),nextOpen=lv<4&&maxOpenLevel()>=nextLv; // V1.03.84
  const info={1:{to:2,label:'JUGAR EN AVANZADO',text:`¡Me ganaste en Normal${n}! ¿Te atreves con el nivel Avanzado?`},
              2:{to:3,label:'JUGAR EN EXPERTO',text:`¡Me ganaste en Avanzado${n}! ¿Te atreves con el nivel Experto?`},
-             3:{to:3,label:'JUGAR OTRA VEZ',text:`¡Me ganaste en Experto${n}! Para la revancha voy a jugar con más garra y sin piedad. ¿Otra partida?`}}[lv];
- up.dataset.level=String(info.to);up.textContent=info.label;up.hidden=(lv===3); // V1.03.30: ganando en Experto solo queda NUEVA PARTIDA
+             3:{to:4,label:'JUGAR EN LEYENDA',text:`¡Me ganaste en Experto${n}! ¿Te atreves con el nivel Leyenda? Ahí calculo cada mano hasta el final.`},
+             4:{to:4,label:'JUGAR OTRA VEZ',text:`¡Me ganaste en Leyenda${n}! Eso no le pasa a cualquiera. ¿La revancha?`}}[lv];
+ if(lv<4&&!nextOpen){info.text=`¡Me ganaste en ${NIVEL_NOMBRE[lv]}${n}! Consigue el As de ${PREMIO_NOMBRE[lv]} y se abre el nivel ${NIVEL_NOMBRE[nextLv]}.`}
+ up.dataset.level=String(info.to);up.textContent=info.label;up.hidden=(lv>=4)||!nextOpen; // V1.03.30: ganando en Experto solo queda NUEVA PARTIDA
  note.textContent=info.text;note.hidden=false;
  // V1.03.43: con una racha en marcha, NUEVA PARTIDA anima a seguir por la siguiente estrella; con el as ganado solo queda la sugerencia de nivel (Experto: NUEVA PARTIDA)
  const ag=$('#again'),ri=rinfo||lastRachaInfo;
@@ -3119,7 +3154,7 @@ $('#levelUp').onclick=()=>{const sl=$('#aiLevel');sl.value=String(Number($('#lev
 // V1.02: CANCELAR cierra el diálogo de captura sin jugar; la carta sigue en la mano y el turno no cambia.
 $('#cancelChoice').onclick=()=>{$('#choices').classList.add('hidden');if(S.started&&S.turn===0&&!S.busy)say('Captura cancelada. Puedes elegir otra carta o volver a seleccionar la misma.');};
 $('#firstToggle').onclick=()=>{if(S.started)return;const next=Number($('#firstToggle').dataset.player||0)===0?1:0;$('#firstToggle').dataset.player=String(next);setTwoSwitch($('#firstToggle'),next===1);showPendingDeal();lockSetup(false);}; // V1.02: cambiar quién comienza no reparte
-$('#aiLevel').oninput=()=>{preferredAiLevel=Number($('#aiLevel').value);try{localStorage.setItem(DON_LEVEL_KEY,String(preferredAiLevel))}catch(e){}updateLevelLabel();S.aiLevel=preferredAiLevel;};
+$('#aiLevel').oninput=()=>{{const want=Number($('#aiLevel').value),mx=maxOpenLevel();if(want>mx){$('#aiLevel').value=String(mx);const q=$('#quickAiLevel');if(q)q.value=String(mx);toast(lockedLevelMsg(mx+1),6500)}}preferredAiLevel=Number($('#aiLevel').value);try{localStorage.setItem(DON_LEVEL_KEY,String(preferredAiLevel))}catch(e){}updateLevelLabel();S.aiLevel=preferredAiLevel;};
 $('#donLevelBadge').onclick=()=>{if(S.started)return;$('#quickLevelPanel').classList.toggle('hidden');};
 $('#quickAiLevel').oninput=()=>{$('#aiLevel').value=$('#quickAiLevel').value;$('#aiLevel').dispatchEvent(new Event('input'));};
 $('#playerName').oninput=()=>{renderMatchWins();updateOwnerAccess()};
@@ -3230,12 +3265,12 @@ centerScores();
  ['pointerup','pointercancel','pointerleave'].forEach(n=>marc.addEventListener(n,quitarM));}
 // V1.03.81 — deslizar el dedo sobre el tapete cambia el nivel de Don Barajón mientras se espera una partida (derecha = nivel anterior, izquierda = siguiente)
 {const felt=document.querySelector('.felt');
- if(felt){const NAMES={1:'NORMAL',2:'AVANZADO',3:'EXPERTO'},box=document.createElement('div');box.className='level-swipe';
-  box.innerHTML='<div class="ls-sub">NIVEL DE DON BARAJÓN</div><div class="ls-name"></div><div class="ls-dots"><i></i><i></i><i></i></div>';felt.appendChild(box);
+ if(felt){const NAMES={1:'NORMAL',2:'AVANZADO',3:'EXPERTO',4:'LEYENDA'},box=document.createElement('div');box.className='level-swipe';
+  box.innerHTML='<div class="ls-sub">NIVEL DE DON BARAJÓN</div><div class="ls-name"></div><div class="ls-dots"><i></i><i></i><i></i><i></i></div>';felt.appendChild(box);
   let hideT=null,x0=null,y0=null,t0=0;
   const esperando=()=>{try{if(S.started)return false}catch(e){return false}const oculto=id=>{const el=document.getElementById(id);return !el||el.classList.contains('hidden')};return['victory','settings','choices','gamePanel','ceremonia','help','sharePanel','rondaPanel'].every(oculto)};
   const mostrar=(v,cls)=>{box.querySelector('.ls-name').textContent=v+' · '+NAMES[v];box.querySelectorAll('.ls-dots i').forEach((d,i)=>d.classList.toggle('on',i===v-1));box.classList.remove('from-left','from-right','edge');void box.offsetWidth;box.classList.add('show',cls);clearTimeout(hideT);hideT=setTimeout(()=>box.classList.remove('show'),1400)};
-  const paso=dir=>{const sl=document.getElementById('aiLevel');if(!sl)return;const cur=Number(sl.value)||1,sig=cur+dir;if(sig<1||sig>3){mostrar(cur,'edge');return}sl.value=String(sig);sl.oninput();try{renderStarsMeter()}catch(e){}mostrar(sig,dir<0?'from-left':'from-right')};
+  const paso=dir=>{const sl=document.getElementById('aiLevel');if(!sl)return;const cur=Number(sl.value)||1,sig=cur+dir;if(sig<1||sig>4){mostrar(cur,'edge');return}sl.value=String(sig);sl.oninput();try{renderStarsMeter()}catch(e){}const got=Number(sl.value)||cur;mostrar(got,got===sig?(dir<0?'from-left':'from-right'):'edge')}; // V1.03.84: un nivel cerrado tiembla
   felt.addEventListener('touchstart',e=>{if(!esperando()||e.touches.length!==1){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()},{passive:true});
   felt.addEventListener('touchend',e=>{if(x0===null)return;const tt=e.changedTouches[0],dx=tt.clientX-x0,dy=tt.clientY-y0;x0=null;if(!esperando()||Date.now()-t0>900)return;if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.3)paso(dx>0?-1:1)},{passive:true});
   felt.addEventListener('touchcancel',()=>{x0=null},{passive:true});
@@ -3286,7 +3321,7 @@ function buildResultRecord(winner){
  const now=new Date(),pad=n=>String(n).padStart(2,'0'),last=gameMoveHistory[gameMoveHistory.length-1];
  const seconds=Math.max(0,Math.floor((Date.now()-new Date(currentGameStartedAt||Date.now()).getTime())/1000));
  return {id:newResultId(),admin:!!ownerUnlocked,hora:`${pad(now.getHours())}:${pad(now.getMinutes())}`,jugador:playerName()||'Sin nombre',puntosJugador:Math.min(40,sc[0]),puntosDon:Math.min(40,sc[1]),
-  fecha:`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`,nivel:({1:'Normal',2:'Avanzado',3:'Experto'})[Number(S.aiLevel)]||'',
+  fecha:`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`,nivel:({1:'Normal',2:'Avanzado',3:'Experto',4:'Leyenda'})[Number(S.aiLevel)]||'',
   jugadas:gameMoveHistory.length,ciclos:last?last.cycle:1,segundos:seconds,ganador:winner===0?(playerName()||'Sin nombre'):'Don Barajón',
   ases:(()=>{try{return leerRachas()}catch(e){return null}})()};
 }
@@ -3296,7 +3331,7 @@ function newResultId(){return(window.crypto&&crypto.randomUUID)?crypto.randomUUI
 function resultRow(r){ // la fila tal como la guarda la base (nombres de hasta 40 caracteres, puntajes de 0 a 40)
  const nm=(x,d)=>String(x==null?'':x).replace(/\s+/g,' ').trim().slice(0,40)||d,pt=n=>Math.max(0,Math.min(40,Math.round(Number(n)||0)));
  const j1=nm(r.jugador,'Sin nombre'),p1=pt(r.puntosJugador),p2=pt(r.puntosDon);
- const nivel=['Normal','Avanzado','Experto'].includes(r.nivel)?{nivel:r.nivel}:{}; // nivel de Don Barajón
+ const nivel=['Normal','Avanzado','Experto','Leyenda'].includes(r.nivel)?{nivel:r.nivel}:{}; // nivel de Don Barajón
  const extra={};if(r.ases&&typeof r.ases==='object')extra.ases=r.ases; // V1.03.83: solo viaja el resultado rápido y los ases; el detalle de la partida se queda en el dispositivo
  return{id:r.id,fecha:r.fecha,hora:/^\d\d:\d\d$/.test(r.hora||'')?r.hora:'00:00',modo:'solo',admin:!!r.admin,jugador1:j1,jugador2:'Don Barajón',puntaje1:p1,puntaje2:p2,ganador:nm(r.ganador,p1>=p2?j1:'Don Barajón'),...nivel,...extra};
 }
@@ -3568,7 +3603,7 @@ const HELP=[
   {t:'Dónde se activan',x:['Se activan en Configuración, en la pestaña Reglas, antes de comenzar la partida. Durante una partida están bloqueadas.']}
  ]},
  {id:'don',t:'Don Barajón y sus niveles',subs:[
-  {t:'Los tres niveles',x:['Don Barajón tiene tres niveles: Normal, Avanzado y Experto. A mayor nivel, juega con más cuidado.','Cuando le ganas, te propone subir al siguiente nivel. El nivel se elige en Configuración antes de comenzar.']},
+  {t:'Los cuatro niveles',x:['Don Barajón tiene cuatro niveles: Normal, Avanzado, Experto y Leyenda. A mayor nivel, juega con más cuidado.','Al empezar solo está abierto Normal. Cada as abre el nivel siguiente: el As de Bronce abre Avanzado, el de Plata abre Experto y el de Oro abre Leyenda. Leyenda no da estrellas: es el reto final.','En Leyenda, Don imagina muchas manos posibles para ti (sin ver tus cartas) y calcula cada una hasta el final de la sección. Por eso a veces piensa hasta un segundo antes de jugar.','Cuando le ganas, te propone subir al siguiente nivel. El nivel se elige en Configuración antes de comenzar.']},
   {t:'Su personalidad',x:['Don Barajón puede hablar con su personalidad burlona y picaresca, o de forma neutral. Se cambia en Configuración, en la pestaña Preferencias.']}
  ]},
  {id:'config',t:'Configuración y personalización',subs:[
@@ -3780,7 +3815,7 @@ async function offerResume(){
  const adm=!!ownerUnlocked;
  const r=await gamePanel({title:'PARTIDA PENDIENTE',text:adm?`Dejaste una partida a medias en ${lv} (marcador ${x.S.score[0]}–${x.S.score[1]}). ¿Quieres continuarla? Como administrador puedes cancelarla sin penalizar: no se quita ninguna estrella ni se guarda como derrota.`:`Dejaste una partida a medias en ${lv} (marcador ${x.S.score[0]}–${x.S.score[1]}). ¿Quieres continuarla?${x.moves>0?` Si la dejas, cuenta como derrota: pierdes una estrella en ${lv} (si tienes).`:''}`,left:{label:adm?'CANCELAR SIN PENALIZAR':'DEJARLA',value:false},right:{label:'CONTINUAR',value:true},dismiss:true});
  if(r===false){
-  if(x.moves>0&&!adm){const ri=registrarRacha(false,Number(x.S.aiLevel));if(ri.antes>0)toast(`Pierdes una estrella en ${NIVEL_NOMBRE[ri.nivel]}.`,3500)}
+  if(x.moves>0&&!adm&&Number(x.S.aiLevel)!==4){const ri=registrarRacha(false,Number(x.S.aiLevel));if(ri.antes>0)toast(`Pierdes una estrella en ${NIVEL_NOMBRE[ri.nivel]}.`,3500)}
   snapClear();
  }else snapRestore(x);
 }
