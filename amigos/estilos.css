@@ -328,3 +328,17 @@ body.sin-mesa .felt>.mesa{display:none} /* sin partida no hay mesa: el menú se 
 /* V2.35 — las caras de las cartas son imágenes fijas (amigos/cartas/<id>.webp, hechas a partir del diseño anterior) */
 html body .card.foto{background-image:var(--foto)!important;background-size:100% 100%!important;background-repeat:no-repeat!important;background-position:center!important;background-origin:border-box!important;background-clip:border-box!important;background-color:transparent!important;border-color:transparent!important}
 html body .card.foto>*{visibility:hidden!important}
+
+/* V2.39 — luz de cometa en el contorno de CREAR SALA, UNIRME y el botón principal (activo): una luz dorada con estela da una vuelta cada 6 s; el botón principal ya no late */
+@property --luz-giro{syntax:'<angle>';inherits:false;initial-value:0deg}
+#btnCrear,#btnUnirme,#principal{position:relative}
+#btnCrear:not(:disabled)::after,#btnUnirme:not(:disabled)::after,#principal:not(.fin):not(:disabled)::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;pointer-events:none;
+ background:conic-gradient(from var(--luz-giro),transparent 0deg,transparent 230deg,#f6d48d33 270deg,#f6d48dcc 325deg,#fff8dc 356deg,transparent 360deg);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+ mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+ filter:drop-shadow(0 0 4px #f6d48d) drop-shadow(0 0 8px #f6d48d99);animation:luzGiro 6s linear infinite}
+@keyframes luzGiro{to{--luz-giro:360deg}}
+#principal.espera:not(:disabled){animation:none!important}
+@media (prefers-reduced-motion:reduce){#btnCrear::after,#btnUnirme::after,#principal::after{animation:none!important;display:none!important}}
+/* texto de guía del campo del código: gris */
+#codigoSala::placeholder{color:#8e96a3;opacity:1}

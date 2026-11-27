@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.38', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.39', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -500,6 +500,28 @@
   $('#btnVoz').onclick = () => { Voz.alternar(); dibujar(); if (Voz.activa()) Voz.hablar('La voz está activada.'); };
   $('#btnSonido').onclick = () => { Efectos.alternarSonido(); dibujar(); };
   $('#codigoSala').addEventListener('input', e => { e.target.value = Red.normaliza(e.target.value); });
+  // V2.39: el campo del código muestra en gris cómo se escribe: cursor, A, AB, ABC (un paso por segundo), ABC unos 4 s, se borra y vuelve a empezar.
+  // Se detiene al tocar el campo o escribir; si queda vacío, vuelve a empezar. Con «reducir movimiento» queda «ABC» fijo.
+  (function () {
+    const inp = $('#codigoSala'); if (!inp) return;
+    const reducido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducido) { inp.placeholder = 'ABC'; return; }
+    let pausa = false, ini = Date.now();
+    const texto = ms => (ms < 1000 ? '' : ms < 2000 ? 'A' : ms < 3000 ? 'AB' : 'ABC'); // ciclo de 7 s: 1 s de cursor, A, AB y ABC (4 s); al volver a empezar se borra todo
+    const pintar = () => {
+      if (pausa || inp.offsetParent === null) return;
+      const ahora = Date.now(), ms = (ahora - ini) % 7000, cursor = Math.floor(ahora / 500) % 2 === 0;
+      const nuevo = texto(ms) + (cursor ? '|' : '\u00A0');
+      if (inp.placeholder !== nuevo) inp.placeholder = nuevo;
+    };
+    const parar = () => { pausa = true; inp.placeholder = ''; };
+    const seguir = () => { if (inp.value === '') { pausa = false; ini = Date.now(); pintar(); } };
+    inp.addEventListener('focus', parar);
+    inp.addEventListener('input', () => { if (inp.value !== '') parar(); });
+    inp.addEventListener('blur', seguir);
+    pintar(); setInterval(pintar, 250);
+  })();
+
   $('#irSolo').addEventListener('click', e => { if ($('#irSolo').getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; } e.preventDefault(); irASolo(); }); // V2.32: siempre pide a la red la versión publicada de Solo
   window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); }); // al volver con «atrás» no se muestra una copia vieja
   // ---- lupa: mantener pulsada una carta de frente la muestra 3 veces más grande (número y palo se leen sin esfuerzo) ----

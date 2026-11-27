@@ -14,6 +14,8 @@ Administrador en Solo (V1.03.80): durante la partida el botón de configuración
 
 Cambiar el nivel deslizando (Solo, V1.03.81): antes de pulsar COMENZAR, deslizar el dedo sobre el tapete cambia el nivel de Don Barajón (hacia la derecha el anterior, hacia la izquierda el siguiente; mínimo 45 px y menos de 0,9 s). Aparece un rótulo con el nivel unos 1,4 s y, si no hay más niveles en esa dirección, tiembla. La primera vez (solo en pantallas táctiles) sale un aviso. No funciona durante la partida ni con ventanas abiertas.
 
+Botones y código de la sala (Amigos V2.39): CREAR SALA, UNIRME y el botón principal de abajo (cuando está activo) llevan una luz de cometa dorada que da una vuelta al contorno cada 6 s (el botón principal ya no late; con «reducir movimiento» no hay luz). El campo «Código de la sala» muestra en gris cómo se escribe: cursor parpadeante, A, AB, ABC (un paso por segundo), ABC unos 4 s, se borra y se repite; se detiene al tocar el campo o escribir, y con «reducir movimiento» queda «ABC» fijo.
+
 Qué es: el modo para jugar con amigos. Es una página aparte del juego Solo (carpeta amigos/); un cambio en una no afecta a la otra.
 
 Cómo se juega en línea (1 contra 1) — el menú de inicio tiene dos pestañas: ANFITRIÓN (crea la sala, elige reglas, comparte el código y pulsa COMENZAR) e INVITADO (no crea sala: escribe el código y pulsa UNIRME). Se recuerda la última pestaña usada.
