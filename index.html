@@ -3060,7 +3060,7 @@ function hdbRenderResumen(){
  const box=$('#hdbVres');if(!box)return;const par=hdbDatos.par,solo=par.filter(hdbEsSolo),am=par.length-solo.length;
  if(!solo.length){box.innerHTML=`<p class="gx-vacio">No hay partidas de Solo en este periodo.${am?` (Hay ${am} de Amigos: míralas en PARTIDAS.)`:''}</p>`;return}
  const gj=solo.filter(p=>!hdbDonGana(p)).length,gd=solo.length-gj,cuatro=solo.filter(p=>hdbMotivo(p)==='cuatro').length;
- const lv=['Normal','Avanzado','Experto'],porNivel=lv.map(n=>{const s=solo.filter(p=>p.nivel===n);return{et:n,g:s.filter(p=>!hdbDonGana(p)).length,d:s.filter(p=>hdbDonGana(p)).length}});
+ const lv=['Normal','Avanzado','Experto','Leyenda'],porNivel=lv.map(n=>{const s=solo.filter(p=>p.nivel===n);return{et:n,g:s.filter(p=>!hdbDonGana(p)).length,d:s.filter(p=>hdbDonGana(p)).length}});
  const sinN=solo.filter(p=>!p.nivel);if(sinN.length)porNivel.push({et:'Sin nivel',g:sinN.filter(p=>!hdbDonGana(p)).length,d:sinN.filter(p=>hdbDonGana(p)).length});
  // por día (los últimos 14 días con partidas)
  const dias={};solo.forEach(p=>{const k=p.fecha;(dias[k]=dias[k]||{g:0,d:0});hdbDonGana(p)?dias[k].d++:dias[k].g++});
@@ -3332,7 +3332,7 @@ function newResultId(){return(window.crypto&&crypto.randomUUID)?crypto.randomUUI
 function resultRow(r){ // la fila tal como la guarda la base (nombres de hasta 40 caracteres, puntajes de 0 a 40)
  const nm=(x,d)=>String(x==null?'':x).replace(/\s+/g,' ').trim().slice(0,40)||d,pt=n=>Math.max(0,Math.min(40,Math.round(Number(n)||0)));
  const j1=nm(r.jugador,'Sin nombre'),p1=pt(r.puntosJugador),p2=pt(r.puntosDon);
- const nivel=['Normal','Avanzado','Experto'].includes(r.nivel)?{nivel:r.nivel}:{}; // nivel de Don Barajón
+ const nivel=['Normal','Avanzado','Experto','Leyenda'].includes(r.nivel)?{nivel:r.nivel}:{}; // nivel de Don Barajón
  const extra={};if(r.ases&&typeof r.ases==='object')extra.ases=r.ases; // V1.03.83: solo viaja el resultado rápido y los ases; el detalle de la partida se queda en el dispositivo
  return{id:r.id,fecha:r.fecha,hora:/^\d\d:\d\d$/.test(r.hora||'')?r.hora:'00:00',modo:'solo',admin:!!r.admin,jugador1:j1,jugador2:'Don Barajón',puntaje1:p1,puntaje2:p2,ganador:nm(r.ganador,p1>=p2?j1:'Don Barajón'),...nivel,...extra};
 }
