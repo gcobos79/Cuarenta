@@ -2,7 +2,7 @@
 """Graba con Fish Audio (misma voz de Don Barajón) SOLO las frases nuevas de Amigos que todavía no tengan archivo en audio/.
 Las frases son fijas y genéricas (sin nombres): se graban una sola vez y sirven para todas las partidas.
 No toca las grabaciones existentes: al final añade las huellas nuevas a audio/index.js.
-La llave de API NO está aquí: el entorno la inyecta en las peticiones a api.fish.audio.
+La llave de API se lee de la variable de entorno FISH_AUDIO_API_KEY (si no existe, el entorno la inyecta en las peticiones a api.fish.audio).
 Uso (desde la carpeta del repositorio):  python3 amigos/voz/generar_amigos.py [--dry]"""
 import json, os, re, subprocess, sys, time
 VOICE = 'a61617f5c2e749e2a9f30bdc73678467'
@@ -22,7 +22,9 @@ def tts(text, path):
     body = json.dumps({'text': text, 'reference_id': VOICE, 'format': 'mp3', 'mp3_bitrate': 64, 'latency': 'normal'})
     for intento in range(4):
         r = subprocess.run(['curl', '-sS', '-m', '120', '-o', path, '-w', '%{http_code}', '-X', 'POST', 'https://api.fish.audio/v1/tts',
-                            '-H', 'Content-Type: application/json', '-H', 'model: s1', '-d', body], capture_output=True, text=True)
+                            '-H', 'Content-Type: application/json', '-H', 'model: s1']
+                           + (['-H', 'Authorization: Bearer ' + os.environ['FISH_AUDIO_API_KEY']] if os.environ.get('FISH_AUDIO_API_KEY') else [])
+                           + ['-d', body], capture_output=True, text=True)
         if r.stdout.strip() == '200' and os.path.getsize(path) > 2000: return True
         time.sleep(2 + intento * 3)
     if os.path.exists(path): os.remove(path)
