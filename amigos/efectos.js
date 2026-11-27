@@ -109,7 +109,7 @@
     const clon = crearVuelo(origen);
     if (!propia) { // la carta del rival aparece de frente al salir de su mano
       const wrap = document.createElement('div'); wrap.innerHTML = root.CartaHTML(carta); const cara = wrap.firstElementChild;
-      clon.className = cara.className + ' flight'; clon.innerHTML = cara.innerHTML; origen.remove();
+      clon.className = cara.className + ' flight'; clon.innerHTML = cara.innerHTML; clon.style.setProperty('--foto', cara.style.getPropertyValue('--foto')); origen.remove(); // la imagen de la cara viaja en --foto: sin ella la carta del rival volaba transparente
     } else origen.classList.add('lift-origin');
     await new Promise(requestAnimationFrame);
     await volarA(clon, destino.left, destino.top, 900, destino.width, destino.height);
