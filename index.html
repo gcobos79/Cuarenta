@@ -1311,14 +1311,14 @@ html body .card.foto>*{visibility:hidden!important}
 })();
 </script>
 <script src="audio/index.js"></script>
-<script src="motor/nivel4.js?v=V1.03.84"></script><!-- V1.03.84: Nivel 4 · Leyenda (motor/nivel4.js) -->
+<script src="motor/nivel4.js?v=V1.03.85"></script><!-- V1.03.84: Nivel 4 · Leyenda (motor/nivel4.js) -->
 <script>
 const R=['A','2','3','4','5','6','7','J','Q','K'],SU=['♠','♥','♦','♣'],V=Object.fromEntries(R.map((r,i)=>[r,i+1]));
 // V1.03.20: estado de la línea de avisos (se declara al principio para que prepareNewGame pueda usarlo durante el arranque)
 var metaQ=[],metaBusy=false,metaSkip=false;
 // las 40 imágenes de las caras se descargan en segundo plano para que no parpadeen al salir
 try{const precargar=()=>{const R=['A','2','3','4','5','6','7','J','Q','K'];for(let s=0;s<4;s++)R.forEach(r=>{const i=new Image();i.src='cartas/'+r+'.'+s+'.webp'})};(window.requestIdleCallback||(f=>setTimeout(f,800)))(precargar)}catch(e){}
-const GAME_VERSION='V1.03.84'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
+const GAME_VERSION='V1.03.85'; // se muestra en Configuración; debe coincidir con el título de la página; se sube el último número (.02, .03…) en cada cambio publicado
 let gameSession=0;
 let ADMIN_PRUEBAS_ON=false; // V1.03.43: la prueba de galardones (solo administrador) queda oculta; el código se conserva y se activa con ADMIN_PRUEBAS_ON=true
 let S={deck:[],hands:[[],[]],table:[],captured:[[],[]],score:[0,0],dealer:1,turn:0,section:1,mode:'assisted',started:false,lastPlayed:null,rounda:[false,false],rondaClaimed:[false,false],rondaVal:[null,null],rondaFall:[false,false],s1Captured:[false,false],pending:null,cycleNo:1,busy:false,paused:false,aiLevel:1,firstPlayer:0};
@@ -3013,7 +3013,7 @@ async function checkOwner(){
  const seq=++ownerCheckSeq,m=/^«\s*(.+?)\s*»$/.exec(rawPlayerName());let ok=false;
  if(m){try{ok=(await ownerKeyHash(m[1]))===OWNER_KEY_HASH}catch(e){ok=false}}
  if(seq!==ownerCheckSeq)return;
- ownerUnlocked=ok;document.body.classList.toggle('es-admin',!!ok);const hd=$('#histDb');if(hd)hd.hidden=!ok;syncModeBtn(); // V1.03.83: la pestaña HISTÓRICOS es para todos; el resumen del servidor, solo para el administrador
+ ownerUnlocked=ok;try{renderLevelLocks()}catch(e){} /* V1.03.85: con la clave de dueño se abren todos los niveles */document.body.classList.toggle('es-admin',!!ok);const hd=$('#histDb');if(hd)hd.hidden=!ok;syncModeBtn(); // V1.03.83: la pestaña HISTÓRICOS es para todos; el resumen del servidor, solo para el administrador
 }
 function updateOwnerAccess(){clearTimeout(ownerCheckTimer);ownerCheckTimer=setTimeout(checkOwner,200)}
 function setSettingsTab(name){

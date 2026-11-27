@@ -4,7 +4,7 @@
   Las copias del juego en artefactos de claude.ai están desactualizadas: no las edites. Si alguien pide cambios
   sobre una copia, avisa primero y compara su `GAME_VERSION` con la de `index.html`.
 - **Solo** = `index.html` (un solo archivo). **Amigos** = `amigos/` (página aparte, con su `LEEME.txt` y pruebas en `amigos/pruebas`).
-- Cada cambio publicado sube el último número de `GAME_VERSION` en `index.html` (V1.03.84 → V1.03.85…).
+- Cada cambio publicado sube el último número de `GAME_VERSION` en `index.html` (V1.03.85 → V1.03.86…). Antes de subir, trae `main` y comprueba que nadie haya usado ya ese número.
 - Todo el texto para el jugador va en español.
 - **Niveles:** Normal, Avanzado, Experto y Leyenda. Al empezar solo está abierto Normal. El As de Bronce abre Avanzado,
   el de Plata abre Experto y el de Oro abre Leyenda. Un as alto abre los de abajo, pero nunca se regalan ases.
