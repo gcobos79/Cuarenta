@@ -99,7 +99,8 @@
   }
   function repartir(E, ev) {
     const first = 1 - E.dealer; E.hands = [[], []];
-    for (let i = 0; i < 5; i++) { E.hands[first].push(E.deck.shift()); E.hands[E.dealer].push(E.deck.shift()); }
+    for (let i = 0; i < 5; i++) E.hands[first].push(E.deck.shift()); // V2.41: primero las 5 cartas seguidas del que comienza...
+    for (let i = 0; i < 5; i++) E.hands[E.dealer].push(E.deck.shift()); // ...y luego las 5 de quien reparte (antes se repartía de una en una)
     E.hands.forEach(ordenar);
     E.turn = first; E.lastPlayed = null; E.rondaClaimed = [false, false]; E.rondaFall = [false, false];
     E.rondaVal = E.hands.map(valorRonda); E.rounda = E.rondaVal.map(v => v !== null);

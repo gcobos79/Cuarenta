@@ -1,4 +1,6 @@
-CUARENTA · AMIGOS — V2.36
+CUARENTA · AMIGOS — V2.41
+
+Reparto seguido (V2.41): las cartas se reparten de 5 en 5: primero las 5 cartas seguidas de quien comienza y luego las 5 de quien reparte (antes se daba una carta a cada jugador por turno). No cambia ninguna regla ni los puntos.
 
 Sin círculo 40 (V2.36): se quitó por completo el círculo 40 del encabezado (y amigos/logo40.svg). Los marcadores ocupan todo el ancho desde el inicio. La versión se ve manteniendo pulsado un marcador durante 1 segundo.
 
