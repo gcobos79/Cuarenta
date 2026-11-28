@@ -7,7 +7,7 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const { jugar, reclamarRonda, puedeRonda, nueva } = Reglas;
-  const VERSION = 'V2.41', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
+  const VERSION = 'V2.42', CLAVE_SESION = 'amigosSesion', CLAVE_NOMBRE = 'amigosNombre';
   let E = null, V = null, modo = null /* null | 'local' | 'red' */, nombres = ['Jugador 1', 'Jugador 2'], ocupado = false, preguntada = '', ultimaCartaId = null;
   let S = null; // sesión en línea
   let avisoFijo = ''; // mensaje de espera (menú o lobby) que se retira al empezar la partida
@@ -317,7 +317,7 @@
     });
   }
 
-  function irASolo() { try { if (!window.__sinSalto) location.href = '../?v=' + Date.now(); } catch (e) { } } // TERMINAR PARTIDA devuelve al juego Solo
+  function irASolo() { try { if (!window.__sinSalto) location.href = '../?desde=amigos&v=' + Date.now(); } catch (e) { } } // TERMINAR PARTIDA devuelve al juego Solo
   async function terminar() {
     if (!E || E.estado !== 'jugando' || ocupado) return;
     const red = modo === 'red';

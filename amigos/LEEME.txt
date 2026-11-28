@@ -1,4 +1,6 @@
-CUARENTA · AMIGOS — V2.41
+CUARENTA · AMIGOS — V2.42
+
+Salir sin repetir el video (V2.42): SALIR y TERMINAR PARTIDA vuelven a Solo con la marca ?desde=amigos; Solo (V1.03.98) la detecta, se salta el video de introducción y abre su ventana principal.
 
 Reparto seguido (V2.41): las cartas se reparten de 5 en 5: primero las 5 cartas seguidas de quien comienza y luego las 5 de quien reparte (antes se daba una carta a cada jugador por turno). No cambia ninguna regla ni los puntos.
 
