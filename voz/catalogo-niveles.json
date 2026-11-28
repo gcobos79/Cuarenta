@@ -1,0 +1,11 @@
+{
+ "nota": "Mensajes de los niveles cerrados (Solo, teléfono). Frases fijas, sin nombres. Se graban una sola vez con la voz de Don Barajón; cada archivo se llama <huella>.mp3 y va en audio/.",
+ "nuevas": [
+  "Gana el As de Bronce en Normal para desbloquear el nivel Avanzado y poder jugar en él.",
+  "Desbloquea primero el nivel Avanzado (gana el As de Bronce en Normal) para poder jugar en el nivel Experto.",
+  "Desbloquea primero el nivel Avanzado (gana el As de Bronce en Normal) para poder jugar en el nivel Leyenda.",
+  "Gana el As de Plata en Avanzado para desbloquear el nivel Experto y poder jugar en él.",
+  "Desbloquea primero el nivel Experto (gana el As de Plata en Avanzado) para poder jugar en el nivel Leyenda.",
+  "Gana el As de Oro en Experto para desbloquear el nivel Leyenda y poder jugar en él."
+ ]
+}
